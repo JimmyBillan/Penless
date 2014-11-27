@@ -70,7 +70,6 @@ $(document).ready(function(){
 	}
 
 	}else if(idDocument !=""){
-		
 			$.ajax({
 			type : 'POST',
 			data : {D: idDocument},
@@ -78,26 +77,15 @@ $(document).ready(function(){
 			success: function(reponse){
 				exo = new Exercice();
 				exo.afficheExercicePourEleve($.parseJSON(reponse));
+				
 				// DEBUG CKE
-				$("#titreExo0CBinput0").attr("checked", "checked");
+				/*$("#titreExo0CBinput0").attr("checked", "checked");
 				$("#titreExo0CBinput2").attr("checked", "checked");				
 				$("#titreExo2CBinput1").attr("checked", "checked");
-				//$("#RtitreExo1").attr("value","A");
+				$("#RtitreExo1").attr("value","A");
 				$("#RtitreExo3").attr("value","B");
-				alert("debug");
-				var jsonReponse = exo.checkAndSaveReponseEleve();
-				alert("ready " +jsonReponse["isReady"] + " => "+jsonReponse.length);
-				if (jsonReponse["isReady"]){
-					$.ajax({
-						type : 'POST',
-						data : {JsonReponse : jsonReponse},
-						url : 'Controller/processSaveReponseEleve.php',
-						success:function(reponse){
-							alert(reponse);
-							//exo.afficheCorrection();
-						}
-					});
-				}			
+				alert("debug");*/
+				
 			}
 		});
 	}
@@ -157,6 +145,22 @@ $(document).ready(function(){
 
 	});
 
-	
+	$("body").on('click', '#EnregistrerReponseEleve', function(){
+		//CKE Possibilité incohérence id
+		var jsonReponse = exo.checkAndSaveReponseEleve();
+		
+		if (jsonReponse["isReady"]){
+			$.ajax({
+				type : 'POST',
+				data : {J : jsonReponse},
+				url : 'Controller/processSaveReponseEleve.php',
+				success:function(reponse){
+					alert(reponse);
+					//exo.afficheCorrection();
+				}
+			});
+		}		
+		
+	});
 
 	});

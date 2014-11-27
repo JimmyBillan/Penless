@@ -54,12 +54,12 @@ function Exercice (){
 			//alert("appel Q"+i+" checkAndSaveReponseEleve");
 			exercice.arrayQuestion[i].checkAndSaveReponseEleve(jsonReponse);
 		}
-		alert("Exo ready " +jsonReponse["isReady"]);
+		//alert("Exo ready " +jsonReponse["isReady"]);
 		var s ="Exo JSON";
 		for (var j in jsonReponse) {
 			s +=" "+j+ " ->" + jsonReponse[j] + "/";	
 		}
-		alert(s);
+		//alert(s);
 
 		return jsonReponse;
 	};

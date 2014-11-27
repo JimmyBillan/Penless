@@ -83,11 +83,11 @@ function Question(divExo) {
 			var valReponse = question.divQuestion.find("input");
 			if ((valReponse.length == 0)||(valReponse[0].value == "")) {
 				jsonReponse["isReady"] = false; 
-				alert("Aucune reponse");
+				alert("Il manque une réponse");
 			}
 			else {
 				jsonReponse[question.idQuestion] = valReponse[0].value;
-				alert("QS avec R" + question.idQuestion + " => " + valReponse[0].value);
+				//alert("QS avec R" + question.idQuestion + " => " + valReponse[0].value);
 			}
 			
 		}
@@ -97,14 +97,14 @@ function Question(divExo) {
 			var s="";
 			if (ReponseChecked.length == 0) {
 				jsonReponse["isReady"] = false; 
-				alert("Aucune reponse");}
+				alert("Il manque une réponse");}
 			else {
 				jsonReponse[question.idQuestion] = [];
 				for (var i = 0; i< ReponseChecked.length; i++) {
 					jsonReponse[question.idQuestion].push(ReponseChecked[i].id);
 					s += question.idQuestion + " => " + ReponseChecked[i].id +" /";
 				}
-				alert (s);
+				//alert (s);
 			}
 		}
 	};
