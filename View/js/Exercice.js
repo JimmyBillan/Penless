@@ -37,7 +37,7 @@ function Exercice (){
 					if(index.substring(0,7) == "CBinput"){
 						q.afficheReponseQCMPourEleve(index, value);
 					}
-					if (index.substring(0,9) == "QSreponse") {
+					if (index.substring(0,7) == "RSinput") {
 						q.afficheReponsePourEleve();
 					}
 

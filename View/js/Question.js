@@ -62,7 +62,7 @@ function Question(divExo) {
 		//if (question.divQuestion != "undefined" && !question.QSinputInForm) {
 		question.typeQuestion = "QS";
 		if (!question.QSinputInForm) {
-			question.divQuestion.append ('<input id="R'+question.idQuestion+'" type="text">');
+			question.divQuestion.append ('<div><input id="R'+question.idQuestion+'" type="text"></div>');
 			question.QSinputInForm = true; 
 		}
 	};
