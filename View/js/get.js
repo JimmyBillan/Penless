@@ -70,42 +70,38 @@ $(document).ready(function(){
 	}
 
 	}else if(idDocument !=""){
+		
 			$.ajax({
 			type : 'POST',
 			data : {D: idDocument},
 			url : 'Controller/getDocument.php',
 			success: function(reponse){
-
-				var result = $.parseJSON(reponse);
-				part1 = '<div class="col-sm-9 col-md-10 col-xs-12"><div id="row" class="droite15">';
-				part5 = '</div></div></div>'
-
-				titre = result.nomDocument;
-				date = result.DateModification;
-				exercices = "";
-				$.each(result, function(key, val){
-					if(key.substring(0,4) == "#exo"){
-						exercices += '<div id="'+key+'"  class="droite15 greybox col-xs-12" style="display : block">';
-						$.each(val, function(index, value) {
-							if(index.substring(0,8) == "titreExo"){
-							 	exercices += '<label name="'+index+'">'+value+'</label>';
-								//exercices +=;
-							}
-							 if(index.substring(0,7) == "CBinput"){
-							 	exercices += 	'<div class="checkbox col-xs-12"><label><input id="'+index+'"type="checkbox">'+value+'</label></div>';
-
-							 }
-
-						});
-						
-						exercices+="</div>";
-					}
-				})
-				
-				$('#sidebar').after(part1+"<br> <br>"+titre+" "+date+exercices);
+				exo = new Exercice();
+				exo.afficheExercicePourEleve($.parseJSON(reponse));
+				// DEBUG CKE
+				$("#titreExo0CBinput0").attr("checked", "checked");
+				$("#titreExo0CBinput2").attr("checked", "checked");				
+				$("#titreExo2CBinput1").attr("checked", "checked");
+				//$("#RtitreExo1").attr("value","A");
+				$("#RtitreExo3").attr("value","B");
+				alert("debug");
+				var jsonReponse = exo.checkAndSaveReponseEleve();
+				alert("ready " +jsonReponse["isReady"] + " => "+jsonReponse.length);
+				if (jsonReponse["isReady"]){
+					$.ajax({
+						type : 'POST',
+						data : {JsonReponse : jsonReponse},
+						url : 'Controller/processSaveReponseEleve.php',
+						success:function(reponse){
+							alert(reponse);
+							//exo.afficheCorrection();
+						}
+					});
+				}			
 			}
 		});
 	}
+	
 
 
 
