@@ -3,12 +3,12 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 session_start();
 
-if(isset($_POST['J'])) {
+if(isset($_POST['document'])) {
 		
-		/*$jsonReponse = $_POST['document'];
+		$jsonReponse = $_POST['document'];
 		$idDocument = $_SESSION['idDocument'];
-		$User       = $_SESSION['id'];
-		var_dump($jsonReponse)*/
+		//$User       = $_SESSION['id'];*/
+		//var_dump($_POST['document'])
 		/*
 		// Expected 
 		$reponseJuste = array();

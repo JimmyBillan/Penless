@@ -3,45 +3,23 @@ function Question(divExo) {
 	var question = this;
 
 	question.divExo = divExo;
-	
+	question.arrayReponse = [];
+
 	/* Formulaire pour la création de l'exercice
 	this.afficheFormEnoncePourAuteur(compteur) = function (compteur){
 	///////////////////////////////////////////////////////////
-		question.divExo.append(
-			'<div id="exo'+compteur+'" isok="0" class="droite15 greybox col-xs-12" style="display : block">'+
-        	'<form class="form-inline" role="form">'+
-        	'<div class="form-group col-xs-12">'+
-        	'<label id="labeltitreExo'+compteur+'" title="modifier ?" class="alignGauche"  style="display : none"></label>'+
-        	'<input id="inputtitreExo'+compteur+'" name="titreExo'+compteur+'" type="text" placeholder="Saisir la question ici" class="form-control" style="width : 80%">'+
-        	'<input id="supprimerExo" comp='+compteur+' class="btn btn-default" type="submit" value="X" title="Supprimer l\'éxercice">'+
-        	'</div>'+
-        	'</form>'+
-        	'</div>');
+		cf pageNewDocument + mettre en commun avec l'affichage pour Eleve
+		--> input pour Auteur / label pour Eleve
 	};
 
 	this.afficheFormReponsePourAuteur(compteur) = function (compteur) {
 	///////////////////////////////////////////////////////////
-		question.divExo.append(
-			'<div id="ReponseSimple'+compteur+'" class="col-xs-12">'+   
-        	'</div>'+
-        	'<div class="col-xs-12">'+
-        	'<input id="plusReponseSimple" comp='+compteur+' class="btn btn-default"  type="submit"  compRep="0" value="Ajouter une réponse">'+
-        	'<input id="enregistrerReponseSimple" comp='+compteur+' type="submit"  style="display : none" class="btn btn-default" value="Enregistrer">'+
-        	'<label id="erreurReponseSimple">'+'</label>'+
-        	'</div>');
-		question.nbReponse = 0;
+		cf pageNewDocument
 	};
 
 	this.addReponseAuteur(compteur) = function (compteur) {
 	///////////////////////////////////////////////////////////
-		question.divExo.append(
-			'<form class="form-inline" role="form" name="reponseSimple'+compRep+'">'+
-        	'<div class="form-group col-xs-12">'+
-        	'<input id="inputReponseSimple'+compRep+'" type="text"  style="width : 80%" class="form-control" placeholder="Réponse juste">'+
-        	'<input id="supprimerReponseSimple'+compRep+'" class="btn btn-default suppr" type="submit" value="X" title="Supprimer la réponse">'+
-        	'</div>'+
-        	'</form>');
-		question.nbReponse ++;
+		cf PageNewDocument
 	};
 	*/
 
@@ -57,27 +35,37 @@ function Question(divExo) {
 		question.QSinputInForm = false;
 	};
 	
-	this.afficheReponsePourEleve = function() {
+	this.afficheReponsePourEleve = function(idReponse, reponse) {
 	///////////////////////////////////////////////////////////
 		//if (question.divQuestion != "undefined" && !question.QSinputInForm) {
 		question.typeQuestion = "QS";
 		if (!question.QSinputInForm) {
-			question.divQuestion.append ('<div><input id="R'+question.idQuestion+'" type="text"></div>');
+			question.divQuestion.append (
+				'<div><input id="R'+question.idQuestion+'" type="text">'+
+				'<span id="Validation"></span>'+
+				'<label id="Correction"></label>'+
+				'</div>');
 			question.QSinputInForm = true; 
 		}
+		question.arrayReponse.push(reponse);
 	};
 
-	this.afficheReponseQCMPourEleve = function(idReponse, reponse) {
+	this.afficheReponseQCMPourEleve = function(idReponse, reponse, reponseOK) {
 	///////////////////////////////////////////////////////////
 		//if (question.divQuestion != "undefined" && !question.QSinputInForm) {
 		question.typeQuestion = "QCM";
 		question.divQuestion.append (
-			'<div class="checkbox col-xs-12"><input id="'+question.idQuestion+idReponse+'"type="checkbox"><label>'+reponse+'</label></div>');
+			'<div class="checkbox col-xs-12"><input id="'+idReponse+'" type="checkbox">'+
+			'<label>'+reponse+'</label>'+
+			'<span id="Validation'+idReponse+'"></span>'+
+			'</div>');
+		
+		question.arrayReponse.push({id   : idReponse, 
+									isOK : reponseOK});
 	};
 
-	// Formulaire de Correction
 	this.checkAndSaveReponseEleve = function(jsonReponse) {
-		
+	///////////////////////////////////////////////////////	
 		//alert(question.divQuestion.html());
 		if (question.typeQuestion == "QS") {
 			var valReponse = question.divQuestion.find("input");
@@ -85,28 +73,102 @@ function Question(divExo) {
 				jsonReponse["isReady"] = false; 
 				alert("Il manque une réponse");
 			}
-			else {
-				jsonReponse[question.idQuestion] = valReponse[0].value;
+			/*else {
+				//jsonReponse[question.idQuestion] = valReponse[0].value;
+				// --> remplacé par un appel à serialize au niveau de l'exercice
 				//alert("QS avec R" + question.idQuestion + " => " + valReponse[0].value);
-			}
+			}*/
 			
 		}
 		if (question.typeQuestion == "QCM") {
 			var ReponseChecked = question.divQuestion.find(":checked");
 			//alert("QCM avec " + ReponseChecked.length + " reponses");
-			var s="";
+			//var s="";
 			if (ReponseChecked.length == 0) {
 				jsonReponse["isReady"] = false; 
-				alert("Il manque une réponse");}
-			else {
+				alert("Il manque une réponse");
+			}
+			/*else {				
+				// --> remplacé par un appel à serialize au niveau de l'exercice
 				jsonReponse[question.idQuestion] = [];
 				for (var i = 0; i< ReponseChecked.length; i++) {
 					jsonReponse[question.idQuestion].push(ReponseChecked[i].id);
 					s += question.idQuestion + " => " + ReponseChecked[i].id +" /";
 				}
 				//alert (s);
+			}*/
+		}
+	};
+
+	this.afficheCorrection = function() {
+	/////////////////////////////////////
+		var removeIcon = function(elem) {
+			elem.removeClass("glyphiconVert glyphiconRouge glyphicon-ok glyphicon-remove glyphicon-unchecked");}
+
+		var setIconOK = function(elem) {elem.addClass("glyphiconVert glyphicon-ok");}
+		var setIconKO = function(elem) {elem.addClass("glyphiconRouge glyphicon-remove");}
+		var setIconCBOK = function(elem, c) {
+			if (c) {elem.addClass("glyphiconVert glyphicon-ok");}
+			else {elem.addClass("glyphiconVert glyphicon-unchecked");}}
+		var setIconCBKO = function(elem, c) {
+			if (c) {elem.addClass("glyphiconRouge glyphicon-ok");}
+			else {elem.addClass("glyphiconRouge glyphicon-unchecked");}}
+
+		var reponseIsOK;
+
+		if (question.typeQuestion == "QS") {
+
+			var reponseEleve = question.divQuestion.find("input");
+			var correction   = question.divQuestion.find("#Correction");
+			var validation   = question.divQuestion.find("#Validation");
+			reponseIsOK = false;
+
+			if ((reponseEleve.length == 0)||(reponseEleve[0].value == "")) {
+				correction.html("Réponse attendue!"); 
+			}
+			else {
+				removeIcon(validation);
+				// Il peut y avoir plusieurs réponses valides, donc on parcourt ce set de réponses
+				for (var i = 0; i< question.arrayReponse.length; i++) {
+					if (reponseEleve[0].value == question.arrayReponse[i]){
+						setIconOK(validation);
+						correction.html("Réponse exacte");
+						reponseIsOK = true;
+					}
+				}
+				if (!reponseIsOK) {
+					setIconKO(validation);
+					correction.html("La bonne réponse est : <em>"+question.arrayReponse[0]+"</em>");
+				}
 			}
 		}
+		if (question.typeQuestion == "QCM") {
+		
+			reponseIsOK = true;
+
+			for (var i=0; i< question.arrayReponse.length; i++) {
+
+				var reponseEleve = question.divQuestion.find("#"+question.arrayReponse[i].id)[0];
+				var validation   = question.divQuestion.find("#Validation"+question.arrayReponse[i].id);
+
+				removeIcon(validation);
+
+				if (question.arrayReponse[i].isOK == (reponseEleve.checked)) {
+					// Bonne réponse
+					setIconCBOK(validation, question.arrayReponse[i].isOK);
+					/*if (question.arrayReponse[i].isOK) {
+						// On ne met l'icone OK que si la réponse est juste et a étéait cochée par l'élève
+						// On ne met pas d'icone si la réponse est mauvaise et que l'élève ne l'a pas cochée
+						setIconOK(validation);
+					}*/
+				}
+				else{
+					setIconCBKO(validation, question.arrayReponse[i].isOK);
+					reponseIsOK = false
+				}
+			}
+		}
+		//return reponseIsOK; // Pour future notation 
 	};
 
 }

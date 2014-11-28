@@ -147,13 +147,14 @@ $(document).ready(function(){
 
 	$("body").on('click', '#EnregistrerReponseEleve', function(){
 		//CKE Possibilité incohérence id
-		var jsonReponse = exo.checkAndSaveReponseEleve();
+		var isReady = exo.checkAndSaveReponseEleve(); // faire juste le check
 		
-		if (jsonReponse["isReady"]){
+		if (isReady){
+			var dataReponse = exo.getDivExo().serialize();
 			$.ajax({
 				type : 'POST',
-				data : {J : jsonReponse},
-				url : 'Controller/processSaveReponseEleve.php',
+				data : {document : dataReponse},
+				url  : 'Controller/processSaveReponseEleve.php',
 				success:function(reponse){
 					alert(reponse);
 					//exo.afficheCorrection();
@@ -163,4 +164,10 @@ $(document).ready(function(){
 		
 	});
 
+	$("body").on('click', '#Corriger', function(){
+		//CKE Possibilité incohérence id
+		
+		exo.afficheCorrection();		
 	});
+
+});

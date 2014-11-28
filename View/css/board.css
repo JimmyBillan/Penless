@@ -340,6 +340,40 @@ cursor: pointer;
 -moz-osx-font-smoothing: grayscale;
 }
 
+.glyphiconVert {
+position: relative;
+top: 3px;
+left: 5px;
+display: inline-block;
+font-family: 'Glyphicons Halflings';
+font-style: normal;
+font-weight: 200;
+line-height: 1;
+font-size: 15px;
+min-width: 5%;
+color: #66FF66;
+cursor: pointer;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+.glyphiconRouge {
+position: relative;
+top: 3px;
+left: 5px;
+display: inline-block;
+font-family: 'Glyphicons Halflings';
+font-style: normal;
+font-weight: 200;
+line-height: 1;
+font-size: 15px;
+min-width: 5%;
+color: #FF5050;
+cursor: pointer;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
 .cbQCM {
 top: 6px;
 }

@@ -16,7 +16,8 @@ function Exercice (){
 		$('#corp').append(
 			'<div id="Exo" class="col-sm-9 col-md-10 col-xs-12">'+ 
 			'<label>'+exercice.titre +'</label>'+
-			'<input type="submit" id="EnregistrerReponseEleve" class="btn btn-default" value="Enregistrer">'+
+			//'<input type="submit" id="EnregistrerReponseEleve" class="btn btn-default" value="Enregistrer">'+
+			'<input type="submit" id="Corriger" class="btn btn-default" value="Corriger">'+
 			'</div>');  
 		//+'<div id="row" class="droite15">');
 		exercice.divExo = $('#Exo');
@@ -28,17 +29,22 @@ function Exercice (){
 				// Test sur le type de la question : QCM, QS, ... 
 				var q = new Question(exercice.divExo);
 				exercice.arrayQuestion.push (q);
-				
+				var nextCBisOK = false;
 				$.each(val, function(index, value) {
 					/// Enonce / Question ///
 					if (index.substring(0,8) == "titreExo"){						
 						q.afficheEnoncePourEleve(index, value);
 					}
 					if(index.substring(0,7) == "CBinput"){
-						q.afficheReponseQCMPourEleve(index, value);
+						q.afficheReponseQCMPourEleve(index, value, nextCBisOK);
+						nextCBisOK = false;
 					}
 					if (index.substring(0,7) == "RSinput") {
-						q.afficheReponsePourEleve();
+						q.afficheReponsePourEleve(index, value);
+					}
+					if (index.substring(0,12) == "reponseJuste") {
+						// indique que la prochaine CBinput est une réponse juste
+						nextCBisOK = true;
 					}
 
 				});
@@ -54,13 +60,24 @@ function Exercice (){
 			//alert("appel Q"+i+" checkAndSaveReponseEleve");
 			exercice.arrayQuestion[i].checkAndSaveReponseEleve(jsonReponse);
 		}
-		//alert("Exo ready " +jsonReponse["isReady"]);
+		/*alert("Exo ready " +jsonReponse["isReady"]);
 		var s ="Exo JSON";
 		for (var j in jsonReponse) {
 			s +=" "+j+ " ->" + jsonReponse[j] + "/";	
 		}
-		//alert(s);
+		alert(s);*/
+		return jsonReponse["isReady"];
 
-		return jsonReponse;
+	};
+
+	this.getDivExo = function() {
+		return exercice.divExo;
+	};
+
+	this.afficheCorrection = function() {
+	//////////////////////////////////////////	
+		for (var i = 0; i< exercice.arrayQuestion.length; i++) {
+			var reponseIsOK = exercice.arrayQuestion[i].afficheCorrection();
+		}	
 	};
 }
