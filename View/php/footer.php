@@ -8,4 +8,3 @@
     <!--<script type="text/javascript" src="View/js/connection.js"></script>-->
    <script type='text/javascript' src='View/js/recherche.js'></script> 
 </foot>
-</html>

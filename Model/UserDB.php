@@ -98,31 +98,16 @@ class UserDbConnection {
         
     }
 
-    public function FindInContactList($myself, $target){
-       
-    $this->_cursor = $this->_collection->findOne(array("idUrl" => $myself));
-    $resultat = array();
-    
-        if(count($this->_cursor["contact"]) != 0){
-
-            for ($i=0; $i < count($this->_cursor["contact"]) ; $i++) {
-
-                if( array_key_exists($target, $this->_cursor["contact"][$i])){
-                    if(!$this->_cursor["contact"][$i][$target]["confirmed"]){
-                            $resultat["etat"] = "FAIL";
-                            $resultat["raison"] = "WAITING";
-                    }elseif($this->_cursor["contact"][$i][$target]["confirmed"]){
-                        $resultat["etat"] = "FAIL";
-                        $resultat["raison"] = "ALREADY_FRIEND";
-                    }
-                }
-            }
-        }
-
-        return $resultat;
+    public function FindInContactList($myself, $target, $type){
+       return $this->_collection->findOne(array('$and' => array( array("idUrl" => $myself), array("contact.$type.$target" => array('$exists' => true)) )),  array("_id" => false, "idUrl" =>true) );
+  
     }
 
-  /*  public function CancelAddContact($myself, $target){
+    public function FindNotificationDemandeContact($myself, $target){
+       return $this->_collection->findOne(array('$and' => array( array("idUrl" => $myself), array("notification.demandeContact.$target" => array('$exists' => true)) )),  array("_id" => false, "idUrl" =>true) );
+    }
+
+  /*  public function CancelAskContact($myself, $target){
       //POssible uniquement si _cursor existe
         if(count($this->_cursor["contact"]) != 0){
             for ($i=0; $i < count($this->_cursor["contact"]) ; $i++) {
@@ -130,38 +115,54 @@ class UserDbConnection {
 
 
     }
+*/
+    public function getNotification($myself){
+        return $this->_collection->findOne(array("idUrl" => $myself), array("_id" => false, "notification" =>true));
+    }
 
-    /*public function FindInNotificationList($myself){
-        $cursor = $this->_collection->findOne(array("idUrl" => $myself));
-        $resultat = array();
-
-        if(count($cursor["NotifcationAttente"]) !=0){
-            for ($i=0; $i < count($cursor["NotifcationAttente"]); $i++){
-                $resultat[$i]=$cursor["NotifcationAttente"][$i];
-            }
-        }
-
-        return json_encode($cursor);
-    }*/
-
-    public function AddNewContact($myself, $target){
+    public function askNewContact($myself, $target){
         $criteria = array("idUrl" => $myself);
-        $newdata = array('$push' => array("contact" => array($target => array( "confirmed" => false))));
-        $this->_collection->update($criteria, $newdata);
+        $newdata = array('$set' => array("contact.waiting.$target" => date("m.d.y g:i:s")));
+        $this->_collection->update($criteria, $newdata, array("upsert" => true));
         
         //Recuperer info target
-        $elementMail = array();
-        $projection = array("_id"=> false, "nom" => true, "prenom"=> true, "mail" => true, "notificationMail" => true);
-       
-        $elementMail= $this->FindUserWithHisidUrlANDProjection($target, $projection);
-        if($elementMail["notificationMail"] == true)
-           echo $elementMail["mail"];
-            //envoi mail ici
+        $this->NotifyUser($target, $myself, "askNewContact");
+        
+    }
 
-       //Notifcation 
-        $criteria = array("idUrl" => $target);
-        $newdata = array('$push' => array("NotificiationAttente" => array($myself => array("ajoutContact" => date("m.d.y g:i:s")))));
-        $this->_collection->update($criteria, $newdata);
+    public function addContact($myself, $target){
+        $criteria = array("idUrl" => $myself);
+        $newdata = array('$set' => array("contact.accepted.$target" => date("m.d.y g:i:s")) );
+        $this->_collection->update($criteria,$newdata, array("upsert" => true));
+    }
+
+    public function removeNotificationDemandeContact($myself, $target){
+        $criteria = array("idUrl" => $myself);
+        $this->_collection->update($criteria, array('$unset' => array("notification.demandeContact.$target" => true)));
+    }
+
+    public function removeWaitingContact($myself, $target){
+        $criteria = array("idUrl" => $myself);
+        $this->_collection->update($criteria, array('$unset' => array("contact.waiting.$target" => true )));
+    }
+
+    public function NotifyUser($user, $myself, $type){
+
+        if($type == "askNewContact"){
+            $projection = array("_id"=> false, "nom" => true, "prenom"=> true, "mail" => true, "notificationMail" => true);
+            $elementMail= $this->FindUserWithHisidUrlANDProjection($user, $projection);
+            
+            if($elementMail["notificationMail"] == true)
+                    echo $user;
+
+            $criteria = array("idUrl" => $user);
+            $newdata = array('$set' => array("notification.demandeContact.$myself"=>date("m.d.y g:i:s")));
+            $this->_collection->update($criteria, $newdata, array("upsert" => true));
+
+          //  $newdata = array('$inc' => array("countNotification" => +1), array("upsert" => true));
+            //$this->_collection->update($criteria, $newdata);
+        }
+    
     }
 
 

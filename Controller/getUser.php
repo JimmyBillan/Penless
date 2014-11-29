@@ -9,7 +9,7 @@ if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
 	$getU = (string) $_POST["U"];
 	$resultat = array();
 
-	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true);
+	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true, "notification" => true);
 	$userDbConnection = new UserDbConnection();
 	$cursor = $userDbConnection->FindUserWithHisidUrlANDProjection($getU, $projection);
 
@@ -18,8 +18,15 @@ if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
 	else{
 		$resultat["nom"] = $cursor["nom"];
 		$resultat["prenom"] = $cursor["prenom"];
-			
-		$resultat["isAmi"] = $userDbConnection->FindInContactList($_SESSION["id"], $getU);
+		
+		if(array_key_exists($_SESSION["id"], $cursor["notification"]["demandeContact"]))
+			$resultat["isAmi"] = "WAITING";
+		elseif(array_key_exists($_SESSION["id"], $cursor["contact"]["accepted"]))
+			$resultat["isAmi"] = "ALREADY_FRIEND";
+		elseif(array_key_exists($_SESSION["id"], $cursor["contact"]["waiting"]))
+			$resultat["isAmi"] = "WAITING_FOR_ME";
+		else
+			$resultat["isAmi"] = "";
 	
 	}
 	
@@ -28,7 +35,7 @@ if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
 }elseif(isset($_POST["U"]) == $_SESSION["id"]) {
 	# code...
 
-	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true);
+	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true );
 	$userDbConnection = new UserDbConnection();
 	$cursor = $userDbConnection->FindUserWithHisidUrlANDProjection($_SESSION["id"], $projection);
 
@@ -38,9 +45,7 @@ if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
 
 	$resultat["nom"] = $cursor["nom"];
 	$resultat["prenom"] = $cursor["prenom"];
-	$temp["etat"] = "FAIL";
-	$temp["raison"] = "MYSELF";
-	$resultat["isAmi"] = $temp;
+	$resultat["isAmi"] = "MYSELF";
 	echo json_encode($resultat);
 }/*else{
 

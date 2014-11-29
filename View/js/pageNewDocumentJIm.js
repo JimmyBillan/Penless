@@ -255,14 +255,14 @@ window.setInterval(function(){
 	    	questions.incrementNombreExo();
 	    	qcm = generateEnonce(questions.nombreExo, "Qcm");
 	    	
-	        $("#creationDocument").append(qcm);
-	       // $("#creationDocument").attr("compQuestion")
+	        $("#blockQuestion").append(qcm);
+	       // $("#entetecreationelement").attr("compQuestion")
 	    }else if ($(this).val() === 'questionSimple') {
 	    	questions.incrementNombreExo();
             questionSimple = generateEnonce(questions.nombreExo, "QuestionSimple");
           	
-	        $("#creationDocument").append(questionSimple);
-	      //  $("#creationDocument").attr("compQuestion")
+	        $("#blockQuestion").append(questionSimple);
+	      //  $("#entetecreationelement").attr("compQuestion")
 	    }
  		$(this).val("Choisir un type d'element");
 	    $("body").animate({ scrollTop: $(document).height() }, "slow");

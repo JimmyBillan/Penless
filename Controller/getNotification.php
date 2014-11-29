@@ -5,22 +5,43 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 
-if(isset($_POST["C"]) && isset($_SESSION["id"])){
-	$getC = (string) $_POST["C"];
-	$resultat = array();
+if(isset($_POST["U"]) && $_POST["U"] == $_SESSION["id"]   && $_POST["C"] == "Notification"){
+	
 
 	$userDbConnection = new UserDbConnection();
+	$R = $userDbConnection->getNotification($_SESSION["id"]);
 
-	$projection = array("_id" => false, "NotificiationAttente" =>true);
-	$resultat = $userDbConnection->FindUserWithHisidUrlANDProjection($_SESSION["id"], $projection);
-	$c = count($resultat["NotificiationAttente"]);
-	$projection = array("_id" => false, "nom" =>true, "prenom" => true);
-	$retour = array();
-	for ($i=0; $i < $c ; $i++) { 
-		$retour[$i] = $userDbConnection->FindUserWithHisidUrlANDProjection(key($resultat["NotificiationAttente"][$i]), $projection);
-		
-	}
-	//echo json_encode($resultat["NotificiationAttente"][0]);
+	$values = array();
+
 	
-	echo  json_encode($retour);
-}
+	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true);
+	foreach ($R["notification"] as $key => $value) {
+		if($key == "demandeContact")
+		{
+			
+			$urls = array_keys($value);
+			for ($i=0; $i < count($urls); $i++) { 
+				$values[$urls[$i]] = $userDbConnection->FindUserWithHisidUrlANDProjection($urls[$i], $projection);
+			}
+			
+		}
+	}
+	$R["values"]=$values;
+	echo json_encode($R);
+	
+}/*else{
+
+	$userDbConnection = new UserDbConnection();
+	$R = $userDbConnection->getNotification("DLbpJe8v67");
+
+	$values = array();
+	
+	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true);
+	foreach ($R["notification"] as $key => $value) {
+		# code...
+		if($key == "demandeContact")
+			$value[key($value)] = $userDbConnection->FindUserWithHisidUrlANDProjection(key($value), $projection);
+	}
+	var_dump($R);
+
+}*/

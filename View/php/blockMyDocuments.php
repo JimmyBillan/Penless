@@ -1,11 +1,11 @@
-<div class="col-sm-9 col-md-10 col-xs-12">
+<div id="corp" class="col-sm-9 col-md-10 col-xs-12">
 	<div id="row" class="droite15">
 		<div class="container-fluid">
 		<table class="table table-striped table-hover ">
 			<thead>
 				<tr>
-					<th>Nom du document</th>
-					<th>Dernière modification</th>
+					<th class="hideMobile">Nom du document</th>
+					<th class="hideMobile">Dernière modification</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,8 +19,9 @@
 		foreach ($cursor as $key) {
 			echo "<tr>";
 				echo"<td onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["nomDocument"]."</td>";
-				echo "<td onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["DateModification"]."</td>";
+				echo "<td class='hideMobile' onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["DateModification"]."</td>";
 				echo "<td> <input type=submit value='Modifier' onclick=\"document.location = 'NewDocument.php?&D=".$key["idDocument"]."';\"> </td>";
+				echo "<td><span class='glyphicon glyphicon-remove' aria-hidden='true' title='Supprimer'></span></td>";
 			echo "</tr>";
 		}
 	}
