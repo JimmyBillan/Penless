@@ -4,10 +4,24 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+padding-top: 50px;
+
+}
+body.hl {
+  background: url('/image/accueil-kids.jpg')no-repeat center fixed;
+-webkit-background-size: cover;
 }
 
+.fontaccueil {
+background-color: rgba(255, 255, 255, 0.52);
+display: inline-block;
 
+}
+
+.policeGras {
+font-size: 50px;
+font-weight: bold;
+}
 /*
  * Global add-ons
  */
@@ -69,6 +83,7 @@ width: auto;
 }
 
 .bulleUser {
+z-index: 6;
 background: whitesmoke;
 border-radius: 4px;
 border: 1px solid #ccc;
@@ -82,8 +97,7 @@ width: 196px;
 
 
 @media (min-width: 768px) {
-  div#blockQuestion {
-    margin-top: 96px;
+   {
 }
 
 div#creationDocument {
@@ -97,8 +111,10 @@ div#creationDocument {
     /* width: 70%; */
     background-color: rgb(245, 245, 245);  padding: 10px;  
     border-width: 0 0 1px;
-    position: fixed; z-index: 1030;  
+    position: fixed; 
+    z-index: 5;  
     position: relative;
+    margin: 0px;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
   .sidebar {
     background-color: #f5f5f5;
@@ -112,15 +128,25 @@ div#creationDocument {
     position: static;
     top: 51px;
     z-index: 1000;
-  }
+  
+    margin: 0px;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+}
   .nav-sidebar {
     margin-bottom: 20px;
     margin-left: -20px;
     margin-right: -21px; /* 20px padding + 1px border */
   }
   .droite15{
-    margin-right: 0px;
+    margin-right: 15px;
   }
+  div#blockQuestion {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+  div#popPartager {
+  padding-right: 0px;
+  padding-left: 0px;
+}
 }
 
 @media (max-width: 768px) {
@@ -130,10 +156,25 @@ display: none;
 }
 
   div#blockQuestion {
+  position: relative;
+  top: 177px;
+  padding-right: 3px;
+  padding-left: 3px;
+  float: right;
+  }
+ div#popPartager {
     position: relative;
     top: 177px;
+    padding-right: 3px;
+padding-left: 3px;
+float: right;
+}
+
+.droite15 {
+left: 0px;
 }
    .navbar-fixed-enteteCreation {
+    min-width: 377px;
     background-color: rgb(245, 245, 245);  padding: 10px;  
     border-style: groove;
     border-top-color: black;
@@ -141,13 +182,14 @@ display: none;
     border-width: 1px 0px 0px 0px;
     margin-top: 140px;  
     position: fixed;
-    position: fixed;  right: 0;  left: 0;  z-index: 1030;  -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
+    position: fixed;  right: 0;  left: 0;  
+    z-index: 1;  -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
     top: 1px;
 }
   .navbar-fixed-top25 {
     border-width: 0 0 1px;
-    position: fixed;
-    position: fixed;  right: 0;  left: 0;  z-index: 1030;  -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
+    position: fixed;  right: 0;    
+    z-index: 0;  -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
 }
 #corp{
     margin-top: 90px;
@@ -255,7 +297,7 @@ div#entetecreationelement {
     background-color: rgb(232, 234, 234);
     padding: 10px;
     margin-top: 2%;
-    position: relative;
+    position: relative;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
 
 select#new_part {
@@ -286,6 +328,7 @@ float: left;
 
 .colorVert{
   background-color: rgba(136, 173, 155, 1);
+  margin: 0px;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
 
 .form-controlSansWidth {
@@ -316,6 +359,12 @@ padding: 0px 3px;
   background-color: rgb(255, 255, 255);
 }
 
+.clickable{
+  cursor: pointer;
+
+}
+
+
 @media (min-width: 768px) {
     .form-inline .radio input[type="radio"], 
     .form-inline .checkbox input[type="checkbox"] {
@@ -340,7 +389,7 @@ height: 34px;
 line-height: 1.42857143;
 padding: 6px 12px;
 transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-width: 95%;
+width: 95%;    
 }
 
 .form-controlReponse{
@@ -394,6 +443,14 @@ line-height: 1;
 min-width: 5%;
 position: relative;
 top: 3px;
+}
+
+#iconsupprimerDoc {
+    position: relative;  top: 6px;  display: inline-block;  font-family: 'Glyphicons Halflings';  font-style: normal;  font-weight: 400;  line-height: 1;  -webkit-font-smoothing: antialiased;
+}
+
+#iconsupprimerDoc:hover {
+    color: red;
 }
 
 .glyphiconVert {
@@ -450,4 +507,35 @@ div#creationDocument {
 
 position: absolute;
 }
+}
+
+div#sidebar {
+    z-index: 2;
+}
+
+
+
+.pop {
+display: none;
+position: absolute;
+z-index: 99999;
+background: #EEEFEB;
+min-width: 100px;
+color: #000000;
+margin: 0px;
+-webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+}
+
+.linePop:hover {
+background-color: white;
+cursor: pointer;
+text-align: center;
+font-weight: bold;
+}
+.linePop {
+width: 100%;
+background-color: whitesmoke;
+padding: 0.5%;
+text-align: center;
 }

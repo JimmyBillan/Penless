@@ -29,7 +29,7 @@ $(document).ready(function(){
 			url : 'Controller/getUser.php',
 			success: function(reponse){
 				var result = $.parseJSON(reponse);
-				console.log(result);
+				
 				nom = Maj(result.nom);
 				prenom = Maj(result.prenom);
 
@@ -66,6 +66,34 @@ $(document).ready(function(){
 
 					}
 
+
+					if(result.isAmi != "MYSELF"){
+						$.ajax({
+						type : 'POST',
+						data : {U:User},
+						url : 'Controller/getDocumentUserNotMe.php',
+						success:function(reponse){
+							console.log(reponse);
+							if(reponse =="no_document"){
+								$("#title").after("<label>Cet utilisateur n'a aucun document disponible</label>")
+							}else{
+								var result = $.parseJSON(reponse);
+							$("#title").after("<div id='tabDocument'></div>")
+							$("#tabDocument").append("<table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>Dernière modification</th></tr></thead><tbody id='bodyTabDocument'>");
+							for(key in result){
+								$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable'>"+result[key].nomDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
+
+							}
+							$("#tabDocument").append("</tbody></table></div></div></div>");
+							
+							}
+
+						}
+					});
+
+						
+					}
+
 				}
 
 				if(codePage == "Notification"){
@@ -96,6 +124,50 @@ $(document).ready(function(){
 				
 				
 
+				}else
+				if(codePage == "Contact"){
+
+					
+					
+					$.ajax({
+						type : 'POST',
+						data : {C:codePage, U:User},
+						url : 'Controller/getContact.php',
+						success:function(reponse){
+							var result = $.parseJSON(reponse);
+							$("#title").after("<div id='gestionContact'><label>Gestion des contacts</label><br><label>Groupe de contact</label><br><button id='btnmodifiergroupe' type='button' class='btn btn-default'>Modifier </button>  <button id='btnAjoutergroupe' type='button' class='btn btn-default'>Ajouter</button></div>");
+							$("#title").after("<div id='tabContact'></div>");
+							$("#tabContact").append("<label>Mes contacts :</label><table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom </th><th class='hideMobile'>Prenom</th></tr></thead><tbody id='bodyTabContact'>");
+							for(key in result){
+								$("#bodyTabContact").append("<tr id='goToTarget' target='"+result[key].idUrl+"'><td class='clickable'>"+result[key].nom+"</td><td class='clickable'>"+result[key].prenom +"</td></tr>");
+
+							}
+							$("#tabContact").append("</tbody></table></div></div></div>");
+							console.log(reponse);
+
+						}
+					});
+
+					/*$.ajax({
+						type : 'POST',
+						data : {C:codePage, U:User},
+						url : 'Controller/getGroupes.php',
+						success:function(reponse){
+							var result = $.parseJSON(reponse);
+							$("#title").after("<div id='tabContact'></div>")
+							$("#tabContact").append("<label>Mes groupes :</label><table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom </th><th class='hideMobile'>Prenom</th></tr></thead><tbody id='bodyTabContact'>");
+							for(key in result){
+								$("#bodyTabContact").append("<tr id='goToTarget' target='"+result[key].idUrl+"'><td class='clickable'>"+result[key].nom+"</td><td class='clickable'>"+result[key].prenom +"</td></tr>");
+
+							}
+							$("#tabContact").append("</tbody></table></div></div></div>");
+							console.log(reponse);
+
+						}
+					});*/
+				
+				
+
 				}
 	
 			$('#corp').on('click', '#accepterContact', function(){
@@ -107,18 +179,25 @@ $(document).ready(function(){
 							return false;
 						} 
 					});
+					console.log($(this).parent().parent());
+					$(this).parent().parent().hide();
+					
 					
 				});
 
 				$('#corp').on('click', '#refuserContact', function(){
+					
 					$.ajax({
 						type : 'POST',
 						data : {U:$(this).attr("idUrl")},
 						url : 'Controller/refuserContact.php',
 						success:function(reponse){
+							
 							return false;
 						} 
 					});
+
+							$(this).parent().parent().hide();
 				});
 
 				
@@ -132,9 +211,13 @@ $(document).ready(function(){
 			data : {D: idDocument},
 			url : 'Controller/getDocument.php',
 			success: function(reponse){
+				console.log(reponse);
+				if(reponse == "itsprivate"){
+					$("#corp").html("<label>Ce document est privée, vous n'avez pas l'autorisation de le lire</label>")
+				}else{
 				exo = new Exercice();
 				exo.afficheExercicePourEleve($.parseJSON(reponse));
-				
+				}
 				// DEBUG CKE
 				/*$("#titreExo0CBinput0").attr("checked", "checked");
 				$("#titreExo0CBinput2").attr("checked", "checked");				
@@ -145,6 +228,8 @@ $(document).ready(function(){
 				
 			}
 		});
+	}else{
+		window.location ="/MyDocuments.php";
 	}
 
 	$('#corp').on('click', '#addContact', function(){
@@ -155,9 +240,26 @@ $(document).ready(function(){
 
 			success: function(reponse){
 				console.log(reponse);
+				console.log(User);
 				if(reponse == User){
 					$("#addContact").remove();
 					$('#title').append('<input type="submit" id="cancelAddContact" class="btn btn-default  btn-xs" value="Annuler l\'invitation">');
+				}
+			}
+		});
+	});
+
+	$('#corp').on('click', '#cancelAddContact', function(){
+		$.ajax({
+			type : 'POST',
+			data : {U: User},
+			url : 'Controller/cancelAddContact.php',
+
+			success: function(reponse){
+				console.log(reponse);
+				if(reponse == User){
+					$("#cancelAddContact").remove();
+					$('#title').append('<input type="submit" id="addContact" class="btn btn-default  btn-xs" value="Ajouter aux contacts">');
 				}
 			}
 		});
@@ -225,5 +327,19 @@ $(document).ready(function(){
 		
 		exo.afficheCorrection();		
 	});
+
+	$("body").on('click', '#goToTarget', function(){
+		console.log($(this).attr("target"));
+		window.location ="/?&U="+$(this).attr("target");	
+	});
+
+
+	$("body").on('click', '#goToTargetDocument', function(){
+		console.log($(this).attr("target"));
+		window.location ="/?&D="+$(this).attr("target");	
+	});
+
+	
+
 
 });

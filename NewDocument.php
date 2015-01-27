@@ -34,4 +34,4 @@ else {
 }
 
 include('View/php/footer.php');
-echo  "<script type='text/javascript' src='View/js/pageNewDocumentJIm.js'></script>";
+echo  "<script type='text/javascript' src='View/js/pageNewDocument.js'></script>";

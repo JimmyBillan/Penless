@@ -4,24 +4,30 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 
 
-if(isset($_POST["U"]) && $_POST["U"] != $_SESSION["id"] ){
+if(isset($_POST["U"]) && $_POST["U"] != $_SESSION["id"] && isset($_SESSION["id"])){
 
 	
 	$getU = (string) $_POST["U"];
 
 	
 	$userDbConnection = new UserDbConnection();
+	
 	$resultat = $userDbConnection->FindInContactList($_SESSION["id"], $getU, "accepted");
-	var_dump($resultat);
+	
+
 	if(!$resultat){
 		$resultat = $userDbConnection->FindInContactList($_SESSION["id"], $getU, "waiting");
-		var_dump($resultat);
+		
 		if(!$resultat){
 			$resultat = $userDbConnection->FindInContactList($getU, $_SESSION["id"], "waiting");
-			var_dump($resultat);
-			if(!$resultat)
+			
+			if(!$resultat){
 				$userDbConnection->askNewContact($_SESSION["id"], $getU);
+				
+			}
+				
 		}
+		
 		
 	}
 

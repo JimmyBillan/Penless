@@ -1,7 +1,12 @@
 <?php
-//require_once "userServices.php";
+/*require_once "userServices.php";
 require_once "../Model/UserDB.php";
-require_once "../Model/TempUserDB.php";
+require_once "../Model/TempUserDB.php";*/
+
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once $root."/Model/UserDB.php";
+require_once $root."/Model/TempUserDB.php";
+require_once "userServices.php";
 
 if (    isset($_POST["mail"])&&
         isset($_POST["userNom"])&& 
@@ -33,7 +38,7 @@ if (    isset($_POST["mail"])&&
                     //On inscrit l'utilisateur dans la collection TempUser
                     $date = time(); 
                     $hashedPassword = hashPassword($date, $pwd);
-                    $cle = md5($pwd); 
+                    $cle = hash('sha256', "efù*zdù*aé'fzaccez".$date.$pwd); 
                     $tempUserDbConnection->InsertTempUser ($date, $mail, $nom, $prenom, $hashedPassword, $cle);
             
                     //On envoie le mail 
@@ -44,9 +49,9 @@ if (    isset($_POST["mail"])&&
                     http://upylinks.com/Controller/pageActivateUserAccount.php?mail=".urlencode($mail)."&cle=".urldecode($cle)." "; 
                     mail($mail, $sujet, $message, $entete);
                     
-                    echo ("http://localhost/penlessMVC/Controller/pageActivateUserAccount.php?mail=".urlencode($mail)."&cle=".urldecode($cle)."");
+                    //echo ("http://localhost/penlessMVC/Controller/pageActivateUserAccount.php?mail=".urlencode($mail)."&cle=".urldecode($cle)."");
                     // CKE DEBUG             
-                    echo "OK";
+                    echo 'Un mail de validation a été envoyé ';
                 }   
                 else {
                     echo "IN_PROGRESS";

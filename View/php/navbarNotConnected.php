@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php">L'ecole !</a>
+          <a class="navbar-brand" href="index.php">PENLESS</a>
         </div>
         <div class="navbar-collapse collapse">
          

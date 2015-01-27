@@ -1,6 +1,7 @@
 <div class="col-sm-9 col-md-10 col-xs-12">
     <div id="row" class="droite15">
-        <div id="creationDocument" compQuestion="0" style="display: block">
+
+        <div compQuestion="0" style="display: block">
                 <div id="entetecreationelement" class="col-xs-12 col-md-12 col-lg-8 navbar-fixed-enteteCreation">   
                         
                     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
@@ -21,13 +22,36 @@
                                 <option id="textatrou" value="questionSimple">questionSimple</option>
                                 <option id="lecon" value="lecon">Leçon</option>              
                             </select>
-                             <input type="submit" id="enregistrer" class="btn btn-default" value="Partager" style="display : none">
+                             <input type="button" id="partager" class="btn btn-default" value="Partager" style="display : none">
                         </div>
                     </div>
                 </div>
+                    <label id="LabelGeneral" style="display : block"></label>
+                    <div id="popPartager" class="col-xs-12 col-md-12 col-lg-8" style="display : none">
+                        <div  class="popPartager droite15 greybox col-xs-12">
+                            <label>Parametre de confidentialité</label>
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="privee" checked>
+                                Privée
+                              </label>
+                            </div>
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="public">
+                                Public
+                              </label>
+                            </div>
+                            <input type="text" class="form-controlEnonce"name="groupecontactpartage" placeholder="Contact/s ou groupe/s"><br>
+                            <button id="annulerpopPartager" type="button" class="btn btn-default">Annuler</button>
+                            <button id="validerpopPartager" type="button" class="btn btn-default">Valider</button>
+                            <div id="textNotifyPopPartager"></div>
+
+                        </div>
+                    </div>
                     
-                    <label id="LabelGeneral" style="display : none"></label>
-                    <div id="blockQuestion" compQuestion="0" style="display: block"></div>
+                    <div id="blockQuestion" class="col-xs-12 col-md-12 col-lg-8"  compQuestion="0" style="display: block"></div>
           </div>
     </div>
+  
 </div>

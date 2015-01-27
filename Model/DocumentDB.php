@@ -26,8 +26,15 @@ class DocumentDbConnection {
 	public function Update($idDocument, $doc)
 	{
 		$criteria = array("createur" => $doc["createur"], "idDocument" => $idDocument);
-		$newdata = $doc; // CKE utile?
 		$options = array("upsert"=>true);
         $this->_collection->update($criteria, $doc, $options);
+	}
+
+	public function findAndDelete($idDocument, $createur)
+	{
+		$criteria = array("createur" => $createur, "idDocument" => $idDocument);
+		$this->_collection->remove($criteria);
+		echo "delete_success";
+
 	}
 }

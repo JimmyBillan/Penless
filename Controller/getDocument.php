@@ -11,7 +11,7 @@ if(isset($_POST["D"])){
 	$db = $m->penless;
 	$collection = $db-> Document;
 
-	$projection = array("_id" => false, "createur" => false);
+	$projection = array("_id" => false);
 	$cursor = $collection->find(array("idDocument" => $getD), $projection);
 
 	if($cursor->count()==0)
@@ -19,7 +19,13 @@ if(isset($_POST["D"])){
 	else{
 		foreach ($cursor as $key) {
 			# code...
-			echo json_encode($key);
+			if($key["confident"] == "privee" && $_SESSION['id'] != $key["createur"]){
+				echo "itsprivate";
+			}else{
+				echo json_encode($key);
+			}
+			
+
 		}
 	}
 		

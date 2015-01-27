@@ -6,6 +6,40 @@ function isValidEmailAddress(emailAddress) {
 }
 /*</Fonction>*/   
 $(document).ready(function(){
+
+    /*######################################################*/
+    /* Chargement du tableau public    */
+    /*######################################################*/
+
+    $.ajax({
+                        type : 'GET',
+                        data : {DPublic:"futurValeurPeutetrelenombrededocument"}, /*Definir le nombre de document que l'on veut voir afficher*/
+                        url : 'Controller/getDocumentPublicArea.php',
+                        success:function(reponse){
+                            
+                                var result = $.parseJSON(reponse);
+                            
+                            $("#tabDocument").append("<label><h2>Les derniers documents partagés </h2></label><table class='table  table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>Dernière modification</th></tr></thead><tbody id='bodyTabDocument'>");
+                            for(key in result){
+                                $("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable2'>"+result[key].nomDocument+"</td><td class='clickable2'>"+result[key].DateModification +"</td></tr>");
+
+                            }
+                            $("#tabDocument").append("</tbody></table></div></div></div>");
+                            
+                            
+
+                        }
+                    });
+
+    /*######################################################*/
+    /* Function clic ligne tableau document      */
+    /*######################################################*/
+
+    $("body").on('click', '#goToTargetDocument', function(){
+        console.log($(this).attr("target"));
+        window.location ="/?&D="+$(this).attr("target");    
+    });
+
     
 /*######################################################*/
 /* Click sur Mot de passe oublié       */
@@ -41,7 +75,7 @@ $("#submitMDPOublie").click(function(){
             url  : '../../Controller/processMailForNewPassword.php',
 
             success: function(responseText){ 
-                label.html('AJAX processMailForNewPassword ' + responseText);
+               
                 
                 if(responseText == "NOK"){
                     label.show(500);
@@ -52,7 +86,7 @@ $("#submitMDPOublie").click(function(){
                     $('#labelMailOublie').hide();
                     $("#submitMDPOublie").hide();
                     label.show(500);
-                    //label.html('Un mail vient d\'être envoyé à l\'adresse '+mail);
+                    label.html('Un mail vient d\'être envoyé à l\'adresse '+mail);
                 }
             }
 

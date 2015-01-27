@@ -37,7 +37,7 @@ if (isset($_GET['mail']) && isset($_GET['cle'])){
 		$tempUserDbConnection->remove($mail);
         
 		echo "Inscription reussie, bienvenue sur Penless! Vous allez être redirigé dans quelques secondes";
-		echo ('<meta http-equiv="refresh" content="2;url=../View/php/index.php">');
+		echo ('<meta http-equiv="refresh" content="2;url=../index.php">');
 	}	
 } 
 include('footer2.php');

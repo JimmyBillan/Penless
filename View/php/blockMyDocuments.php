@@ -17,11 +17,11 @@
 	$cursor = $documentDBconnection->Find($_SESSION['id']); // On cherche les documents de l'utilisateur
 	if($cursor->count() > 0){
 		foreach ($cursor as $key) {
-			echo "<tr>";
+			echo "<tr id=".$key["idDocument"].">";
 				echo"<td onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["nomDocument"]."</td>";
 				echo "<td class='hideMobile' onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["DateModification"]."</td>";
 				echo "<td> <input type=submit value='Modifier' onclick=\"document.location = 'NewDocument.php?&D=".$key["idDocument"]."';\"> </td>";
-				echo "<td><span class='glyphicon glyphicon-remove' aria-hidden='true' title='Supprimer'></span></td>";
+				echo "<td><span class='glyphicon glyphicon-remove' aria-hidden='true' id='iconsupprimerDoc' title='Supprimer' value=".$key["idDocument"]."></span></td>";
 			echo "</tr>";
 		}
 	}

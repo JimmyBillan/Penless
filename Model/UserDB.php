@@ -42,9 +42,10 @@ class UserDbConnection {
                                          "dateInscription"          => $dateInscription,
                                          "dateModificationPassword" => $datePassword,
                                          "password"                 => $hashedPassword,
-                                         "contact"                  => array(),
-                                         "notificationMail"         => true,
-                                         "NotificiationAttente"     => array()));
+                                         //"contact"                  => array(),
+                                         "notificationMail"         => true//,
+                                         //"notificiation"            => array()
+                                         ));
         //return $this->_collection->findOne(array("mail" => $mail))['id'];
     }
 
@@ -103,6 +104,7 @@ class UserDbConnection {
   
     }
 
+
     public function FindNotificationDemandeContact($myself, $target){
        return $this->_collection->findOne(array('$and' => array( array("idUrl" => $myself), array("notification.demandeContact.$target" => array('$exists' => true)) )),  array("_id" => false, "idUrl" =>true) );
     }
@@ -121,12 +123,14 @@ class UserDbConnection {
     }
 
     public function askNewContact($myself, $target){
+        
         $criteria = array("idUrl" => $myself);
         $newdata = array('$set' => array("contact.waiting.$target" => date("m.d.y g:i:s")));
         $this->_collection->update($criteria, $newdata, array("upsert" => true));
         
         //Recuperer info target
-        $this->NotifyUser($target, $myself, "askNewContact");
+       $this->NotifyUser($target, $myself, "askNewContact");
+       echo $target;
         
     }
 
@@ -152,8 +156,8 @@ class UserDbConnection {
             $projection = array("_id"=> false, "nom" => true, "prenom"=> true, "mail" => true, "notificationMail" => true);
             $elementMail= $this->FindUserWithHisidUrlANDProjection($user, $projection);
             
-            if($elementMail["notificationMail"] == true)
-                    echo $user;
+           // if($elementMail["notificationMail"] == true)
+                    //echo $user;
 
             $criteria = array("idUrl" => $user);
             $newdata = array('$set' => array("notification.demandeContact.$myself"=>date("m.d.y g:i:s")));
