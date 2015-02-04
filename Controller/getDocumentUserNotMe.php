@@ -5,10 +5,10 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 require_once $root."/Model/DocumentDB.php";
 
-if(isset($_POST["U"]) && $_POST["U"] != $_SESSION["id"]){
+if(isset($_GET["U"]) && $_GET["U"] != $_SESSION["id"]){
 
 	$db = new DocumentDbConnection();
-	$user = (string) $_POST["U"];
+	$user = (string) $_GET["U"];
 
 	$m = new MongoClient();
 	$db = $m->penless;

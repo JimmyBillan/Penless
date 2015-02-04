@@ -5,7 +5,7 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 
-if(isset($_POST["U"]) && $_POST["U"] == $_SESSION["id"]   && $_POST["C"] == "Notification"){
+if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){
 	
 
 	$userDbConnection = new UserDbConnection();
