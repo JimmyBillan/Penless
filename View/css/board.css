@@ -109,7 +109,8 @@ div#creationDocument {
     -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
     /* margin-top: -95px; */
     /* width: 70%; */
-    background-color: rgb(245, 245, 245);  padding: 10px;  
+    background-color: rgb(245, 245, 245);
+    padding: 10px;  
     border-width: 0 0 1px;
     position: fixed; 
     z-index: 5;  
@@ -373,6 +374,18 @@ padding: 0px 3px;
     }
 }
 
+.labelEnonce { /* idem formControl sauf background-color et border supprimés*/
+background-color: rgb(232, 234, 234);
+border:transparent;
+font-weight:bold;
+color: #555;
+display: inline;
+font-size: 14px;
+height: 34px;
+line-height: 1.42857143;
+padding: 6px 12px;
+width: 95%;    
+}
 .form-controlEnonce {
 -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -391,7 +404,17 @@ padding: 6px 12px;
 transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 width: 95%;    
 }
-
+.labelReponse{ /* idem formControl sauf background-color et border supprimés*/
+background-color: rgb(232, 234, 234);
+border:transparent;
+color: #555;
+display: inline;
+font-size: 14px;
+height: 34px;
+line-height: 1.42857143;
+padding: 6px 12px;
+width: 93.5%;
+}
 .form-controlReponse{
 -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);

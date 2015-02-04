@@ -1,27 +1,24 @@
 <?php
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once $root."/Model/DocumentDB.php";
+
 session_start();
 if(isset($_POST['D'])){
 	$idDOcument = (string) $_POST['D'];
-
-	$resultat = array();
-
 	
-	$m = new MongoClient();
-	$db = $m->penless;
-	$collection = $db-> Document;
-
-
-	$cursor = $collection->find(array("idDocument" => $idDOcument));
-
+	// Test si le document appartient bien à l'utilisateur
+	$m = new DocumentDbConnection();
 	
-	if($cursor->count()==0)
-		echo "aucun document à cette url";
-	else{
-
-		foreach ($cursor as $key) {
-			# code...
-			echo $key["nomDocument"]."<br>";
-			echo $key["DateModification"];
-		}
+	$doc = $m->FindOne($idDOcument);
+	
+	if ($doc['createur'] == null) {
+		echo "INVALID_DOCUMENT";}
+	else if ($doc['createur'] != $_SESSION['id']) {
+		echo "UNAUTHORIZED_USER";}
+	else {
+		
+		$_SESSION['idDocument'] = $idDOcument;
+		
+		echo json_encode($doc);
 	}
 }

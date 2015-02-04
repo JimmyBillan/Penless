@@ -18,9 +18,9 @@
 	if($cursor->count() > 0){
 		foreach ($cursor as $key) {
 			echo "<tr id=".$key["idDocument"].">";
-				echo"<td onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["nomDocument"]."</td>";
+				echo"<td onclick=\"document.location = '/?&D=".$key["idDocument"]."&C=Affichage';\" class=clickable>".$key["titreDocument"]."</td>";
 				echo "<td class='hideMobile' onclick=\"document.location = '/?&D=".$key["idDocument"]."';\" class=clickable>".$key["DateModification"]."</td>";
-				echo "<td> <input type=submit value='Modifier' onclick=\"document.location = 'NewDocument.php?&D=".$key["idDocument"]."';\"> </td>";
+				echo "<td><input type=submit value='Modifier' onclick=\"document.location = '/?&D=".$key["idDocument"]."&C=Modification';\"> </td>";
 				echo "<td><span class='glyphicon glyphicon-remove' aria-hidden='true' id='iconsupprimerDoc' title='Supprimer' value=".$key["idDocument"]."></span></td>";
 			echo "</tr>";
 		}
