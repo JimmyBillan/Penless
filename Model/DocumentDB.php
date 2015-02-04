@@ -14,9 +14,15 @@ class DocumentDbConnection {
 
     public function FindOne($idDocument)
 	{
-		return $this->_collection->findOne(array("idDocument" => $idDocument));		
+		$projection = array("_id" => false);
+		return $this->_collection->findOne(array("idDocument" => $idDocument), $projection );		
 	}
     
+	/*public function FindAuteur($idDocument)
+	{
+		return $this->_collection->findOne(array("idDocument" => $idDocument), array("auteur"=> true));	
+	}*/
+
     public function Find($idCreateur)
 	{
 	return $this->_collection->find(array("createur" => $idCreateur));

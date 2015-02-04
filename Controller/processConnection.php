@@ -1,5 +1,6 @@
 <?php 
-require_once "../Model/UserDB.php";
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once $root."/Model/UserDB.php";
 
 if (isset($_POST['mail']) && isset($_POST['password'])) {
 	
