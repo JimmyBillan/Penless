@@ -23,6 +23,7 @@ include('footer.php');
 
 echo  "<script type='text/javascript' src='View/js/Question.js'></script>";
 echo  "<script type='text/javascript' src='View/js/Exercice.js'></script>";
-echo  "<script type='text/javascript' src='View/js/get.js'></script>"; // CKE TODO à passer dans le footer?
+echo  "<script type='text/javascript' src='View/js/user.js'></script>";
+echo  "<script type='text/javascript' src='View/js/document.js'></script>"; // CKE TODO à passer dans le footer?
 echo "</html>";
 

@@ -140,6 +140,11 @@ class UserDbConnection {
         $this->_collection->update($criteria,$newdata, array("upsert" => true));
     }
 
+    public function removeContact($myself, $target){
+        $this->_collection->update(array("idUrl" => $myself), array('$unset' => array("contact.accepted.$target"=> 1)));
+        $this->_collection->update(array("idUrl" => $target), array('$unset' => array("contact.accepted.$myself"=> 1)));
+    }
+
     public function removeNotificationDemandeContact($myself, $target){
         $criteria = array("idUrl" => $myself);
         $this->_collection->update($criteria, array('$unset' => array("notification.demandeContact.$target" => true)));

@@ -1,8 +1,9 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include $root."/Controller/userServices.php";
+require_once "Hashids.php";
 
-class ContactGestion {
+class groupDbConnection {
     var $_m;
     var $_db;
     var $_collection;
@@ -11,7 +12,7 @@ class ContactGestion {
     {
         $this->_m          = new MongoClient("localhost:27017");
         $this->_db         = $this->_m->penless;
-        $this->_collection = $this->_db->Contact;
+        $this->_collection = $this->_db->Group;
     }
 
     public function CreerEtablissement($idEtablissement, $nom, $admin)
@@ -24,9 +25,12 @@ class ContactGestion {
 			"admin"				=>[]));
     }
 
-    public function CreerGroupe($arrayUser, $nomGroupe, $idGroupe, $admin){
-    	$this->_collection->insert(array(
-    	"type" => "classe","idGroupe" => $idGroupe, "nom" => $nomGroupe, "arrayUser" => $arrayUser, "admin" => $admin));
+    public function initGroup($nomGroupe, $idGroupe, $admin){
+        $hashids = new Hashids("PenlesssaléeGroup"); 
+        $idGroupe += microtime(true) * 10000;
+        $id = $hashids->encode($idGroupe);
+    	$result = $this->_collection->insert(array("idGroupe" => $id, "nom" => $nomGroupe, "arrayUser" => $arrayUser, "admin" => $admin, "date" => new MongoDate()));
+        echo "init_success";
     }
 
     public function newclassInEcole($idEtablissement, $idClasse){

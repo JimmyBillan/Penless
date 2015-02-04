@@ -4,9 +4,9 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 
-if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
+if(isset($_GET["U"])&& $_GET["U"] != $_SESSION["id"]){
 	
-	$getU = (string) $_POST["U"];
+	$getU = (string) $_GET["U"];
 	$resultat = array();
 
 	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true, "notification" => true);
@@ -32,7 +32,7 @@ if(isset($_POST["U"])&& $_POST["U"] != $_SESSION["id"]){
 	
 	echo json_encode($resultat);
 
-}elseif(isset($_POST["U"]) == $_SESSION["id"]) {
+}elseif(isset($_GET["U"]) == $_SESSION["id"]) {
 	# code...
 
 	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true );
