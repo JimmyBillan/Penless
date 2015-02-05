@@ -145,7 +145,7 @@ $(document).ready(function(){
 		postDocument();
 
 		// Désactivation du Titre
-		showLabel(divTitreDoc.parent(), 300);
+		showLabel(divTitreDoc.parent(), 0);
 
 		// Affichage du menu déroulant de choix des exercices
 		$("#new_element").show(300);
@@ -164,7 +164,7 @@ $(document).ready(function(){
 	   		 		 mode    : "CREATE"};
 	   	
 	    addFormQuestion(infoQ);
-	     
+
  		$(this).val("Ajouter un élément"); // CKE : il faudrait pouvoir retrouver la valeur1 du select sans la nommer
 	    $("body").animate({ scrollTop: $(document).height() }, "slow");
 	    $('#LabelGeneral').hide();  
@@ -190,6 +190,7 @@ $(document).ready(function(){
 	//BOUTONS "Partager"
 	//---------------------------------------------------
 	$("body").on('click', "#partager", function(){
+		showInput($("#popPartager"));
 		$("#popPartager").show();
 		$("#textNotifyPopPartager").html("");
 	});
@@ -213,8 +214,17 @@ $(document).ready(function(){
 	//BOUTONS Modifier
 	//---------------------------------------------------
 	$("body").on('click', '[name^="modifier"]', function(){	
-		console.log($(this).parent());	
 		showInput($(this).parent(), 300);		
+	});
+
+	//BOUTONS Valider
+	//---------------------------------------------------
+	$("body").on('click', '[name="valider"]', function(){
+
+		var exoOK = checkExo($(this).parent());
+		if (exoOK) {
+			showLabel($(this).parent());
+		}
 	});
 
 	//BOUTONS Supprimer	
@@ -229,7 +239,6 @@ $(document).ready(function(){
 	$("body").on('click', '#iconsupprimerDoc', function(){
 		
 		var idDoc = $(this).attr("value");
-		console.log(idDoc);
 		$.ajax({
 			type : 'POST',
 			url : '../../Controller/processDeleteDocument.php',

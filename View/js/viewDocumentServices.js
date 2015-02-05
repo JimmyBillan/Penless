@@ -1,27 +1,25 @@
 function showLabel(div, retard){
     div.find("[name^='titre']").prop( "readonly", true );
-    div.find("[name^='reponse']").prop( "readonly", true );
-    div.find(".form-controlEnonce").addClass("labelEnonce").removeClass("form-controlEnonce");
-    div.find(".form-controlReponse").addClass("labelReponse").removeClass("form-controlReponse");    
+    div.find("[name^='reponse']").prop( "readonly", true ); 
+    div.find(".saisie").removeClass("saisie");   
     div.find("[name^='modifier']").show(retard);  
     div.find("[name^='plus']").hide(retard); 
     div.find("[name^='valider']").hide(retard);    
 }
 function showInput(div, retard){
     div.find("[name^='titre']").prop( "readonly", false );
-    div.find("[name^='reponse']").prop( "readonly", false );
-    div.find(".labelEnonce").addClass("form-controlEnonce").removeClass("labelEnonce");
-    div.find(".labelReponse").addClass("form-controlReponse").removeClass("labelReponse");    
-    div.find("[name^='modifier']").prop( "readonly", true );//hide(retard); // CKE : ne marche pas ??  A TESTER
+    div.find("[name^='reponse']").prop( "readonly", false );    
+    div.find(".labelTitre, .labelEnonce, .labelReponse").addClass("saisie");  
+    div.find("[name^='modifier']").hide(retard);
     div.find("[name^='plus']").show(retard); 
     div.find("[name^='valider']").show(retard);      
 }
 function showForEleve(div, retard){
     div.find("[name^='titre']").prop( "readonly", true );
     div.find("[name^='reponse-Qcm']").prop( "readonly", true );
-    div.find(".form-controlEnonce").addClass("labelEnonce").removeClass("form-controlEnonce");
-    div.find("[typeexo='Qcm']").find("[name^='reponse']").addClass("labelReponse").removeClass("form-controlReponse"); 
-    div.find("[typeexo='QuestionSimple']").find("[name^='reponse']").addClass("form-controlReponse").removeClass("labelReponse").val('');
+    div.find(".saisie").removeClass("saisie");
+    div.find("[typeexo='Qcm']").find("[name^='reponse']").removeClass("saisie"); 
+    div.find("[typeexo='QuestionSimple']").find("[name^='reponse']").addClass("saisie").val('');
 }
 
 // !!! L'attribut "name" se retrouve dans le JSON !!!
@@ -34,19 +32,17 @@ function showForEleve(div, retard){
 
 var addFormTitreDoc = function (div, mode, jsonDoc) {
     
-
     var valueTitre = '';
     if (jsonDoc) {valueTitre = jsonDoc["titreDocument"];}    
 
     var formTitre =
-        '<div id="TitreDoc" class="col-lg-10 col-md-10 col-sm-9 col-xs-12">'+
-            //'<label name="labelTitreDoc" class="col-xs-12">'+valueTitre +'</label>';
-        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="form-controlEnonce" value="'+valueTitre +'">';
+        '<div id="TitreDoc">'+// class="col-lg-10 col-md-10 col-sm-9 col-xs-12">'+
+        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">';
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         formTitre +=
-            '<span type="submit" name="validerTitreDoc" class="glyphiconSupprimerQuestion glyphicon-chevron-right" title="Valider"></span>'+
-            '<span type="submit" name="modifierTitreDoc" class="glyphiconSupprimerQuestion glyphicon-edit" title="Modifier"></span>';
+            '<span type="submit" name="validerTitreDoc" class="glyphiconDoc glyphicon-ok" title="Valider"></span>'+
+            '<span type="submit" name="modifierTitreDoc" class="glyphiconDoc glyphicon-edit" title="Modifier" style="display: none;"></span>';
     } else {
         formTitre += '<input type="submit" id="Corriger" class="btn btn-default" value="Corriger">';
     }
@@ -63,7 +59,6 @@ var addMenus = function(div, mode) {
 
     var menus = 
     '<div id="row" class="top10 col-xs-12">'+
-        '<div class="col-lg-12 col-sm-12 col-xs-12 ">'+
             // Menu Deroulant "Ajouter un élément"
             '<select name="new_element" id="new_element" class="btn btn-default" '+displayStyle+'>'+
                 '<option id="vide">Ajouter un élément</option>'+
@@ -72,7 +67,6 @@ var addMenus = function(div, mode) {
             '</select>'+
             // Bouton "partager"
             '<input type="button" id="partager" class="btn btn-default" value="Partager" '+displayStyle+'>'+
-        '</div>'+
     '</div>';
     div.append(menus);
 }
@@ -92,7 +86,7 @@ var addPopPartage = function(div) {
                 '<input type="radio" name="optionsRadios" id="optionsRadios2" value="public"> Public'+
                 '</label>'+
             '</div>'+
-            '<input type="text" class="form-controlEnonce"name="groupecontactpartage" placeholder="Contact/s ou groupe/s"><br>'+
+            '<input type="text" class="labelReponse saisie"name="groupecontactpartage" placeholder="Contact/s ou groupe/s"><br>'+
             '<button id="annulerpopPartager" type="button" class="btn btn-default">Annuler</button>'+
             '<button id="validerpopPartager" type="button" class="btn btn-default">Valider</button>'+
             '<div id="textNotifyPopPartager"></div>'+
@@ -107,26 +101,20 @@ var addBlockExos = function (div) {
 
 var addFormDocHeader = function (div, mode, jsonDoc) {
 	// En-tête du nouveau document	
-	// !!! Attention pas de saut de ligne après return (";"" inséré automatiquement par JS)!!!
 	var header =
-    '<div class="col-sm-9 col-md-10 col-xs-12">'+ //CKE Supprimer qq niveaux de div ?...
-    	'<div id="row" class="droite15">'+
-        	'<div id="doc" style="display: block">'+
-               	'<div id="entetecreationelement" class="col-xs-12 col-md-12 col-lg-8 navbar-fixed-enteteCreation">'+                		
-                '</div>'+
-                // LabelGeneral : utilisé pour affichage general // CKE voir quand on s'en sert
-                '<label id="LabelGeneral" style="display : block"></label>'+ 
-                // Block qui contiendra les exercices/questions
+        '<div id="doc" class="droite15" style="display: block">'+
+            '<div id="docHeader" class="col-xs-12 col-md-12 col-lg-8 navbar-fixed-enteteCreation">'+                		
+                // LabelGeneral : utilisé pour affichage general 
+                '<label id="LabelGeneral" style="display : block"></label>'+
             '</div>'+
-        '</div>'+
-    '</div>';
+        '</div>';
     
-    $("#corp").append(header);
+    div.append(header);
 
-    addFormTitreDoc($("#entetecreationelement"), mode, jsonDoc);
+    addFormTitreDoc($("#docHeader"), mode, jsonDoc);
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
-        addMenus($("#entetecreationelement"), mode);
+        addMenus($("#docHeader"), mode);
         addPopPartage($("#doc")); 
         // document en mode privé par défaut à la création et à la Modification
         // Un doc en cours de modification n'est donc plus accessible
@@ -137,10 +125,6 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
 
 var addFormQuestion = function (data){
     // data = (div, mode, idExo, typeExo, question)
-    // cas création du document : affichage d'un bouton valider
-    // cas modification d'un document existant : titre pré-rempli et pas de bouton
-    ////console.log("***addFormQuestion***");
-    ////console.log(data);
     
     // Calcul idExo
     // Si l'id existe (doc existant), on l'utilise
@@ -148,9 +132,6 @@ var addFormQuestion = function (data){
     //-------------------------------------------------------------------------------------------------------------
     if (!data.idExo) {
         var lastExo = data.div.find('[name^="exo"]:last');
-        // Check du contenu du dernier exo
-        checkExo(lastExo);
-        //----------------
         if (lastExo.length===0) {
             data.idExo = "exo1";
         } else {
@@ -168,15 +149,17 @@ var addFormQuestion = function (data){
 
 	var q = 
         '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-        '<input name="titreExo" type="text" placeholder="Saisir la question" class="form-controlEnonce col-xs-11" value="'+valueQuestion+'">';
+        '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
 
     if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
+        // Les styles d'affichage par défaut sont ceux pour le mode CREATE
         q +=
-        '<span name="supprimer" class="glyphiconSupprimerQuestion glyphicon-remove" aria-hidden="true" type="submit" title="Supprimer l\'exercice"></span>'+
-        '<span name="modifier" class="glyphiconSupprimerQuestion glyphicon-edit" aria-hidden="true" type="submit" title="Mofifier l\'exercice"></span>'+
+        '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
+        '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
+        '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
         '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
-        '<label name="labelErreur"  style="color:red"></label>';
-        // CKE : pas besoin d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
+        '<label name="labelErreur" style="color:red"></label>';
+        // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
     }
     // CKE : créer un div blockreponses?
     q += '</div>';
@@ -184,9 +167,7 @@ var addFormQuestion = function (data){
 }
 
 var addFormReponse = function(data){
-    // data = (div, idReponse, mode, reponse, typeExo, CBOK)
-    ////console.log("***addFormReponse***");
-    ////console.log(data);
+    // data = (div, idReponse, mode, reponse, CBOK)
     
     // Calcul idReponse : 
     // Si l'id existe (doc existant), on l'utilise
@@ -216,7 +197,7 @@ var addFormReponse = function(data){
     // Construction du formulaire de réponse
     //--------------------------------------
     var reponse = 
-        '<div name="div'+data.idReponse+'" type="CB" class="col-xs-11 checkbox reponseCheckbox">';  // type CB utilisé dans Supprimer réponse
+        '<div name="div'+data.idReponse+'" type="CB" class="col-xs-12 checkbox reponseCheckbox">';  // type CB utilisé dans Supprimer réponse
 
     // Checkbox pour les QCM
 	if (data.div.attr("typeexo") === "Qcm") {
@@ -225,14 +206,14 @@ var addFormReponse = function(data){
         reponse += '<input name="OK-'+data.idReponse+'" class="cbQCM" type="checkbox" '+ CBchecked+' >';
     }
 
-    reponse += '<input name="'+data.idReponse+'" type ="text" class="form-controlReponse" value="'+valueReponse+'" placeholder="Saisir la reponse">';
+    reponse += '<input name="'+data.idReponse+'" type ="text" class="labelReponse saisie" value="'+valueReponse+'" placeholder="Saisir la reponse">';
     // Bouton Supprimer
     if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
         reponse +=   		   
-   		   '<span name="supprimerReponse" class="glyphiconSupprimerReponse glyphicon-remove" aria-hidden="true"></span>';
+   		   '<span name="supprimerReponse" class="glyphiconReponse glyphicon-remove"></span>';
     } else {
         reponse +=
-            '<span name="Validation"></span>'+
+            '<span name="Validation" class="glyphiconReponse"></span>'+
             '<label name="Correction"></label>';
     }
 
@@ -243,9 +224,7 @@ var addFormReponse = function(data){
 
 
 var afficheDoc = function (div, mode, jsonDoc){
-    //console.log("****afficheDoc****");
-    //console.log(jsonDoc);
-    //console.log(mode)
+
     addFormDocHeader(div, mode, jsonDoc);
 
     $.each(jsonDoc, function(key, val){ // On parcourt le document
@@ -358,15 +337,12 @@ var checkDocument = function() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   CORRECTION EXERCICE
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var removeIcon = function(elem) {elem.removeClass("glyphiconVert glyphiconRouge glyphicon-ok glyphicon-remove glyphicon-unchecked");}
+var removeIcon = function(elem) {elem.removeClass("glyphiconVert glyphiconRouge glyphicon-ok glyphicon-remove");}// glyphicon-unchecked");}
 var setIconOK = function(elem) {elem.addClass("glyphiconVert glyphicon-ok");}
 var setIconKO = function(elem) {elem.addClass("glyphiconRouge glyphicon-remove");}
-var setIconCBOK = function(elem, c) {
-            if (c) {elem.addClass("glyphiconVert glyphicon-ok");}
-            else {elem.addClass("glyphiconVert glyphicon-unchecked");}}
-var setIconCBKO = function(elem, c) {
-            if (c) {elem.addClass("glyphiconRouge glyphicon-ok");}
-            else {elem.addClass("glyphiconRouge glyphicon-unchecked");}}
+var setIconCBKO = function(elem, shouldBeChecked) {
+            if (shouldBeChecked) {elem.addClass("glyphiconRouge glyphicon-ok");}
+            else {elem.addClass("glyphiconRouge glyphicon-remove");}}
 
 var afficheCorrectionExo = function(divExo, jsonExo) {
     var reponseIsOK;
@@ -385,6 +361,7 @@ var afficheCorrectionExo = function(divExo, jsonExo) {
             ////console.log(reponseEleve[0].value);
             if ((reponseEleve.length === 0)||(reponseEleve.val() === "")) {
                 correction.html("Réponse attendue!"); 
+                setIconKO(validation);
             }
             else {
                 removeIcon(validation);
@@ -422,8 +399,7 @@ var afficheCorrectionExo = function(divExo, jsonExo) {
                 
                 if ((reponseChecked) === reponseToCheck) {
                     // Bonne réponse
-                    setIconCBOK(validation, reponseToCheck);
-                    if (jsonExo["OK-"+idReponse]) {
+                    if (reponseToCheck) {
                         // On ne met l'icone OK que si la réponse est juste et a été cochée par l'élève
                         // On ne met pas d'icone si la réponse est mauvaise et que l'élève ne l'a pas cochée
                         setIconOK(validation);
