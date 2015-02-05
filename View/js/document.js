@@ -33,27 +33,29 @@ function dateJour(){
 	jsonDoc["titreDocument"] = $('[name="titreDocument"]').val();
 	jsonDoc["nbExo"] = 0;
 	$("#blockQuestion").find('[name^="exo"]').each(function() {
+		if (jsonDoc["titreDocument"])
 		jsonDoc["nbExo"] ++;
 		var idExo = "exo" +jsonDoc["nbExo"]; //ou $(this).attr("name"); si on ne veut pas renuméroter
-		jsonDoc[idExo] = {}
+		jsonDoc[idExo] = {};
 		jsonDoc[idExo]["typeExo"] = $(this).attr("typeExo");
 		var arrayExo = $(this).find(" input,select,textarea").serializeArray();
 		jQuery.each(arrayExo, function() {
 			jsonDoc[idExo][this.name] = this.value || '';
 		});
 	});
-	//allExoToJson(jsonDoc);
-	console.log(jsonDoc);
-	$.ajax({
-		type : 'POST',
-		url : '../../Controller/processSaveDocument.php',
-		data: {document : jsonDoc},
-		success: function(reponse){
-			//CKE : decommente
-			//$("#LabelGeneral").html(" Sauvegardé..");
-			//$("#LabelGeneral").show().delay(400).fadeOut();	
-		}
-	});
+	if (jsonDoc["titreDocument"] !== '') {
+		console.log(jsonDoc);
+		$.ajax({
+			type : 'POST',
+			url : '../../Controller/processSaveDocument.php',
+			data: {document : jsonDoc},
+			success: function(reponse){
+				//CKE : decommente
+				//$("#LabelGeneral").html(" Sauvegardé..");
+				//$("#LabelGeneral").show().delay(400).fadeOut();	
+			}
+		});
+	}
 }
 $(document).ready(function(){
 	///////////////////////////////////////////////////
@@ -63,12 +65,6 @@ $(document).ready(function(){
 	
 	var jsonDoc = {};		
 	///////////////////////////////////////////////////
-
-	// Création de la division qui va accueillir les données de type Document --> à mettre au niveau supérieur
-	/*part1 = '<div id="row" class="droite15"><div class="container-fluid">';
-	part2 = '<div id="title" class="well"><h2></h2></div>';
-	part3 = '</div>';
-	$('#corp').html(part1+part2+part3);*/
 
 	if ((idDocument ==="")&&(codePage ==="Creation")){
 		// Création d'un nouveau document
@@ -122,19 +118,11 @@ $(document).ready(function(){
 						jsonDoc = $.parseJSON(reponse);			
 						afficheDoc($("#corp"), "UPDATE", jsonDoc);
 						window.setInterval( function() {postDocument()}, 4000);
-						// CKE Attention à la cohérence du json enregistré après modif
 					}				
 				}
 			});
 		}
 	}
-
-	/*	
-
-	}
-	/*else if "U != null"{
-		window.location ="/MyDocuments.php";
-	}*/ //CKE TBC
 	
 	////////////////////////////////////////////////////////////
 	//        Création/Modification d'un document             //
@@ -188,7 +176,7 @@ $(document).ready(function(){
 	$("body").on('click', '[name^="plusReponse"]', function(){
 
 		var divExo = $(this).parent(); //$("#"+$(this).parent().attr('id')); CKE
-		divExo.find("#labelErreur").hide();
+		divExo.find("[name='labelErreur']").hide();
 			
 		// Incremente le compteur de réponse : CKE a supprimer si possible : index nextAvailableIdReponse
 		// Insère le formulaire de saisie de la nouvelle réponse
@@ -196,13 +184,7 @@ $(document).ready(function(){
 			div       : divExo,
             mode      : "CREATE"});
 
-		divExo.attr("isok","0"); // CKE a supprimer ???
-		divExo.animate({ scrollTop: $(document).height()}, "slow");
-			
-		if (divExo.find('[name^="titreExo"]').val() === ""){
-			divExo.find("#labelErreur").html("<span style='left : 5px;' class='glyphicon glyphicon-warning-sign' ria-hidden='true'>Question vide !</span> ");
-			divExo.find("#labelErreur").show(300);
-		}		
+		divExo.animate({ scrollTop: $(document).height()}, "slow");	
 	});
 
 	//BOUTONS "Partager"
@@ -217,9 +199,15 @@ $(document).ready(function(){
 	});
 
 	$("body").on('click', '#validerpopPartager', function(){
-		$("#textNotifyPopPartager").html('Sauvegarde effectuée');
-		$("#popPartager").delay(1000).fadeOut();
-		postDocument();
+		var docOK = checkDocument();
+		$("#textNotifyPopPartager").html("");		
+		if (docOK) {
+			postDocument();
+			$("#textNotifyPopPartager").html('<b>Sauvegarde effectuée</b>');
+			$("#popPartager").delay(1000).fadeOut();
+		} else {
+			$("#textNotifyPopPartager").html("<span style='color:red'><b>Il existe une erreur dans vos exercices</b></span>");
+		}
 	});
 
 	//BOUTONS Modifier
@@ -229,7 +217,7 @@ $(document).ready(function(){
 		showInput($(this).parent(), 300);		
 	});
 
-	//BOUTON Supprimer Exo	
+	//BOUTONS Supprimer	
 	//---------------------------------------------------
 	$("body").on('click', '[name^="supprimer"]', function(){		
 		$(this).parent().remove();		

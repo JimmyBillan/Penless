@@ -22,8 +22,6 @@ function showForEleve(div, retard){
     div.find(".form-controlEnonce").addClass("labelEnonce").removeClass("form-controlEnonce");
     div.find("[typeexo='Qcm']").find("[name^='reponse']").addClass("labelReponse").removeClass("form-controlReponse"); 
     div.find("[typeexo='QuestionSimple']").find("[name^='reponse']").addClass("form-controlReponse").removeClass("labelReponse").val('');
-    //div.find("[name^='OK']").prop('ckecked',false).checkboxradio("refresh"); // ne marche pas
-    //div.find("[name^='OK']").removeAttr('ckecked');
 }
 
 // !!! L'attribut "name" se retrouve dans le JSON !!!
@@ -129,7 +127,9 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         addMenus($("#entetecreationelement"), mode);
-        addPopPartage($("#doc"));
+        addPopPartage($("#doc")); 
+        // document en mode privé par défaut à la création et à la Modification
+        // Un doc en cours de modification n'est donc plus accessible
     }
 
     addBlockExos($("#doc"));
@@ -148,9 +148,9 @@ var addFormQuestion = function (data){
     //-------------------------------------------------------------------------------------------------------------
     if (!data.idExo) {
         var lastExo = data.div.find('[name^="exo"]:last');
-        //var lastExo = data.div.find('[name^="exo"]');
-        ////console.log("div last Exo : ")
-        ////console.log(lastExo);
+        // Check du contenu du dernier exo
+        checkExo(lastExo);
+        //----------------
         if (lastExo.length===0) {
             data.idExo = "exo1";
         } else {
@@ -175,7 +175,7 @@ var addFormQuestion = function (data){
         '<span name="supprimer" class="glyphiconSupprimerQuestion glyphicon-remove" aria-hidden="true" type="submit" title="Supprimer l\'exercice"></span>'+
         '<span name="modifier" class="glyphiconSupprimerQuestion glyphicon-edit" aria-hidden="true" type="submit" title="Mofifier l\'exercice"></span>'+
         '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
-        '<label id="labelErreur"></label>';
+        '<label name="labelErreur"  style="color:red"></label>';
         // CKE : pas besoin d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
     }
     // CKE : créer un div blockreponses?
@@ -297,6 +297,62 @@ var afficheDoc = function (div, mode, jsonDoc){
         case "READ" : {
             showForEleve(div, 0); break;} 
         }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   VERIFICATION EXERCICE
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var checkExo = function(divExo) {
+
+    var isOK = true; 
+    var question    = divExo.find("[name^='titreExo']");
+    var reponses    = divExo.find("[name^='reponse']");
+    var labelErreur = divExo.find("[name='labelErreur']");
+    labelErreur.html("");
+
+    if (question.val() === "") {
+        isOK = false;
+        labelErreur.html("Vous devez renseigner ou supprimer la question.").show();
+    } else {
+    switch (divExo.attr("typeExo")) {
+
+        case "Qcm" : {
+            // Il faut au moins 1 réponse juste et 1 réponse fausse 
+            var checkedReponses = divExo.find(":checked");
+            if ((reponses.length < 2)||((checkedReponses.length === 0)||(checkedReponses.length === reponses.length))) {
+                isOK = false;
+                labelErreur.html("Vous devez saisir au moins une réponse juste et une réponse fausse.").show();
+            }
+            if (isOK) {
+                reponses.each(function(){
+                    if ($(this).val() === "") {
+                        isOK = false;
+                        labelErreur.html("Vous devez renseigner ou supprimer les réponses vides.").show();
+                    }
+                });
+            }
+            break;
+        }
+        case "QuestionSimple" : {
+            // Il faut au moins une réponse non-nulle
+            if ((reponses.length === 0)||(reponses.val() === "")) {
+                isOK = false;
+                labelErreur.html("Vous devez saisir une réponse.").show();
+            }
+            break;
+        }
+    }
+    }
+    return isOK;
+}
+
+var checkDocument = function() {
+    var docOK = true;
+    $("#blockQuestion").find('[name^="exo"]').each(function() {
+        var exoOK = checkExo($(this));
+        if (!exoOK) {docOK = false}
+    });
+    return docOK;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

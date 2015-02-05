@@ -181,8 +181,6 @@ $(document).ready(function(){
 
 		});
 
-	}else{
-		window.location ="/MyDocuments.php";
 	}
 	
 
@@ -290,31 +288,7 @@ $(document).ready(function(){
 		}
 
 	});
-
-	$("body").on('click', '#EnregistrerReponseEleve', function(){
-		//CKE Possibilité incohérence id
-		var isReady = exo.checkAndSaveReponseEleve(); // faire juste le check
-		
-		if (isReady){
-			var dataReponse = exo.getDivExo().serialize();
-			$.ajax({
-				type : 'POST',
-				data : {document : dataReponse},
-				url  : 'Controller/processSaveReponseEleve.php',
-				success:function(reponse){
-					alert(reponse);
-					//exo.afficheCorrection();
-				}
-			});
-		}		
-		
-	});
-
-	$("body").on('click', '#Corriger', function(){
-		//CKE Possibilité incohérence id
-		
-		exo.afficheCorrection();		
-	});
+ 
 
 	$("body").on('click', '#goToTarget', function(){
 		console.log($(this).attr("target"));
