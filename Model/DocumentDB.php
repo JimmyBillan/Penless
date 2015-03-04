@@ -14,14 +14,34 @@ class DocumentDbConnection {
 
     public function FindOne($idDocument)
 	{
-		$projection = array("_id" => false);
+		$projection = array("_id" => false);// prendre id, Nom, Date, Auteur, Note mais pas contenu??? CKE
 		return $this->_collection->findOne(array("idDocument" => $idDocument), $projection );		
 	}
     
-	/*public function FindAuteur($idDocument)
+	public function findWithCategory($category)
 	{
-		return $this->_collection->findOne(array("idDocument" => $idDocument), array("auteur"=> true));	
-	}*/
+		$projection = array("_id" => false, 
+			"titreDocument"    => true,
+			"idDocument"       => true, 
+			"createur"         => true, 
+			"confident"        => true, 
+			"DateModification" => true, 
+			"categorie"        => true);
+		return $this->_collection->find(array("categorie" => $category), $projection);	
+	}
+
+	public function findWithTags($tags)
+	{
+		$projection = array("_id" => false, 
+			"titreDocument"    => true,
+			"idDocument"       => true, 
+			"createur"         => true, 
+			"confident"        => true, 
+			"DateModification" => true, 
+			"categorie"        => true);
+		
+		return $this->_collection->find(array("tags" => array('$all' => $tags)), $projection);
+	 }
 
     public function Find($idCreateur)
 	{

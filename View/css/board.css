@@ -5,11 +5,10 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
 padding-top: 50px;
-
 }
 body.hl {
   background: url('/image/accueil-kids.jpg')no-repeat center fixed;
--webkit-background-size: cover;
+  -webkit-background-size: cover;
 }
 
 .fontaccueil {
@@ -48,7 +47,9 @@ font-weight: bold;
 /* Hide for mobile, show later */
 .sidebar {
   display: none;
+  /*height:100%;*/
 }
+
 
 @media (max-width: 768px){
 .corp {
@@ -84,7 +85,7 @@ width: auto;
 
 .bulleUser {
 z-index: 6;
-background: whitesmoke;
+background: w hitesmoke;
 border-radius: 4px;
 border: 1px solid #ccc;
 cursor: pointer;
@@ -93,12 +94,11 @@ max-width: 100%;
 position: absolute;
 width: 196px;
 }
+
 }
 
 
 @media (min-width: 768px) {
-   {
-}
 
 div#creationDocument {
     margin-top: 1px;
@@ -128,15 +128,43 @@ div#creationDocument {
     padding: 20px;
     position: static;
     top: 51px;
-    z-index: 1000;
-  
-    margin: 0px;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
-}
+    z-index: 1000;  
+    margin: 0px;  
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  
+    box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+  }
   .nav-sidebar {
     margin-bottom: 20px;
     margin-left: -20px;
     margin-right: -21px; /* 20px padding + 1px border */
   }
+  /*.dropdown-submenu{
+    position:static;
+    list-style: none;
+    text-decoration: none;
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    width: 200px;
+    top: 51px;
+    margin: 0px; 
+    }
+  .dropdown-submenu>.dropdown-menu{
+    display: none;
+    top:0;
+    position: relative;
+    left:100%;
+    margin-top:-6px;
+    margin-left:-1px;}
+  .dropdown-submenu:hover{
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  
+    box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+  }
+  .dropdown-submenu:hover>.dropdown-menu{
+    display:block;}*/
+  
   .droite15{
     margin-right: 15px;
   }
@@ -144,7 +172,7 @@ div#creationDocument {
   padding-right: 0px;
   padding-left: 0px;
 }
-  div#popPartager {
+  div.popMenu {
   padding-right: 0px;
   padding-left: 0px;
 }
@@ -163,14 +191,13 @@ display: none;
   padding-left: 3px;
   float: right;
   }
- div#popPartager {
+ div.popMenu {
     position: relative;
     top: 177px;
     padding-right: 3px;
-padding-left: 3px;
-float: right;
+    padding-left: 3px;
+    float: right;
 }
-
 .droite15 {
 left: 0px;
 }

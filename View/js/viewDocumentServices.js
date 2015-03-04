@@ -52,11 +52,18 @@ var addFormTitreDoc = function (div, mode, jsonDoc) {
     div.append(formTitre); 
 }
 
-var addMenus = function(div, mode) {
+var addMenus = function(div, mode, jsonDoc) {
+    
+    var displayStyle = 'style="display : none"';
+    var labelPartage = "Partager";
+    var labelCategorie = "Catégorie";
 
-    if (mode === "UPDATE") {displayStyle = 'style="display : inline-block"';}
-    else if (mode === "CREATE") {displayStyle = 'style="display : none"';}
-
+    if (mode === "UPDATE") {
+        displayStyle = 'style="display : inline-block"';
+        labelPartage = 'Privé';
+        if (jsonDoc.categorie) {labelCategorie = CATEGORY.arrayToString(jsonDoc.categorie);}
+    }
+    
     var menus = 
     '<div id="row" class="top10 col-xs-12">'+
             // Menu Deroulant "Ajouter un élément"
@@ -66,15 +73,17 @@ var addMenus = function(div, mode) {
                 '<option id="qs" value="QuestionSimple">Question Simple</option>'+      
             '</select>'+
             // Bouton "partager"
-            '<input type="button" id="partager" class="btn btn-default" value="Partager" '+displayStyle+'>'+
+            '<input type="button" id="partager" class="btn btn-default" value="'+labelPartage+'" '+displayStyle+'>'+
+            // Bouton "Catégorie"
+            '<input type="button" id="categorie" class="btn btn-default" value="'+labelCategorie+'" '+displayStyle+'>'+
     '</div>';
     div.append(menus);
 }
 
 var addPopPartage = function(div) {
     var popPartage =
-    '<div id="popPartager" class="col-xs-12 col-md-12 col-lg-8" style="display : none">'+
-        '<div  class="popPartager droite15 greybox col-xs-12">'+
+    '<div id="popPartager" class="col-xs-12 col-md-12 col-lg-8 popMenu" style="display : none">'+
+        '<div  class="droite15 greybox col-xs-12">'+
             '<label>Parametre de confidentialité</label>'+
             '<div class="radio">'+
                 '<label>'+
@@ -114,10 +123,11 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
     addFormTitreDoc($("#docHeader"), mode, jsonDoc);
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
-        addMenus($("#docHeader"), mode);
-        addPopPartage($("#doc")); 
+        addMenus($("#docHeader"), mode, jsonDoc);
+        addPopPartage($("#doc"));
         // document en mode privé par défaut à la création et à la Modification
         // Un doc en cours de modification n'est donc plus accessible
+        CATEGORY.addPopCategorie($("#doc"), jsonDoc);
     }
 
     addBlockExos($("#doc"));
@@ -224,7 +234,7 @@ var addFormReponse = function(data){
 
 
 var afficheDoc = function (div, mode, jsonDoc){
-
+    div.empty();
     addFormDocHeader(div, mode, jsonDoc);
 
     $.each(jsonDoc, function(key, val){ // On parcourt le document
@@ -327,6 +337,9 @@ var checkExo = function(divExo) {
 
 var checkDocument = function() {
     var docOK = true;
+    if (CATEGORY.inputToArray().length === 0) {
+        $("#textNotifyPopPartager").html("Vous devez renseigner la catégorie de l'exercice.");
+    }
     $("#blockQuestion").find('[name^="exo"]').each(function() {
         var exoOK = checkExo($(this));
         if (!exoOK) {docOK = false}
