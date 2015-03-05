@@ -29,8 +29,15 @@ function dateJour(){
  
 ﻿function postDocument(){
 	var jsonDoc={}
-	jsonDoc["confident"]= $('input[name=optionsRadios]:checked', '#popPartager').val();
+	// Titre
 	jsonDoc["titreDocument"] = $('[name="titreDocument"]').val();
+	// Partage
+	jsonDoc["confident"]= $('input[name=optionsRadios]:checked', '#popPartager').val();
+	// Catégories
+	jsonDoc["categorie"] = CATEGORY.inputToArray();
+	// Tags
+	jsonDoc["tags"] = CATEGORY.tagsToArray();
+	// Exercices
 	jsonDoc["nbExo"] = 0;
 	$("#blockQuestion").find('[name^="exo"]').each(function() {
 		if (jsonDoc["titreDocument"])
@@ -50,7 +57,6 @@ function dateJour(){
 			url : '../../Controller/processSaveDocument.php',
 			data: {document : jsonDoc},
 			success: function(reponse){
-				//CKE : decommente
 				//$("#LabelGeneral").html(" Sauvegardé..");
 				//$("#LabelGeneral").show().delay(400).fadeOut();	
 			}
@@ -149,9 +155,10 @@ $(document).ready(function(){
 
 		// Affichage du menu déroulant de choix des exercices
 		$("#new_element").show(300);
-
 		// Affichage du bouton "Partager"
 		$("#partager").show(300);
+		// Affichage du bouton "Partager"
+		$("#categorie").show(300);
 	});
 	
 	//MENU DEROULANT "Ajouter un élément"	
@@ -200,17 +207,18 @@ $(document).ready(function(){
 	});
 
 	$("body").on('click', '#validerpopPartager', function(){
+		$("#textNotifyPopPartager").html("");	
 		var docOK = checkDocument();
-		$("#textNotifyPopPartager").html("");		
+		$("#partager").val($('input[name=optionsRadios]:checked').val());			
 		if (docOK) {
 			postDocument();
 			$("#textNotifyPopPartager").html('<b>Sauvegarde effectuée</b>');
 			$("#popPartager").delay(1000).fadeOut();
 		} else {
-			$("#textNotifyPopPartager").html("<span style='color:red'><b>Il existe une erreur dans vos exercices</b></span>");
+			$("#textNotifyPopPartager").append("<span style='color:red'><br><b>Il existe une erreur dans vos exercices</b></span>");
 		}
 	});
-
+	
 	//BOUTONS Modifier
 	//---------------------------------------------------
 	$("body").on('click', '[name^="modifier"]', function(){	
