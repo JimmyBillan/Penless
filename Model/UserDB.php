@@ -15,6 +15,12 @@ class UserDbConnection {
         $this->_collection = $this->_db->User;
     }
 
+     public function isUserExist($idUrl){
+        $cursor = $this->_collection->find(array('idUrl'=> $idUrl));
+        return ($cursor->count() > 0);
+    }
+
+
     public function MailExistsInDb($mail)
     {
         $cursor = $this->_collection->find(array("mail" => $mail));

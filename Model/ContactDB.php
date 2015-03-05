@@ -1,7 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include $root."/Controller/userServices.php";
-require_once "Hashids.php";
+require_once $root."/Controller/Hashids.php";
 
 class groupDbConnection {
     var $_m;
@@ -33,6 +32,26 @@ class groupDbConnection {
         echo "init_success";
     }
 
+    public function getGroupe($admin, $projection){
+        $cursor =  $this->_collection->find(array(
+        'admin' => array('$in' => array($admin))
+        ), $projection)
+        ;
+        return $cursor;
+        
+    }
+
+    public function isGroupExist($idGroupe){
+        $cursor = $this->_collection->find(array('idGroupe'=> $idGroupe));
+        return ($cursor->count() > 0);
+    }
+
+    public function updateGroupe($idGroupe, $groupe){
+        $criteria = array('idGroupe'=> $idGroupe);
+        $this->_collection->update($criteria, array('$set' =>$groupe));
+    }
+    
+    /*
     public function newclassInEcole($idEtablissement, $idClasse){
     	$criteria = array("idEtablissement" => $idEtablissement);
     	$newdata = array('$addToSet' => array("classe" => $idClasse));
@@ -43,6 +62,19 @@ class groupDbConnection {
     	$criteria = array("arrayUser" => $idGroupe);
     	$newdata = array('$addToSet' => array("classe" => $idUser));
     	$this->_collection->update($criteria, $newdata);
+    }*/
+
+    public function amIAdmin($idUser, $idGroup){
+        $cursor = $this->_collection->find(array('$and' => array( array('idGroupe' => $idGroup), array('admin' => array('$in'  => array($idUser)))) ));
+        return ($cursor->count() > 0);
     }
 
+     public function isInGroup($idUser, $idGroup){
+        return $this->_collection->findOne(array('$and' => array( array('idGroupe' => $idGroup), array('arrayUser' => array('$in'  => array($idUser)))) ));
+    }
+
+    public function listUserInGroup($idGroup, $projection){
+        return $this->_collection->findOne(array('idGroupe' => $idGroup), $projection);
+        
+    }
  }

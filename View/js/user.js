@@ -88,62 +88,147 @@ function genererCorpNotification(User) {
 					});
 }
 
-function genererCorpContact(User){
-	$.ajax({
-						type : 'GET',
-						data : {U:User},
-						url : 'Controller/getContact.php',
-						success:function(reponse)
-						{
-							var result = $.parseJSON(reponse);
-							$("#title").after(""+
-								"<div id='gestionContact'>"+
-								"<label><h2>Gestion des contacts</h2></label><br>"+
-								"<label><h3>Groupe de contact</h3></label><br>"+
-									//"<button id='btnmodifiergroupe' type='button' class='btn btn-default'>Modifier</button>"+
-									"<button id='btnCreateGroupe' type='button' class='btn btn-default'>Creer un groupe</button>"+
-									"<form class='form-inline' id='formNewGroup' style='display:none'>"+
-										"<div class='form-group'>"+
-										"<input type='text' class='form-control' id='inputGroupName' placeholder='Creer un nouveau groupe'>"+
-										"</div>"+
-										"<button id='btnAjoutergroupe' type='button' class='btn btn-default'>Ajouter</button>"+
-									"</form>"+				
-								"</div>");
-							
+function genererCorpContact(User, jsonDescontact){
 
+	var request = $.ajax({
+		type : 'GET',
+		data : {U:User},
+		async: !1,
+		url : 'Controller/getContact.php'
+	}).done(function(reponse)
+		{
+			var result = $.parseJSON(reponse);
+			$("#title").after(""+"<div id='listContact'style='display:none'>"+reponse+"</div>"+ /* ICI ON STORE EN LOCAL DANS LE HTML LE JSON DE LA LISTE DES CONTACTS*/
+				"<div id='gestionContact' >"+
+				"<label><h2>Gestion des contacts</h2></label><br>"+		
+				"</div>");
+			genererTableauGroupe(User);
+			$("#tabGroupe").after("<div id='tabContact' class='col-xs-12 col-sm-12 col-md-12 col-lg-6'></div>");
+			$("#tabContact").append(""+
+				"<label><h3>Mes contacts </h3></label>"+
+				"<table class='table table-striped table-hover '>"+
+					"<thead>"+
+						"<tr>"+
+							"<th class='hideMobile'>Nom </th>"+
+							"<th class='hideMobile'>Prenom</th>"+
+						"</tr>"+
+					"</thead>"+
+					"<tbody id='bodyTabContact'>");
+			for(key in result){
+				$("#bodyTabContact").append(""+
+						"<tr id='goToTarget' target='"+result[key].idUrl+"'>"+
+							"<td class='clickable'>"+result[key].nom+"</td>"+
+							"<td class='clickable'>"+result[key].prenom +"</td>"+
+						"</tr>");
+			}
+			$("#tabContact").append("</tbody></table></div></div></div>");
+			
+			jsonDescontact = result;
+			
+		});
+	return jsonDescontact;
+}
 
-							$("#gestionContact").after("<div id='tabContact'></div>");
-							$("#tabContact").append(""+
-								"<label><h3>Mes contacts </h3></label>"+
-								"<table class='table table-striped table-hover '>"+
-									"<thead>"+
-										"<tr>"+
-											"<th class='hideMobile'>Nom </th>"+
-											"<th class='hideMobile'>Prenom</th>"+
-										"</tr>"+
-									"</thead>"+
-									"<tbody id='bodyTabContact'>");
-							for(key in result){
-								$("#bodyTabContact").append(""+
-										"<tr id='goToTarget' target='"+result[key].idUrl+"'>"+
-											"<td class='clickable'>"+result[key].nom+"</td>"+
-											"<td class='clickable'>"+result[key].prenom +"</td>"+
-										"</tr>");
-							}
-							$("#tabContact").append("</tbody></table></div></div></div>");
-
-						}
-					});
-
+	function genererTableauGroupe(User){
+	$("#gestionContact").append(
+		"<label><h3>Groupe de contact</h3></label><br>"+
+			"<button id='btnCreateGroupe' type='button' class='btn btn-default'>Creer un groupe</button>"+
+			"<form class='form-inline' id='formNewGroup' style='display:none'>"+
+				"<div class='form-group'>"+
+				"<input type='text' class='form-control' id='inputGroupName' placeholder='Creer un nouveau groupe'>"+
+				"</div>"+
+				"<button id='btnAjoutergroupe' type='button' class='btn btn-default'>Ajouter</button>"+
+			"</form>");
+	$("#gestionContact").after("<div id='tabGroupe' class='col-xs-12 col-sm-12 col-md-12 col-lg-6'></div>");
+	$("#tabGroupe").append("<label><h3>Mes Groupes</h3></label><div id='row' class='bodytabGroupe'>");
+	newLineGroupe(User);
+	$("#tabGroupe").append("</div>");
 
 }
 
+function newLineGroupe(User){
+	$.ajax({type:'GET',data:{U:User}, url:'Controller/getlistofmyGroup.php', success:function(reponse){
+		arrayReponse = $.parseJSON(reponse);	
+		for (var i = 0; i < arrayReponse.length ; i++) {
+		
+			$(".bodytabGroupe").append(""+
+				 	"<div class='row ligngroup'>"+
+				 		"<div class='col-xs-9' ><div id='groupName-"+arrayReponse[i].idGroupe+"' style='font-size: 18px; vertical-align: middle;'>"+arrayReponse[i].nom+"</div></div>"+
+				 		"<div class='col-xs-3' style='text-align: right ;margin-top:2px'><button id='btnEditerGroup' class='btn btn-default btn-xs'  value='"+arrayReponse[i].idGroupe+"' statut='Editer'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer</button><button id='btnEnregisterEditionGroup' value='"+arrayReponse[i].idGroupe+"' class='btn btn-default btn-xs' style='float:right; display:none'>Enregistrer</button></div>"+
+				 	"</div>"
+				 );
+
+		}
+	}
+	});
+}
+
+function getlistofUserinaGroup(groupID){
+	$.ajax({
+		url: 'Controller/getlistofUserinaGroup.php',
+		type: 'GET',
+		dataType: 'json',
+		data: {id: groupID},
+	})
+	.done(function(reponse) {
+			$('#listOfUserInGroup-'+groupID).html('<table class="table table-striped" id="tableOfuserIngroup-'+groupID+'"><tbody id="tbodyOfuserInGroup-'+groupID+'"></tbody></table>');
+		console.log(reponse);
+		if(reponse.arrayUser == null && reponse.admin == null){
+			$('#tbodyOfuserInGroup-'+groupID).after('<th id="defaut-'+groupID+'">Aucun utilisateur dans ce groupe</th>');
+			//$('#listOfUserInGroup-'+groupID).html("");
+		}else 
+		if(reponse.arrayUser != null){
+			for (i=0; i < reponse.arrayUser.length; i++){
+				view = '<tr url="'+reponse.arrayUser[i]+'"><td>'+reponse.arrayUser[i]+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+				$('#tbodyOfuserInGroup-'+groupID).prepend(view);
+			}
+			
+		}
+		if(reponse.admin != null){
+			for (i=0; i < reponse.admin.length; i++){
+				view = '<tr url="'+reponse.admin[i]+'"><td>'+reponse.admin[i]+'</td><td><select id="select-'+groupID+'-'+reponse.admin[i]+'"><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+				$('#tbodyOfuserInGroup-'+groupID).prepend(view);
+				$('#select-'+groupID+'-'+reponse.admin[i]).val('Admin');
+			}
+
+		}
+
+	})
+	.fail(function(reponse) {
+		console.log("error");
+		console.log(reponse);
+	})
+	.always(function() {
+		
+	});
+	
+}
+
+function saveEditGroupe(arrayGroupe){
+	$.ajax({
+		url: 'Controller/processSaveGroupEdit.php',
+		type: 'POST',
+		data: {g: arrayGroupe},
+	})
+	.done(function() {
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function(reponse) {
+		console.log("complete");
+		console.log(reponse);
+	});
+	
+}
 
 
 $(document).ready(function(){
 	var User = getParameterByName('U');
 	var idDocument = getParameterByName('D');
 	var codePage = getParameterByName('C');
+	var jsonDescontact;
 
 
 	if(User !=""){
@@ -172,7 +257,8 @@ $(document).ready(function(){
 				}
 				else
 				if(codePage == "Contact"){			
-					genererCorpContact(User);
+					jsonDescontact = genererCorpContact(User, jsonDescontact);
+					
 				}
 
 
@@ -182,7 +268,26 @@ $(document).ready(function(){
 		});
 
 	}
+
+
 	
+
+	$('#corp').on('click', '#supprimerGroup',function(){
+		
+		$.ajax({
+		type : 'POST',
+		url : '../../Controller/processDeleteGroup.php',
+		data: {idGroup : $(this).attr("value")},
+		success: function(reponse){
+			
+			if ( reponse = "delete_succes"){
+				$("#"+iddoc).hide();
+			}
+				
+		}
+
+		});
+	});
 
 	$('#corp').on('click', '#btnCreateGroupe',function(){
 		if( $('#formNewGroup').is(":visible")){
@@ -202,6 +307,8 @@ $(document).ready(function(){
 			success: function(reponse){
 				if(reponse == "init_success"){
 					$('#inputGroupName').val("");
+					$('#bodytabGroupe').empty();
+					newLineGroupe(User)
 					$('#formNewGroup').hide();
 					$('#btnCreateGroupe').html('Creer un groupe');
 				}
@@ -297,7 +404,176 @@ $(document).ready(function(){
 
 
 
+	$("body").on('click', '#btnEditerGroup', function(){
+		var groupCourrant = $(this).attr('value');
+		var listContact;
+		
+		if($(this).attr('statut')==="Editer"){
+			$(this).closest('div').after(""+
+				"<div id='detailGroupe-"+groupCourrant+"' class='col-xs-12' value='"+groupCourrant+"'>"+
+					"<h5 id='ajouterNewUserToGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Ajouter</h5>"+
+					"<h5 class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
+					"<h5 class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
+			
+					"<div id='listOfUserInGroup-"+groupCourrant+"' class='form-inline listOfUserInGroup '>>"+
+				"</div>");
+			getlistofUserinaGroup(groupCourrant);
+			
+			$(this).parent().find('#btnEnregisterEditionGroup').show();
+			$(this).attr('statut', 'Annuler');
+			$(this).html("<span class='glyphicon glyphicon-remove-circle' aria-hidden='true'></span> Annuler");
+		}
+			
+		else{
+			$(this).attr('statut', 'Editer');;
+			$(this).parent().find('#btnEnregisterEditionGroup').hide();
+			$(this).html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
+			$('#detailGroupe-'+groupCourrant).remove();
+			
+		}
+
+	});
+
+	$('#corp').on('click', '#ajouterNewUserToGroup', function(){
+		var groupCourrant = $(this).attr('value');
+		
+		if($(this).html()==="Ajouter"){
+			$('#listOfUserInGroup-'+groupCourrant).before(''+
+				'<form id ="formNewUserToGroup" class="form-inline"  style="padding-left:8px" onsubmit=" return false;" >'+
+					'<input type="text" class="form-control" id="inputNewUserToGroup" placeholder="Saisir son nom ou son ID" style="width:100%">'+
+					//'<div id="labelRechercheNewUserToGroup" class="bulleUser bullUser-control" style="display: none"></div><input type="button" id="inputbtnNewUserToGroup" value="+" class="btn btn-default"></form>');
+					'<div id="labelRechercheNewUserToGroup" codeGroup="'+groupCourrant+'"></div></form>');
+			$(this).html("Annuler ajout");
+		}else{
+			$(this).html("Ajouter");
+			$(this).parent().children('#formNewUserToGroup').remove();
+			
+		}
+	});
+
+
+
+	$("#corp").on('keyup', '#inputNewUserToGroup', function(){
+		
+        var letters = $(this).val();
+	   	var length = letters.length;
+		var contactFound = [];
+		var c = 0;
+		if(letters.length != 0){
+			for (var i = 0; i < jsonDescontact.length; i++) {
+				if(letters === jsonDescontact[i].nom.substring(0,letters.length)|| letters === jsonDescontact[i].prenom.substring(0,letters.length)){
+					contactFound.push(jsonDescontact[i]);
+					c++;
+				}	
+			}
+		}
+		
+		c = contactFound.length;
+
+		
+		if( c > 0){
+			var view = '<select multiple class="form-control" id="formlabelRechercheNewUserToGroup" style="overflow-y: auto;">';
+			for (var i = 0; i < c; i++) {
+				view = view+'<option id="OptionAddUserToGroup" url="'+contactFound[i].idUrl+'">'+contactFound[i].nom+' '+contactFound[i].prenom+'</option>';
+			};
+
+			view = view+'</select>';
+
+			cGroupe = $(this).parent().children('#labelRechercheNewUserToGroup').attr('codeGroup');
+
+			$(this).parent().children("#labelRechercheNewUserToGroup").html(view);
+			$(this).parent().children("#labelRechercheNewUserToGroup").show();
+
+			/* ICI On choisis une option dans la liste des utilisateurs apres la recherche*/
+			$("#formlabelRechercheNewUserToGroup").change(function() {
+				
+				
+				/*Supprimer la phrase signalant un groupe vide*/
+				$("#defaut-"+cGroupe).remove();
+
+				var selected = $(this).find("option:selected").parent();
+				var groupe = $(this).find("option:selected").parent().parent().attr('codegroup');
+				var urlUser = $(this).find("option:selected").attr("url");
+
+
+				/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
+				view = '<tr url="'+urlUser+'"><td>'+$(this).find("option:selected").html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+				
+				/*On supprime la ligne */
+				$(this).find("option:selected").remove();
+				
+				if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){
+					/*Cas ou il y a pas d'utilisateur dans le groupe */ 
+					$('#tbodyOfuserInGroup-'+groupe).prepend(view);
+
+					/* On supprime le select si il n'y a plus de resultat*/
+					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
+					}
+				}else{
+					/*Cas ou il y a déjà des utilisateurs dans le groupe */ 
+					var okToPush = true;
+
+					/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
+					$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
+						if($(this).attr('url') === urlUser )
+							okToPush = false;
 	
+					});
+
+					if(okToPush == true){
+						$('#tbodyOfuserInGroup-'+groupe).prepend(view);
+
+						/* On supprime le select si il n'y a plus de resultat*/
+						if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+							$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
+						}
+					}else{
+						/*On supprime la ligne */
+						$(this).find("option:selected").remove();
+
+						/* On supprime le select si il n'y a plus de resultat*/
+						if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+							$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
+						}
+					}
+				}
+					
+				
+				
+			});
+
+			if($(this).parent().children('#labelRechercheNewUserToGroup')=='')
+				$(this).parent().children('#labelRechercheNewUserToGroup').empty();
+		}else{
+			$(this).parent().children('#labelRechercheNewUserToGroup').empty();
+		}
+			
+	});
+
+$('#corp').on('click', '#btnEnregisterEditionGroup', function() {
+	var save = {};
+	save['idGroupe'] = $(this).val();
+	save['nom'] = $("#groupName-"+save['idGroupe']).html();
+	save['listUser'] = [];
+	
+	$('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
+	
+		url = $(this).attr('url');
+		option = $(this).find('select option:selected').text();
+		var row = {};
+		row[url] = option ;
+		save['listUser'].push(row);
+	});
+	console.log(save);
+	saveEditGroupe(save);
+
+
+});
+	
+
+
+
 	$('#corp').on('click', '#accepterContact', function(){
 			$.ajax({
 				type : 'POST',
@@ -307,7 +583,7 @@ $(document).ready(function(){
 					return false;
 				} 
 			});
-			console.log($(this).parent().parent());
+			
 			$(this).parent().parent().hide();
 			
 			
@@ -326,4 +602,5 @@ $(document).ready(function(){
 			$(this).parent().parent().hide();
 		});
 
+		
 });

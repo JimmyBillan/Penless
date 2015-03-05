@@ -13,9 +13,9 @@ if (    isset($_POST["mail"])&&
         isset($_POST["userPrenom"])&& 
         isset($_POST["password"]))
 {    
-	$mail   = (string) strtolower($_POST["mail"]);
-	$nom    = (string) strtolower($_POST["userNom"]);
-	$prenom = (string) strtolower($_POST["userPrenom"]);	
+	$mail   = htmlentities((string) strtolower($_POST["mail"]));
+	$nom    = htmlentities((string) strtolower($_POST["userNom"]));
+	$prenom = htmlentities((string) strtolower($_POST["userPrenom"]));	
 	$pwd    = (string) $_POST["password"];
     //$classe =  (string) $_POST["classe"];
     
