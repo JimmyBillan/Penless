@@ -1,32 +1,37 @@
 var CATEGORY = {};
-	// CKE : A définir ici ou dans la database?
+	
 CATEGORY.list = {
-		"Français" 		: {	"Conjugaison" : ["1er groupe", "2ème groupe", "3ème groupe", "présent", "imparfait", "futur", "passé-simple"], 
-							"Grammaire"   : ["types de phrases", "analyse grammaticale", "accord sujet-verbe", "accord groupe nominal"],
-							"Orthographe" : [],
-							"Vocabulaire" : []},
-		"Mathématiques" : {	"Opérations"  : ["Multiplication", "Additions", "Soustractions", "Divisions"],
-							"Problèmes"   : [],
-							"Géométrie"   : []},
-		"Histoire"		: { "Préhistoire" : [], 
-							"Antiquité"   : [], 
-							"Moyen-Age"   : [],
-							"Renaissance" : [], 
-							"XVIIIème siècles": [], 
-							"XIXème siècle": [], 
-							"XXème siècle": []},
-		"Géographie"  	: {	"France"      : ["Fleuves", "Montagnes", "Villes"], 
-							"Monde"       : [], 
-							"Europe"      : []},
-		"Sciences"		: {	"Corps humain": [],
-							"Monde animal": [],
-							"Monde végétal": [],
-							"Environement": [],
-							"Physique"    : []},
-		"Langues"		: {	"Anglais"     : [],
-							"Espagnol"    : [],
-							"Allemand"    : [],
-							"Corse"       : []}
+		"Français" 		: {	"Tous"		  :{},
+							"Conjugaison" : {"Tous":{}, "1er groupe":{}, "2ème groupe":{}, "3ème groupe":{}, "présent":{}, "imparfait":{}, "futur":{}, "passé-simple":{}}, 
+							"Grammaire"   : {"Tous":{}, "types de phrases":{}, "analyse grammaticale":{}, "accord sujet-verbe":{}, "accord groupe nominal":{}},
+							"Orthographe" : {},
+							"Vocabulaire" : {}},
+		"Mathématiques" : {	"Tous"		  :{},
+							"Opérations"  : {"Tous":{}, "Multiplication":{}, "Additions":{}, "Soustractions":{}, "Divisions":{}},
+							"Problèmes"   : {},
+							"Géométrie"   : {}},
+		"Histoire"		: { "Tous"		  :{},
+							"Préhistoire" : {}, 
+							"Antiquité"   : {}, 
+							"Moyen-Age"   : {},
+							"Renaissance" : {}, 
+							"XVIIIème siècles": {}, 
+							"XIXème siècle": {}, 
+							"XXème siècle": {}},
+		"Géographie"  	: {	"Tous"		  :{},
+							"France"      : {"Tous":{}, "Fleuves":{}, "Montagnes":{}, "Villes":{}}, 
+							"Monde"       : {}, 
+							"Europe"      : {}},
+		"Sciences"		: {	"Tous"		  :{},
+							"Corps humain": {},
+							"Monde animal": {},
+							"Monde végétal": {},
+							"Environement": {},
+							"Physique"    : {}},
+		"Langues"		: {	"Anglais"     : {},
+							"Espagnol"    : {},
+							"Allemand"    : {},
+							"Corse"       : {}}
 
 		}
 
@@ -52,7 +57,7 @@ CATEGORY.tagsToArray = function() {
 	var tagsAuteur = [];
 	// Mots du titre en minuscules
 	var titre = $('[name="titreDocument"]').val().toLowerCase();
-	var titreDefaut = /Document_[^a-zA-Z]+/;
+	var titreDefaut = /document_[^a-zA-Z]+/;
 	if (!titreDefaut.test(titre)) {
 		tagsTitre = titre.split(/[\s,]+/);
 	}  
@@ -67,45 +72,81 @@ CATEGORY.tagsToArray = function() {
 
 // Sidebar Menu pour la recherche d'exercices par catégorie
 //----------------------------------------------------------
-CATEGORY.createSidebarCategory = function(div) {
-		// En-tête menu
-		div.append(
-			'<div class="sidebar navbar-fixed-top25">'+
-			'<ul name="menuCategory">'+
-            '<li class="nav nav-sidebar" >'+
-            '<input name="tagsDoc" class="form-control" type="text"></input>'+
-            '<a href="#" name="searchDoc" class="glyphiconQuestion glyphicon-search" type="submit" title="Rechercher"></a>'+
-            '</li>'+
-            '</ul>'+
-            '</div>');
-		var divLevel1 = $('[name="menuCategory"]');
-
-		// Catégories (niveau 1)
-		for (var category1 in CATEGORY.list) {
-			divLevel1.append(
-				'<li class="nav nav-sidebar" name="SearchCat">' +
-				'<a href="#">'+ category1 + '</a>'+ 
-				'<ul name="menuCategory-'+category1+'"></ul></li>');
-
-			// Sous-catégories (niveau 2)
-			var divLevel2 = $('[name="menuCategory-'+category1+'"]');
-			for (var category2 in CATEGORY.list[category1]) {
-				divLevel2.append(
-					'<li class="nav nav-sidebar" name="SearchCat">' + 
-					'<a href="#">'+ category2+'</a>'+
-					'<ul name="menuCategory-'+category1+'-'+category2+'"></ul></li>');
-
-				// Sous-catégories (niveau 3)
-				if (CATEGORY.list[category1][category2].length > 0) {
-					var divLevel3 = $('[name="menuCategory-'+category1+'-'+category2+'"]');
-					for (var category3 in CATEGORY.list[category1][category2]) {
-						divLevel3.append('<li class="nav nav-sidebar" name="SearchCat">' +
-						 '<a href="#">'+ CATEGORY.list[category1][category2][category3] +'</a></li>');
-					}
-				}
-			}
+CATEGORY.addCategoryMenu = function(catList) {
+	var submenu = "";
+	for (var cat in catList) {
+		submenu += '<li><a href="#">';		
+		if ($.isEmptyObject(catList[cat])) {
+			// dernier niveau : click -> accès aux exercices
+			submenu += '<label name="searchCat">'+ cat +'</label>';
 		}
+		else {
+			// niveau intermédiaire : click -> affichage du sous-menu
+			submenu += '<label name="menuCat">'+ cat +'</label>'+
+			'<span class="glyphiconReponse glyphicon-chevron-right" style="float:right;">';
+		}
+		submenu += '</a></li>';
 	}
+	$('[name="menuCategory"]').append(submenu);
+}
+
+CATEGORY.createSidebarCategory = function(div) {
+	var sidebar = 
+		//'<div class="sidebar navbar-fixed-top25">'+
+		'<ul class="nav nav-sidebar" name="menuCategory">'+
+		// Champs de recherche 
+		'<li>'+
+        '<input name="tagsDoc" class="labelCategorie saisie" type="text"></input>'+
+        '<span href="#" name="searchDoc" class="glyphiconReponse glyphicon-search"></span>'+
+        '</li>'+
+        // Entête du Menu des catégories
+		'<li class="active"><a href="#">'+
+		'<label name="menuCat">Catégories</label>' +
+		'<span class="glyphiconReponse glyphicon-chevron-right" style="float:right">'+
+		'</a></span></li>'+
+		'</ul>';//</div>';
+	div.append(sidebar);
+
+	CATEGORY.addCategoryMenu (CATEGORY.list);
+}
+
+CATEGORY.toSubCategory = function(category) {
+	var subcat = CATEGORY.list; // tableau listant les sous-catégories
+	var catFound = false;
+	//console.log("*** toSubCategory " + category);
+	// Suppression des catégories "mères" inutiles
+	$('[name="menuCat"]').each(function() {
+		var cat = $(this).html();
+		//console.log(cat);
+		
+		if ((!catFound) && ($(this).parent().parent().hasClass("active"))) {
+				// Pour récupérer le tableau de sous-catégories correspondant à la catégorie sélectionnée
+				// on utilise les catégories de niveau supérieur déjà sélectionnées
+				subcat = subcat[cat] || subcat;
+				//console.log("-> " + subcat);
+		}
+		if (cat === category) {
+			catFound = true;
+			subcat = subcat[cat] || subcat;
+			//console.log("-> selection");
+			// Modification de l'apparence de la catégorie sélectionnée
+			$(this).parent().parent().addClass("active");
+		} else if (catFound || !($(this).parent().parent().hasClass("active"))) {
+			// Suppression des catégories non-sélectionnées
+			$(this).parent().parent().remove();
+			//console.log("-> remove 1");
+		};
+	});
+	// Suppression des catégories "filles"
+	$('[name="searchCat"]').each(function() {
+		$(this).parent().parent().remove();
+		//console.log("-> remove 3 " + $(this).html());
+	});
+	//console.log(subcat);
+
+	// Affichage des sous-catégories
+	CATEGORY.addCategoryMenu(subcat);
+}
 
 // Affichage table de résultats de recherche de documents
 //--------------------------------------------------------
@@ -165,8 +206,7 @@ CATEGORY.addPopCategory3 = function(div, category1, category2) {
 
 	// Catégories (niveau 3)
 	for (var category3 in CATEGORY.list[category1][category2]) {
-		var cat3 = CATEGORY.list[category1][category2][category3];
-		div.append('<input name="'+cat3+'" type="button" class="btn btn-default category" value="'+cat3+'"></input>');
+		div.append('<input name="'+category3+'" type="button" class="btn btn-default category" value="'+category3+'"></input>');
 	}
 }
 
@@ -225,12 +265,28 @@ CATEGORY.addPopCategorie = function(div, jsonDoc) {
 
 $(document).ready(function(){
 	
-	if ($("#sidebarCategory").length > 0) {CATEGORY.createSidebarCategory($("#sidebarCategory"));}
+	// Si le visiteur n'est pas connecté, la sidebar est vide : on y met le menu "Catégories"
+	// Si le visiteur est connecté la sidebar présente le menu "Mon Compte"
+	if ($('#sidebar').is(':empty')) {
+		CATEGORY.createSidebarCategory($("#sidebar"));
+	}
+
+	// BOUTONS "Tous les exercices" du menu "Mon Compte"
+	//---------------------------------------------------
+	$("body").on('click', '#goToMenuCategory', function(){
+		// Suppression du menu "Mon Compte"
+		$('#sidebar').empty(); 
+		CATEGORY.createSidebarCategory($("#sidebar"));
+	});
 
 	// BOUTONS du Menu Recherche par Catégories
 	//---------------------------------------------------
-	$("body").on('click', "[name='SearchCat']", function(){
-		var category = $(this).find('a').html();
+	$("body").on('click', "[name='searchCat']", function(){
+		var category = $(this).html();
+		if (category === "Tous") {
+			category = $('.active:last').find('label').html();
+		}
+		//console.log(category);
 		$.ajax({
 				type : 'POST',
 				data : {category: category},
@@ -242,6 +298,11 @@ $(document).ready(function(){
 		return false;
 		// evite le comportement par défaut :
 		// ici evite la propagation du click au niveaux de menu supérieurs
+	});
+
+	$("body").on('click', "[name='menuCat']", function(){
+		console.log("menuCat");
+		CATEGORY.toSubCategory($(this).parent().find('label').html());
 	});
 
 	// Recherche de document par mots-clés
