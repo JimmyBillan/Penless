@@ -69,10 +69,17 @@ $(document).ready(function(){
 	var codePage   = getParameterByName('C');
 	///////////////////////////////////////////////////
 	
-	var jsonDoc = {};		
-	///////////////////////////////////////////////////
+	var jsonDoc = {};
 
-	if ((idDocument ==="")&&(codePage ==="Creation")){
+	// Page de recherche de documents	
+	///////////////////////////////////////////////////
+	if ((idDocument ==="")&&(codePage ==="TousLesDocuments")){
+		$('#sidebar').empty(); 
+		CATEGORY.createSidebarCategory($("#sidebar"));
+		$('#corp').empty();
+	}
+
+	else if ((idDocument ==="")&&(codePage ==="Creation")){
 		// Création d'un nouveau document
 		///////////////////////////////////////
 		$.ajax({

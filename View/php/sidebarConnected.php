@@ -8,6 +8,7 @@
             <li><a href="#">Mes Corrections</a></li>
             <li><a href="#">Mes Messages</a></li>
             <li><a href="<?php echo '/?&U='.$_SESSION["id"].'&C=Contact';?>">Mes Contacts</a></li>
-            <li id="goToMenuCategory"><a href="#"><label>Tous les exercices</label></a></li>
+            <!--li id="goToMenuCategory"><a href="#"><label>Tous les exercices</label></a></li-->
+            <li><a href="<?php echo '/?&C=TousLesDocuments';?>"><label>Tous les exercices</label></a></li>
            </ul>
 </div>

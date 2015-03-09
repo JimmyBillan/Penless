@@ -95,7 +95,7 @@ CATEGORY.createSidebarCategory = function(div) {
 		'<ul class="nav nav-sidebar" name="menuCategory">'+
 		// Champs de recherche 
 		'<li><a href="#">'+
-        '<input name="tagsDoc" class="labelCategorie saisie" type="text"></input>'+
+        '<input name="tagsDoc" class="labelCategorie saisie" type="text" placeholder="Recherche exercice"></input>'+
         '<span class="glyphiconReponse glyphicon-search" style="float:right"></span>'+
         '</a></li>'+
         // Entête du Menu des catégories
@@ -112,36 +112,30 @@ CATEGORY.createSidebarCategory = function(div) {
 CATEGORY.toSubCategory = function(category) {
 	var subcat = CATEGORY.list; // tableau listant les sous-catégories
 	var catFound = false;
-	//console.log("*** toSubCategory " + category);
+	
 	// Suppression des catégories "mères" inutiles
 	$('[name="menuCat"]').each(function() {
 		var cat = $(this).html();
-		//console.log(cat);
 		
 		if ((!catFound) && ($(this).parent().parent().hasClass("active"))) {
 				// Pour récupérer le tableau de sous-catégories correspondant à la catégorie sélectionnée
 				// on utilise les catégories de niveau supérieur déjà sélectionnées
 				subcat = subcat[cat] || subcat;
-				//console.log("-> " + subcat);
 		}
 		if (cat === category) {
 			catFound = true;
 			subcat = subcat[cat] || subcat;
-			//console.log("-> selection");
 			// Modification de l'apparence de la catégorie sélectionnée
 			$(this).parent().parent().addClass("active");
 		} else if (catFound || !($(this).parent().parent().hasClass("active"))) {
 			// Suppression des catégories non-sélectionnées
 			$(this).parent().parent().remove();
-			//console.log("-> remove 1");
 		};
 	});
 	// Suppression des catégories "filles"
 	$('[name="searchCat"]').each(function() {
 		$(this).parent().parent().remove();
-		//console.log("-> remove 3 " + $(this).html());
 	});
-	//console.log(subcat);
 
 	// Affichage des sous-catégories
 	CATEGORY.addCategoryMenu(subcat);
@@ -270,20 +264,12 @@ $(document).ready(function(){
 		CATEGORY.createSidebarCategory($("#sidebar"));
 	}
 
-	// BOUTONS "Tous les exercices" du menu "Mon Compte"
-	//---------------------------------------------------
-	$("body").on('click', '#goToMenuCategory', function(){
-		// Suppression du menu "Mon Compte"
-		$('#sidebar').empty(); 
-		CATEGORY.createSidebarCategory($("#sidebar"));
-	});
-
 	// BOUTONS du Menu Recherche par Catégories
 	//---------------------------------------------------
 	$("body").on('click', "[name='searchCat']", function(){
 		var category = $(this).html();
 		if (category === "Tous") {
-			category = $('.active:last').find('label').html();
+			category = $('#sidebar').find('.active:last').find('label').html();
 		}
 		//console.log(category);
 		$.ajax({
@@ -308,8 +294,8 @@ $(document).ready(function(){
 	//---------------------------------------------------
 	var getDocumentWithTags = function(tags) {
 		// Passage en minuscules
-		// TODO CKE : test sur accents, ç,...??
 		var lcTags = tags.toLowerCase();
+		// TODO CKE : test sur accents, ç,...??
 		// recherche si l'un des mots-clés est une catégorie : TBC CKE
 		
 		// Recherche des documents correspondants
