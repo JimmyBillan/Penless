@@ -272,284 +272,297 @@ $(document).ready(function(){
 
 	
 
-	$('#corp').on('click', '#supprimerGroup',function(){
-		
-		$.ajax({
-		type : 'POST',
-		url : '../../Controller/processDeleteGroup.php',
-		data: {idGroup : $(this).attr("value")},
-		success: function(reponse){
-			
-			if ( reponse = "delete_succes"){
-				$("#"+iddoc).hide();
-			}
-				
-		}
-
-		});
-	});
-
-	$('#corp').on('click', '#btnCreateGroupe',function(){
-		if( $('#formNewGroup').is(":visible")){
-			$('#inputGroupName').val("");
-			$('#formNewGroup').hide();
-			$('#btnCreateGroupe').html('Creer un groupe');
-		}else if ( $('#formNewGroup').is(":hidden")){
-			$('#formNewGroup').show();
-			$('#btnCreateGroupe').html('Annuler');
-
-		}
-	});
-
-	$('#corp').on('click', '#btnAjoutergroupe',function(){
-		if( $('#inputGroupName').val() !=""){
-			$.ajax({type : 'POST',data : {G: $('#inputGroupName').val()},url : 'Controller/initGroup.php',
-			success: function(reponse){
-				if(reponse == "init_success"){
-					$('#inputGroupName').val("");
-					$('.bodytabGroupe').empty();
-					newLineGroupe(User)
-					$('#formNewGroup').hide();
-					$('#btnCreateGroupe').html('Creer un groupe');
-				}
-				
-			}
-			});
-		}
+$('#corp').on('click', '#supprimerGroup',function(){
 	
+	$.ajax({type : 'POST',url : '../../Controller/processDeleteGroup.php',data: {idGroup : $(this).attr("value")},
+		success: function(reponse){
+			if ( reponse = "delete_succes"){
+				$("#"+iddoc).hide();}			
+		}
 	});
+});
 
+$('#corp').on('click', '#btnCreateGroupe',function(){
+	
+	if( $('#formNewGroup').is(":visible")){
+		$('#inputGroupName').val("");
+		$('#formNewGroup').hide();
+		$('#btnCreateGroupe').html('Creer un groupe');
 
+	}else if ( $('#formNewGroup').is(":hidden")){
+		$('#formNewGroup').show();
+		$('#btnCreateGroupe').html('Annuler');
 
-	$('#corp').on('click', '#addContact', function(){
-		$.ajax({type : 'POST',data : {U: User},url : 'Controller/addContact.php',
-			success: function(reponse){
-				console.log(reponse);
-				console.log(User);
-				if(reponse == User){
-					$("#addContact").remove();
-					$('#title').append('<input type="submit" id="cancelAddContact" class="btn btn-default  btn-xs" value="Annuler l\'invitation">');
-				}
+	}
+});
+
+$('#corp').on('click', '#btnAjoutergroupe',function(){
+	if( $('#inputGroupName').val() !=""){
+		$.ajax({type : 'POST',data : {G: $('#inputGroupName').val()},url : 'Controller/initGroup.php',
+		success: function(reponse){
+			if(reponse == "init_success"){
+				$('#inputGroupName').val("");
+				$('.bodytabGroupe').empty();
+				newLineGroupe(User)
+				$('#formNewGroup').hide();
+				$('#btnCreateGroupe').html('Creer un groupe');
 			}
+			
+		}
 		});
+	}
+
+});
+
+
+
+$('#corp').on('click', '#addContact', function(){
+	$.ajax({type : 'POST',data : {U: User},url : 'Controller/addContact.php',
+		success: function(reponse){
+			console.log(reponse);
+			console.log(User);
+			if(reponse == User){
+				$("#addContact").remove();
+				$('#title').append('<input type="submit" id="cancelAddContact" class="btn btn-default  btn-xs" value="Annuler l\'invitation">');
+			}
+		}
 	});
+});
 
-	$('#corp').on('click', '#cancelAddContact', function(){
-		$.ajax({type : 'POST',data : {U: User},url : 'Controller/cancelAddContact.php',
-			success: function(reponse){
-				console.log(reponse);
-				if(reponse == User){
-					$("#cancelAddContact").remove();
-					$('#title').append('<input type="submit" id="addContact" class="btn btn-default  btn-xs" value="Ajouter aux contacts">');
-				}
+$('#corp').on('click', '#cancelAddContact', function(){
+	$.ajax({type : 'POST',data : {U: User},url : 'Controller/cancelAddContact.php',
+		success: function(reponse){
+			console.log(reponse);
+			if(reponse == User){
+				$("#cancelAddContact").remove();
+				$('#title').append('<input type="submit" id="addContact" class="btn btn-default  btn-xs" value="Ajouter aux contacts">');
 			}
-		});
+		}
 	});
+});
 
-	$('#corp').on('click', '#deleteContact', function(){
-		$.ajax({type : 'POST',data : {U: User},url : 'Controller/deleteContact.php',
-			success: function(reponse){
-				console.log(reponse);
-				console.log(User);
-				if(reponse == User){
-					$("#deleteContact").remove();
-					$('#title').append('<input type="submit" id="addContact" class="btn btn-default  btn-xs" value="Annuler l\'invitation">');
-				}
+$('#corp').on('click', '#deleteContact', function(){
+	$.ajax({type : 'POST',data : {U: User},url : 'Controller/deleteContact.php',
+		success: function(reponse){
+			console.log(reponse);
+			console.log(User);
+			if(reponse == User){
+				$("#deleteContact").remove();
+				$('#title').append('<input type="submit" id="addContact" class="btn btn-default  btn-xs" value="Annuler l\'invitation">');
 			}
-		});
-	})
+		}
+	});
+})
 
-	$('#corp').on('click', '#myParameter', function(){
-		if($('#formParametre').is(":visible")){
-			$('#formParametre').hide();
-			$('#myParameter').prop('value', 'Mes paramètres');
-		}else if ($('#formParametre').is(":hidden")){
-				$('#formParametre').show();
-				$('#myParameter').prop('value', 'Annuler');
-		}else
-		{
+$('#corp').on('click', '#myParameter', function(){
+	if($('#formParametre').is(":visible")){
+		$('#formParametre').hide();
+		$('#myParameter').prop('value', 'Mes paramètres');
+	}else if ($('#formParametre').is(":hidden")){
+			$('#formParametre').show();
 			$('#myParameter').prop('value', 'Annuler');
-				$.ajax({
-					type : 'POST',
-					data : {U: User},
-					url : 'Controller/parametreConfidentiel.php',
+	}else
+	{
+		$('#myParameter').prop('value', 'Annuler');
+			$.ajax({
+				type : 'POST',
+				data : {U: User},
+				url : 'Controller/parametreConfidentiel.php',
 
-					success: function(reponse){
-					checkboxMail = "<input id='idCheckboxMail' type='checkbox'>";
-					saveParametre = "<input id='saveParametre' type='submit' value='Sauvegarder' class='btn btn-default  btn-xs'>";
-					var result = $.parseJSON(reponse);
+				success: function(reponse){
+				checkboxMail = "<input id='idCheckboxMail' type='checkbox'>";
+				saveParametre = "<input id='saveParametre' type='submit' value='Sauvegarder' class='btn btn-default  btn-xs'>";
+				var result = $.parseJSON(reponse);
 
-					$("#title").after("<form id='formParametre'class='form-inline' style='display:none;'>"+
-						"<form class='form-horizontal'><div class='form-group'><input class='form-control' value="+result.nom+"></div><div class='form-group'><input class='form-control' value="+result.prenom+"></div></form>"+
-						"<label>Info Confidentiel</label>"+
-						"<form class='form-horizontal'><div class='checkbox'><label>"+checkboxMail+"Recevoir les notifications par mail :</label></div></form>"+saveParametre+"</form>");
-					
-					if(result.notificationMail == true)
-						$( "#idCheckboxMail" ).prop( "checked", true );
-					$('#formParametre').show();
+				$("#title").after("<form id='formParametre'class='form-inline' style='display:none;'>"+
+					"<form class='form-horizontal'><div class='form-group'><input class='form-control' value="+result.nom+"></div><div class='form-group'><input class='form-control' value="+result.prenom+"></div></form>"+
+					"<label>Info Confidentiel</label>"+
+					"<form class='form-horizontal'><div class='checkbox'><label>"+checkboxMail+"Recevoir les notifications par mail :</label></div></form>"+saveParametre+"</form>");
+				
+				if(result.notificationMail == true)
+					$( "#idCheckboxMail" ).prop( "checked", true );
+				$('#formParametre').show();
 
-					}
+				}
 
+
+			});
+	}
+
+});
+
+
+$("body").on('click', '#goToTarget', function(){
+	console.log($(this).attr("target"));
+	window.location ="/?&U="+$(this).attr("target");	
+});
+
+
+
+$("body").on('click', '#btnEditerGroup', function(){
+	var groupCourrant = $(this).attr('value');
+	var listContact;
+	
+	if($(this).attr('statut')==="Editer"){
+		$(this).closest('div').after(""+
+			"<div id='detailGroupe-"+groupCourrant+"' class='col-xs-12' value='"+groupCourrant+"'>"+
+				"<h5 id='ajouterNewUserToGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"' statut='on'>Ajouter</h5>"+
+				"<h5 id='renommerGroup'class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
+				"<h5 id='SupprimerGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
+		
+				"<div id='listOfUserInGroup-"+groupCourrant+"' class='form-inline listOfUserInGroup '>"+
+			"</div>");
+		getlistofUserinaGroup(groupCourrant);
+		
+		$(this).parent().find('#btnEnregisterEditionGroup').show();
+		$(this).attr('statut', 'Annuler');
+		$(this).html("<span class='glyphicon glyphicon-remove-circle' aria-hidden='true'></span> Annuler");
+	}
+		
+	else{
+		$(this).attr('statut', 'Editer');;
+		$(this).parent().find('#btnEnregisterEditionGroup').hide();
+		$(this).html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
+		$('#detailGroupe-'+groupCourrant).remove();
+		
+	}
+
+});
+
+$("body").on('click', '#renommerGroup', function() {
+	var gCourrant = $(this).attr("value");
+	var nom = $('#groupName-'+gCourrant).html();
+
+	if($('#groupName-'+gCourrant).attr('statut') == "normal"){
+
+		$('#groupName-'+gCourrant).attr('statut', 'editing');
+
+		$(this).parent().find('#ajouterNewUserToGroup').attr({
+			style:'cursor: not-allowed;color: #C2BCBC',
+			statut: 'off'
+		});
+		$(this).parent().find('#SupprimerGroup').attr({
+			style:'cursor: not-allowed;color: #C2BCBC',
+			statut: 'off'
+		});
+		$(this).html("Terminer");
+		console.log(nom);
+		$('#groupName-'+gCourrant).html('<input id="inputGroupName-'+gCourrant+'" type="text" autocomplete="off" class="form-control" >');
+		$('#inputGroupName-'+gCourrant).val(nom);
+	}else{
+		$(this).html("Renommer");
+
+		$('#groupName-'+gCourrant).html($('#inputGroupName-'+gCourrant).val());
+
+		$('#groupName-'+gCourrant).attr('statut', 'normal');
+		$(this).parent().find('#ajouterNewUserToGroup').attr({
+			style:'',
+			statut: 'on'
+		});
+		$(this).parent().find('#SupprimerGroup').attr({
+			style:'',
+			statut: 'on'
+		});
+
+
+	}
+});
+
+$('#corp').on('click', '#ajouterNewUserToGroup', function(){
+	var groupCourrant = $(this).attr('value');
+	var ok = false;
+	if($(this).attr('statut')==="on"){
+		ok = true;
+	}
+	if($(this).html()==="Ajouter" && ok == true){
+		$('#listOfUserInGroup-'+groupCourrant).before(''+
+			'<form id ="formNewUserToGroup" class="form-inline"  style="padding-left:8px" onsubmit=" return false;" >'+
+				'<input type="text" class="form-control" id="inputNewUserToGroup" placeholder="Saisir son nom ou son ID" style="width:100%">'+
+				//'<div id="labelRechercheNewUserToGroup" class="bulleUser bullUser-control" style="display: none"></div><input type="button" id="inputbtnNewUserToGroup" value="+" class="btn btn-default"></form>');
+				'<div id="labelRechercheNewUserToGroup" codeGroup="'+groupCourrant+'"></div></form>');
+		$(this).html("Annuler ajout");
+	}else{
+		$(this).html("Ajouter");
+		$(this).parent().children('#formNewUserToGroup').remove();
+		
+	}
+});
+
+
+
+$("#corp").on('keyup', '#inputNewUserToGroup', function(){
+	
+        var letters = $(this).val();
+   	var length = letters.length;
+	var contactFound = [];
+	var c = 0;
+	if(letters.length != 0){
+		for (var i = 0; i < jsonDescontact.length; i++) {
+			if(letters === jsonDescontact[i].nom.substring(0,letters.length)|| letters === jsonDescontact[i].prenom.substring(0,letters.length)){
+				contactFound.push(jsonDescontact[i]);
+				c++;
+			}	
+		}
+	}
+	
+	c = contactFound.length;
+
+	
+	if( c > 0){
+		var view = '<select multiple class="form-control" id="formlabelRechercheNewUserToGroup" style="overflow-y: auto;">';
+		for (var i = 0; i < c; i++) {
+			view = view+'<option id="OptionAddUserToGroup" url="'+contactFound[i].idUrl+'">'+contactFound[i].nom+' '+contactFound[i].prenom+'</option>';
+		};
+
+		view = view+'</select>';
+
+		cGroupe = $(this).parent().children('#labelRechercheNewUserToGroup').attr('codeGroup');
+
+		$(this).parent().children("#labelRechercheNewUserToGroup").html(view);
+		$(this).parent().children("#labelRechercheNewUserToGroup").show();
+
+		/* 
+		ICI SELECTION DANS LES RESULTATS DU MENU DEROULANT
+
+		*/
+		$("#formlabelRechercheNewUserToGroup").change(function() {
+			
+			
+			/*Supprimer la phrase signalant un groupe vide*/
+			$("#defaut-"+cGroupe).remove();
+
+			var selected = $(this).find("option:selected").parent();
+			var groupe = $(this).find("option:selected").parent().parent().attr('codegroup');
+			var urlUser = $(this).find("option:selected").attr("url");
+
+
+			/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
+			view = '<tr url="'+urlUser+'"><td>'+$(this).find("option:selected").html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+			
+			/*On supprime la ligne du menu deroulant */
+			$(this).find("option:selected").remove();
+
+			
+			if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
+				
+				$('#tbodyOfuserInGroup-'+groupe).prepend(view);
+
+				/* On supprime le select si il n'y a plus de resultat*/
+				if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+					$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
+				}
+			}else{
+				/*Cas ou il y a déjà des utilisateurs dans le groupe */ 
+				var okToPush = true;
+
+				/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
+				$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
+					if($(this).attr('url') === urlUser )
+						okToPush = false;
 
 				});
-		}
 
-	});
- 
-
-	$("body").on('click', '#goToTarget', function(){
-		console.log($(this).attr("target"));
-		window.location ="/?&U="+$(this).attr("target");	
-	});
-
-
-
-	$("body").on('click', '#btnEditerGroup', function(){
-		var groupCourrant = $(this).attr('value');
-		var listContact;
-		
-		if($(this).attr('statut')==="Editer"){
-			$(this).closest('div').after(""+
-				"<div id='detailGroupe-"+groupCourrant+"' class='col-xs-12' value='"+groupCourrant+"'>"+
-					"<h5 id='ajouterNewUserToGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Ajouter</h5>"+
-					"<h5 id='renommerGroup'class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
-					"<h5 id='SupprimerGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
-			
-					"<div id='listOfUserInGroup-"+groupCourrant+"' class='form-inline listOfUserInGroup '>>"+
-				"</div>");
-			getlistofUserinaGroup(groupCourrant);
-			
-			$(this).parent().find('#btnEnregisterEditionGroup').show();
-			$(this).attr('statut', 'Annuler');
-			$(this).html("<span class='glyphicon glyphicon-remove-circle' aria-hidden='true'></span> Annuler");
-		}
-			
-		else{
-			$(this).attr('statut', 'Editer');;
-			$(this).parent().find('#btnEnregisterEditionGroup').hide();
-			$(this).html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
-			$('#detailGroupe-'+groupCourrant).remove();
-			
-		}
-
-	});
-
-	$("body").on('click', '#renommerGroup', function() {
-		var gCourrant = $(this).attr("value");
-		var nom = $('#groupName-'+gCourrant).html();
-
-		if($('#groupName-'+gCourrant).attr('statut') == "normal"){
-
-			$('#groupName-'+gCourrant).attr('statut', 'editing');
-
-			$(this).parent().find('#ajouterNewUserToGroup').attr({
-				style:'cursor: not-allowed;color: #C2BCBC',
-				statut: 'off'
-			});
-			$(this).parent().find('#SupprimerGroup').attr({
-				style:'cursor: not-allowed;color: #C2BCBC',
-				statut: 'off'
-			});
-			$(this).html("Terminer");
-			console.log(nom);
-			$('#groupName-'+gCourrant).html('<input id="inputGroupName-'+gCourrant+'" type="text" autocomplete="off" class="form-control" >');
-			$('#inputGroupName-'+gCourrant).val(nom);
-		}else{
-			$(this).html("Renommer");
-
-			$('#groupName-'+gCourrant).html($('#inputGroupName-'+gCourrant).val());
-
-			$('#groupName-'+gCourrant).attr('statut', 'normal');
-			$(this).parent().find('#ajouterNewUserToGroup').attr({
-				style:'',
-				statut: 'on'
-			});
-			$(this).parent().find('#SupprimerGroup').attr({
-				style:'',
-				statut: 'on'
-			});
-
-
-		}
-	});
-
-	$('#corp').on('click', '#ajouterNewUserToGroup', function(){
-		var groupCourrant = $(this).attr('value');
-		var ok = false;
-		if($(this).attr('statut')==="on"){
-			ok = true;
-		}
-		if($(this).html()==="Ajouter" && ok == true){
-			$('#listOfUserInGroup-'+groupCourrant).before(''+
-				'<form id ="formNewUserToGroup" class="form-inline"  style="padding-left:8px" onsubmit=" return false;" >'+
-					'<input type="text" class="form-control" id="inputNewUserToGroup" placeholder="Saisir son nom ou son ID" style="width:100%">'+
-					//'<div id="labelRechercheNewUserToGroup" class="bulleUser bullUser-control" style="display: none"></div><input type="button" id="inputbtnNewUserToGroup" value="+" class="btn btn-default"></form>');
-					'<div id="labelRechercheNewUserToGroup" codeGroup="'+groupCourrant+'"></div></form>');
-			$(this).html("Annuler ajout");
-		}else{
-			$(this).html("Ajouter");
-			$(this).parent().children('#formNewUserToGroup').remove();
-			
-		}
-	});
-
-
-
-	$("#corp").on('keyup', '#inputNewUserToGroup', function(){
-		
-        var letters = $(this).val();
-	   	var length = letters.length;
-		var contactFound = [];
-		var c = 0;
-		if(letters.length != 0){
-			for (var i = 0; i < jsonDescontact.length; i++) {
-				if(letters === jsonDescontact[i].nom.substring(0,letters.length)|| letters === jsonDescontact[i].prenom.substring(0,letters.length)){
-					contactFound.push(jsonDescontact[i]);
-					c++;
-				}	
-			}
-		}
-		
-		c = contactFound.length;
-
-		
-		if( c > 0){
-			var view = '<select multiple class="form-control" id="formlabelRechercheNewUserToGroup" style="overflow-y: auto;">';
-			for (var i = 0; i < c; i++) {
-				view = view+'<option id="OptionAddUserToGroup" url="'+contactFound[i].idUrl+'">'+contactFound[i].nom+' '+contactFound[i].prenom+'</option>';
-			};
-
-			view = view+'</select>';
-
-			cGroupe = $(this).parent().children('#labelRechercheNewUserToGroup').attr('codeGroup');
-
-			$(this).parent().children("#labelRechercheNewUserToGroup").html(view);
-			$(this).parent().children("#labelRechercheNewUserToGroup").show();
-
-			/* 
-			ICI SELECTION DANS LES RESULTATS DU MENU DEROULANT
-
-			*/
-			$("#formlabelRechercheNewUserToGroup").change(function() {
-				
-				
-				/*Supprimer la phrase signalant un groupe vide*/
-				$("#defaut-"+cGroupe).remove();
-
-				var selected = $(this).find("option:selected").parent();
-				var groupe = $(this).find("option:selected").parent().parent().attr('codegroup');
-				var urlUser = $(this).find("option:selected").attr("url");
-
-
-				/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
-				view = '<tr url="'+urlUser+'"><td>'+$(this).find("option:selected").html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
-				
-				/*On supprime la ligne du menu deroulant */
-				$(this).find("option:selected").remove();
-
-				
-				if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
-					
+				if(okToPush == true){
 					$('#tbodyOfuserInGroup-'+groupe).prepend(view);
 
 					/* On supprime le select si il n'y a plus de resultat*/
@@ -557,95 +570,77 @@ $(document).ready(function(){
 						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
 					}
 				}else{
-					/*Cas ou il y a déjà des utilisateurs dans le groupe */ 
-					var okToPush = true;
+					/*On supprime la ligne */
+					$(this).find("option:selected").remove();
 
-					/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
-					$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
-						if($(this).attr('url') === urlUser )
-							okToPush = false;
-	
-					});
-
-					if(okToPush == true){
-						$('#tbodyOfuserInGroup-'+groupe).prepend(view);
-
-						/* On supprime le select si il n'y a plus de resultat*/
-						if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-							$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-						}
-					}else{
-						/*On supprime la ligne */
-						$(this).find("option:selected").remove();
-
-						/* On supprime le select si il n'y a plus de resultat*/
-						if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-							$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-						}
+					/* On supprime le select si il n'y a plus de resultat*/
+					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
 					}
 				}
-					
+			}
 				
-				
-			});
-
-			if($(this).parent().children('#labelRechercheNewUserToGroup')=='')
-				$(this).parent().children('#labelRechercheNewUserToGroup').empty();
-		}else{
-			$(this).parent().children('#labelRechercheNewUserToGroup').empty();
-		}
 			
-	});
+			
+		});
+
+		if($(this).parent().children('#labelRechercheNewUserToGroup')=='')
+			$(this).parent().children('#labelRechercheNewUserToGroup').empty();
+	}else{
+		$(this).parent().children('#labelRechercheNewUserToGroup').empty();
+	}
+		
+});
 
 $('#corp').on('click', '#btnEnregisterEditionGroup', function() {
-	var save = {};
-	save['idGroupe'] = $(this).val();
-	save['nom'] = $("#groupName-"+save['idGroupe']).html();
-	save['listUser'] = [];
-	
-	$('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
-	
-		url = $(this).attr('url');
-		option = $(this).find('select option:selected').text();
-		var row = {};
-		row[url] = option ;
-		save['listUser'].push(row);
-	});
-	console.log(save);
-	saveEditGroupe(save);
-	$('#detailGroupe-'+save['idGroupe']).remove();
+var save = {};
+save['idGroupe'] = $(this).val();
+save['nom'] = $("#groupName-"+save['idGroupe']).html();
+save['listUser'] = [];
+
+$('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
+
+	url = $(this).attr('url');
+	option = $(this).find('select option:selected').text();
+	var row = {};
+	row[url] = option ;
+	save['listUser'].push(row);
 });
-	
+console.log(save);
+saveEditGroupe(save);
+$('#detailGroupe-'+save['idGroupe']).remove();
+});
 
 
 
-	$('#corp').on('click', '#accepterContact', function(){
-			$.ajax({
-				type : 'POST',
-				data : {U:$(this).attr("idUrl")},
-				url : 'Controller/accepterContact.php',
-				success:function(reponse){
-					return false;
-				} 
-			});
-			
-			$(this).parent().parent().hide();
-			
-			
+
+$('#corp').on('click', '#accepterContact', function(){
+		$.ajax({
+			type : 'POST',
+			data : {U:$(this).attr("idUrl")},
+			url : 'Controller/accepterContact.php',
+			success:function(reponse){
+				return false;
+			} 
 		});
-
-		$('#corp').on('click', '#refuserContact', function(){
-			
-			$.ajax({
-				type : 'POST',
-				data : {U:$(this).attr("idUrl")},
-				url : 'Controller/refuserContact.php',
-				success:function(reponse){
-					return false;
-				} 
-			});
-			$(this).parent().parent().hide();
-		});
-
 		
+		$(this).parent().parent().hide();
+		
+		
+	});
+
+$('#corp').on('click', '#refuserContact', function(){
+	
+	$.ajax({
+		type : 'POST',
+		data : {U:$(this).attr("idUrl")},
+		url : 'Controller/refuserContact.php',
+		success:function(reponse){
+			return false;
+		} 
+	});
+	$(this).parent().parent().hide();
+});
+
+	
 });

@@ -31,6 +31,29 @@ if(isset($_GET["id"])){
 	
 	
 }
+/*
+$idgroupe = (string) "PLQRanq6Ax";
+	$groupDbConnection = new groupDbConnection();
+	$allowed = TRUE;
+
+	//Verifie si je suis admin du groupe
+	//$cursor = $groupDbConnection->amIAdmin($_SESSION['id'], $idgroupe);
+	
+	//Si je fais bien partie du groupe 
+	$cursor = $groupDbConnection->isInGroup("m4QrZA90vL", $idgroupe);
+	echo '\n';
+	if(!$cursor){
+		$allowed = FALSE;
+		echo json_encode(array('error'=>'dontexist'));
+	}
+			
+		
+	if($allowed == TRUE) {
+		$projection = array("_id" => false,"admin" => true, "arrayUser" =>true);
+		$cursor = $groupDbConnection->listUserInGroup($idgroupe, $projection);
+		echo json_encode($cursor);
+	}
+*/
 
 
 
