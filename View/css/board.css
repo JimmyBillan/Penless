@@ -197,6 +197,8 @@ left: 0px;
     margin-top: 90px;
   
     position: relative;
+    padding-right: 0px;    
+    padding-left: 0px;
 }
   .sidebar {
     /* overflow-y: auto; */ /* Scrollable contents if viewport is shorter than content. */

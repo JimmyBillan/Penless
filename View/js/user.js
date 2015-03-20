@@ -16,7 +16,7 @@ function genererEntete(result) {
 	nom = Maj(result.nom);
 	prenom = Maj(result.prenom);
 
-	ouvertureDiv = '<div id="row" class="droite15"><div class="container-fluid">';
+	ouvertureDiv = '<div id="row" ><div class="container-fluid">';
 	titreNomPrenom= '<div id="title" class="well"><h2>'+nom+" "+prenom+'</h2></div>';
 	fermetureDiv = '</div></div>';
 	
