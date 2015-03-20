@@ -1,4 +1,4 @@
-<div id="corp" class="col-sm-9 col-md-10 col-xs-12">
+<div id="corp" class="col-sm-9 col-md-9 col-xs-12">
 	<div id="row" class="droite15">
 		<div class="container-fluid">
 		<table class="table table-striped table-hover ">

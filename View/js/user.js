@@ -135,7 +135,7 @@ function genererCorpContact(User, jsonDescontact){
 			"<button id='btnCreateGroupe' type='button' class='btn btn-default'>Creer un groupe</button>"+
 			"<form class='form-inline' id='formNewGroup' style='display:none'>"+
 				"<div class='form-group'>"+
-				"<input type='text' class='form-control' id='inputGroupName' placeholder='Creer un nouveau groupe'>"+
+				"<input type='text' class='form-control' id='inputGroupName'  placeholder='Creer un nouveau groupe'>"+
 				"</div>"+
 				"<button id='btnAjoutergroupe' type='button' class='btn btn-default'>Ajouter</button>"+
 			"</form>");
@@ -153,8 +153,8 @@ function newLineGroupe(User){
 		
 			$(".bodytabGroupe").append(""+
 				 	"<div class='row ligngroup'>"+
-				 		"<div class='col-xs-9' ><div id='groupName-"+arrayReponse[i].idGroupe+"' style='font-size: 18px; vertical-align: middle;'>"+arrayReponse[i].nom+"</div></div>"+
-				 		"<div class='col-xs-3' style='text-align: right ;margin-top:2px'><button id='btnEditerGroup' class='btn btn-default btn-xs'  value='"+arrayReponse[i].idGroupe+"' statut='Editer'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer</button><button id='btnEnregisterEditionGroup' value='"+arrayReponse[i].idGroupe+"' class='btn btn-default btn-xs' style='float:right; display:none'>Enregistrer</button></div>"+
+				 		"<div class='col-xs-12 col-lg-7 col-md-8 col-sm-8' ><div id='groupName-"+arrayReponse[i].idGroupe+"' statut='normal' style='font-size: 18px; vertical-align: middle;'>"+arrayReponse[i].nom+"</div></div>"+
+				 		"<div class='col-xs-12  col-lg-5 col-md-4 col-sm-4' style='text-align: right;heigh:25px;margin-bottom:3px'><button id='btnEditerGroup' class='btn btn-default btn-xs'  value='"+arrayReponse[i].idGroupe+"' statut='Editer'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer</button><button id='btnEnregisterEditionGroup' value='"+arrayReponse[i].idGroupe+"' class='btn btn-default btn-xs' style='float:right; display:none'>Enregistrer</button></div>"+
 				 	"</div>"
 				 );
 
@@ -307,7 +307,7 @@ $(document).ready(function(){
 			success: function(reponse){
 				if(reponse == "init_success"){
 					$('#inputGroupName').val("");
-					$('#bodytabGroupe').empty();
+					$('.bodytabGroupe').empty();
 					newLineGroupe(User)
 					$('#formNewGroup').hide();
 					$('#btnCreateGroupe').html('Creer un groupe');
@@ -412,8 +412,8 @@ $(document).ready(function(){
 			$(this).closest('div').after(""+
 				"<div id='detailGroupe-"+groupCourrant+"' class='col-xs-12' value='"+groupCourrant+"'>"+
 					"<h5 id='ajouterNewUserToGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Ajouter</h5>"+
-					"<h5 class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
-					"<h5 class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
+					"<h5 id='renommerGroup'class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
+					"<h5 id='SupprimerGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
 			
 					"<div id='listOfUserInGroup-"+groupCourrant+"' class='form-inline listOfUserInGroup '>>"+
 				"</div>");
@@ -434,10 +434,52 @@ $(document).ready(function(){
 
 	});
 
+	$("body").on('click', '#renommerGroup', function() {
+		var gCourrant = $(this).attr("value");
+		var nom = $('#groupName-'+gCourrant).html();
+
+		if($('#groupName-'+gCourrant).attr('statut') == "normal"){
+
+			$('#groupName-'+gCourrant).attr('statut', 'editing');
+
+			$(this).parent().find('#ajouterNewUserToGroup').attr({
+				style:'cursor: not-allowed;color: #C2BCBC',
+				statut: 'off'
+			});
+			$(this).parent().find('#SupprimerGroup').attr({
+				style:'cursor: not-allowed;color: #C2BCBC',
+				statut: 'off'
+			});
+			$(this).html("Terminer");
+			console.log(nom);
+			$('#groupName-'+gCourrant).html('<input id="inputGroupName-'+gCourrant+'" type="text" autocomplete="off" class="form-control" >');
+			$('#inputGroupName-'+gCourrant).val(nom);
+		}else{
+			$(this).html("Renommer");
+
+			$('#groupName-'+gCourrant).html($('#inputGroupName-'+gCourrant).val());
+
+			$('#groupName-'+gCourrant).attr('statut', 'normal');
+			$(this).parent().find('#ajouterNewUserToGroup').attr({
+				style:'',
+				statut: 'on'
+			});
+			$(this).parent().find('#SupprimerGroup').attr({
+				style:'',
+				statut: 'on'
+			});
+
+
+		}
+	});
+
 	$('#corp').on('click', '#ajouterNewUserToGroup', function(){
 		var groupCourrant = $(this).attr('value');
-		
-		if($(this).html()==="Ajouter"){
+		var ok = false;
+		if($(this).attr('statut')==="on"){
+			ok = true;
+		}
+		if($(this).html()==="Ajouter" && ok == true){
 			$('#listOfUserInGroup-'+groupCourrant).before(''+
 				'<form id ="formNewUserToGroup" class="form-inline"  style="padding-left:8px" onsubmit=" return false;" >'+
 					'<input type="text" class="form-control" id="inputNewUserToGroup" placeholder="Saisir son nom ou son ID" style="width:100%">'+
@@ -484,7 +526,10 @@ $(document).ready(function(){
 			$(this).parent().children("#labelRechercheNewUserToGroup").html(view);
 			$(this).parent().children("#labelRechercheNewUserToGroup").show();
 
-			/* ICI On choisis une option dans la liste des utilisateurs apres la recherche*/
+			/* 
+			ICI SELECTION DANS LES RESULTATS DU MENU DEROULANT
+
+			*/
 			$("#formlabelRechercheNewUserToGroup").change(function() {
 				
 				
@@ -499,11 +544,12 @@ $(document).ready(function(){
 				/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
 				view = '<tr url="'+urlUser+'"><td>'+$(this).find("option:selected").html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
 				
-				/*On supprime la ligne */
+				/*On supprime la ligne du menu deroulant */
 				$(this).find("option:selected").remove();
+
 				
-				if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){
-					/*Cas ou il y a pas d'utilisateur dans le groupe */ 
+				if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
+					
 					$('#tbodyOfuserInGroup-'+groupe).prepend(view);
 
 					/* On supprime le select si il n'y a plus de resultat*/
@@ -567,8 +613,7 @@ $('#corp').on('click', '#btnEnregisterEditionGroup', function() {
 	});
 	console.log(save);
 	saveEditGroupe(save);
-
-
+	$('#detailGroupe-'+save['idGroupe']).remove();
 });
 	
 

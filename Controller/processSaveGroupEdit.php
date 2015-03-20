@@ -14,13 +14,12 @@ if(isset($_POST['g']))
 
 	/*On cherche si le groupe existe et qu'on est bien admin*/
 	$cursor = $db->amIAdmin($_SESSION['id'], (string) $doc["idGroupe"]);
-	$groupe = array();
+	
 
 	if($cursor){
-		echo "le groupe existe \n";
 
 		/*On reconstruit l'array en sécurité, en faille xss (htmlEntities) et injection mongo (string) */
-		
+		$groupe = array();
 		/*On verifie nom du groupe non vide*/
 		if(!isset($doc["nom"]))
 			echo "nom groupe vide \n";
