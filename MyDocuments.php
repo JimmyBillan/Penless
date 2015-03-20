@@ -31,3 +31,7 @@ if($_SESSION['id']){
 
 include('View/php/footer.php');
 echo  "<script type='text/javascript' src='View/js/pageMyDocuments.js'></script>";
+echo  "<script type='text/javascript' src='View/js/viewDocumentServices.js'></script>";
+echo  "<script type='text/javascript' src='View/js/user.js'></script>";
+echo  "<script type='text/javascript' src='View/js/document.js'></script>"; 
+echo  "<script type='text/javascript' src='View/js/category.js'></script>"; 
