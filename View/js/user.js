@@ -492,7 +492,8 @@ $('#corp').on('click', '#ajouterNewUserToGroup', function(){
 
 $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 	
-        var letters = $(this).val();
+ 	
+    var letters = $(this).val().toLowerCase();
    	var length = letters.length;
 	var contactFound = [];
 	var c = 0;
@@ -509,12 +510,12 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 
 	
 	if( c > 0){
-		var view = '<select multiple class="form-control" id="formlabelRechercheNewUserToGroup" style="overflow-y: auto;">';
+		var view = '<ul multiple  id="formlabelRechercheNewUserToGroup" style="overflow-y: auto;">';
 		for (var i = 0; i < c; i++) {
-			view = view+'<option id="OptionAddUserToGroup" url="'+contactFound[i].idUrl+'">'+contactFound[i].nom+' '+contactFound[i].prenom+'</option>';
+			view = view+'<li id="OptionAddUserToGroup" url="'+contactFound[i].idUrl+'">'+contactFound[i].nom+' '+contactFound[i].prenom+'</li>';
 		};
 
-		view = view+'</select>';
+		view = view+'</ul>';
 
 		cGroupe = $(this).parent().children('#labelRechercheNewUserToGroup').attr('codeGroup');
 
@@ -523,24 +524,25 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 
 		/* 
 		ICI SELECTION DANS LES RESULTATS DU MENU DEROULANT
-
+		
+		detailGroupe-bLVmNg67bP
 		*/
-		$("#formlabelRechercheNewUserToGroup").change(function() {
+		$("#corp").on('click',"#OptionAddUserToGroup",function() {
 			
 			
 			/*Supprimer la phrase signalant un groupe vide*/
 			$("#defaut-"+cGroupe).remove();
-
-			var selected = $(this).find("option:selected").parent();
-			var groupe = $(this).find("option:selected").parent().parent().attr('codegroup');
-			var urlUser = $(this).find("option:selected").attr("url");
+			console.log("nom "+ $(this).html());
+			var selected = $(this);
+			var groupe = $(this).parent().parent().attr('codegroup');
+			var urlUser = $(this).attr("url");
 
 
 			/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
-			view = '<tr url="'+urlUser+'"><td>'+$(this).find("option:selected").html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+			view = '<tr url="'+urlUser+'"><td>'+$(this).html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
 			
 			/*On supprime la ligne du menu deroulant */
-			$(this).find("option:selected").remove();
+			$(this).remove();
 
 			
 			if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
@@ -548,8 +550,8 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 				$('#tbodyOfuserInGroup-'+groupe).prepend(view);
 
 				/* On supprime le select si il n'y a plus de resultat*/
-				if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-					$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
+				if($.trim($(this).parent().parent().children('#formlabelRechercheNewUserToGroup').html())==''){
+					$(this).parent().parent().children('#formlabelRechercheNewUserToGroup').remove();
 				}
 			}else{
 				/*Cas ou il y a déjà des utilisateurs dans le groupe */ 
@@ -571,7 +573,7 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 					}
 				}else{
 					/*On supprime la ligne */
-					$(this).find("option:selected").remove();
+					$(this).remove();
 
 					/* On supprime le select si il n'y a plus de resultat*/
 					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
@@ -609,6 +611,9 @@ $('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
 console.log(save);
 saveEditGroupe(save);
 $('#detailGroupe-'+save['idGroupe']).remove();
+$(this).parent().children("#btnEditerGroup").attr('statut', 'Editer');
+$(this).parent().children("#btnEditerGroup").html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
+$(this).hide();
 });
 
 

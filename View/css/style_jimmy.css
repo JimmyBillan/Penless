@@ -1,0 +1,98 @@
+    /****************************************************************************************/
+    /****************************************************************************************/
+    /*STYLE GLOBAL */
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+
+
+ul#formlabelRechercheNewUserToGroup {
+    background-color: white;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+li#OptionAddUserToGroup {
+    cursor: pointer;
+}
+
+li#OptionAddUserToGroup:hover {
+    background-color: rgb(91, 164, 218);
+    font-weight: bold;
+    font-size: 1.2em;
+    color: white;
+    margin-left: -8px;
+    margin-right: 2px;
+
+}
+    
+    /****************************************************************************************/
+    /****************************************************************************************/
+    /*VUE PC */
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+@media (min-width: 768px){
+
+    ul.BAR {
+        list-style-type: none;
+        /* overflow-x: scroll; */
+        height: auto;
+        margin-bottom: 0px;
+        overflow-y: hidden;
+        padding-left: 0px;
+    }
+
+    ul.BAR li {
+        float: left;
+        padding: 20px;
+    
+        width: 100%;
+        background-color: rgb(239, 238, 237);
+        margin-bottom: 2px;
+        text-decoration: none;
+        font-weight: bold;
+    
+        border-bottom: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+}
+    
+    ul.BAR li:hover {
+        background-color: rgb(218, 230, 224);
+        cursor: pointer;
+        text-decoration: none;
+    }
+}
+
+    /****************************************************************************************/
+    /****************************************************************************************/
+    /*VUE MOBILE */
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+@media (max-width: 768px){
+
+    ul.BAR {
+        list-style-type: none;
+        height: 70px;
+        margin-bottom: 0px;
+        overflow-y: hidden;
+        padding-left: 0px;
+        overflow-x: hidden;
+        width: 1040px;
+    }
+
+    ul.BAR li {
+        float: left;
+        padding: 20px;
+    
+        text-decoration: none;    font-weight: bold;
+}
+
+    #corp {
+      position: relative;
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+}

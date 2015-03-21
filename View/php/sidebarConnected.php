@@ -1,6 +1,6 @@
-<div id ="sidebar" class="col-sm-3 col-md-3 col-lg-2 navbar-fixed-top25 sidebar">
+<div id ="sidebar" class="col-sm-3 col-md-3 col-lg-2 col-xs-12">
 
-          <ul class="nav nav-sidebar">
+          <ul class="BAR">
             <li id="titreMenuLatteral" class="active"><a href="#">Sections</a></li>
             <li><a href="<?php echo '/?&U='.$_SESSION["id"].'&C=Notification';?>">Mes Notifications</a></li>
             <li><a href="<?php echo '/?&C=Creation';?>">Créer un Document</a></li>
