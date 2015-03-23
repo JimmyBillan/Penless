@@ -75,14 +75,14 @@ CATEGORY.tagsToArray = function() {
 CATEGORY.addCategoryMenu = function(catList) {
 	var submenu = "";
 	for (var cat in catList) {
-		submenu += '<li><a href="#">';		
+		submenu += '<li>';		
 		if ($.isEmptyObject(catList[cat])) {
 			// dernier niveau : click -> accès aux exercices
-			submenu += '<label class="labelCategorie" name="searchCat">'+ cat +'</label>';
+			submenu += '<a name="searchCat"><label class="labelCategorie">'+ cat +'</label>';
 		}
 		else {
 			// niveau intermédiaire : click -> affichage du sous-menu
-			submenu += '<label class="labelCategorie" name="menuCat">'+ cat +'</label>'+
+			submenu += '<a name="menuCat"><label class="labelCategorie">'+ cat+ '</label>'+
 			'<span class="glyphiconReponse glyphicon-chevron-right" style="float:right;">';
 		}
 		submenu += '</a></li>';
@@ -96,7 +96,7 @@ CATEGORY.createSidebarCategory = function(div) {
 		// Champs de recherche 
 		'<li><a href="#">'+
         '<input name="tagsDoc" class="labelCategorie saisie" type="text" placeholder="Recherche exercice"></input>'+
-        '<span class="glyphiconReponse glyphicon-search" style="float:right"></span>'+
+        '<span name="searchDoc" class="glyphiconReponse glyphicon-search" style="float:right"></span>'+
         '</a></li>'+
         // Entête du Menu des catégories
 		'<li class="active"><a href="#">'+
@@ -115,9 +115,9 @@ CATEGORY.toSubCategory = function(category) {
 	
 	// Suppression des catégories "mères" inutiles
 	$('[name="menuCat"]').each(function() {
-		var cat = $(this).html();
+		var cat = $(this).find('label').html();
 		
-		if ((!catFound) && ($(this).parent().parent().hasClass("active"))) {
+		if ((!catFound) && ($(this).parent().hasClass("active"))) {
 				// Pour récupérer le tableau de sous-catégories correspondant à la catégorie sélectionnée
 				// on utilise les catégories de niveau supérieur déjà sélectionnées
 				subcat = subcat[cat] || subcat;
@@ -126,15 +126,15 @@ CATEGORY.toSubCategory = function(category) {
 			catFound = true;
 			subcat = subcat[cat] || subcat;
 			// Modification de l'apparence de la catégorie sélectionnée
-			$(this).parent().parent().addClass("active");
+			$(this).parent().addClass("active");
 		} else if (catFound || !($(this).parent().parent().hasClass("active"))) {
 			// Suppression des catégories non-sélectionnées
-			$(this).parent().parent().remove();
+			$(this).parent().remove();
 		};
 	});
 	// Suppression des catégories "filles"
 	$('[name="searchCat"]').each(function() {
-		$(this).parent().parent().remove();
+		$(this).parent().remove();
 	});
 
 	// Affichage des sous-catégories
@@ -267,7 +267,8 @@ $(document).ready(function(){
 	// BOUTONS du Menu Recherche par Catégories
 	//---------------------------------------------------
 	$("body").on('click', "[name='searchCat']", function(){
-		var category = $(this).html();
+		var category = $(this).children('label').html();
+		console.log(category);
 		if (category === "Tous") {
 			category = $('#sidebar').find('.active:last').find('label').html();
 		}
@@ -286,8 +287,8 @@ $(document).ready(function(){
 	});
 
 	$("body").on('click', "[name='menuCat']", function(){
-		console.log("menuCat");
-		CATEGORY.toSubCategory($(this).parent().find('label').html());
+		console.log("menuCat " + $(this).find('label').html());
+		CATEGORY.toSubCategory($(this).find('label').html());
 	});
 
 	// Recherche de document par mots-clés
