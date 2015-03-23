@@ -92,6 +92,7 @@ li#OptionAddUserToGroup:hover {
 
     #corp {
       position: relative;
+        margin-top: 0px;
       padding-right: 0px;
       padding-left: 0px;
     }
