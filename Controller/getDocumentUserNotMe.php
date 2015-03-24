@@ -14,7 +14,7 @@ if(isset($_GET["U"]) && $_GET["U"] != $_SESSION["id"]){
 	$db = $m->penless;
 	$collection = $db-> Document;
 
-	$projection = array("_id" => false, "nomDocument" => true,"idDocument" => true, "createur" => true, "confident" => true, "DateModification" => true);
+	$projection = array("_id" => false, "titreDocument" => true,"idDocument" => true, "createur" => true, "confident" => true, "DateModification" => true);
 	$cursor = $collection->find(array("createur" => $user), $projection);
 
 	$arrayRetour = array();

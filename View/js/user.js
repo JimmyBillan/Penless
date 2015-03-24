@@ -56,7 +56,7 @@ function genererCorpAutreUser(User){
 			$("#title").after("<div id='tabDocument'></div>")
 			$("#tabDocument").append("<table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>DerniÃ¨re modification</th></tr></thead><tbody id='bodyTabDocument'>");
 			for(key in result){
-				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable'>"+result[key].nomDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
+				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"&C=Affichage'><td class='clickable'>"+result[key].titreDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
 			}
 			$("#tabDocument").append("</tbody></table></div></div></div>");
 		
@@ -543,67 +543,6 @@ var length = letters.length;
 		
 		detailGroupe-bLVmNg67bP
 		*/
-		$("#corp").on('click',"#OptionAddUserToGroup",function() {
-			
-			
-			/*Supprimer la phrase signalant un groupe vide*/
-			$("#defaut-"+cGroupe).remove();
-			console.log("nom "+ $(this).html());
-			var selected = $(this);
-			var groupe = $(this).parent().parent().attr('codegroup');
-			var urlUser = $(this).attr("url");
-
-
-			/* Le .html() pour recuperer le nom et prenom c est pas super Ã  voir*/
-			view = '<tr url="'+urlUser+'"><td>'+$(this).html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
-			
-			/*On supprime la ligne du menu deroulant */
-			$(this).remove();
-
-			
-			if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
-				
-				$('#tbodyOfuserInGroup-'+groupe).prepend(view);
-
-				/* On supprime le select si il n'y a plus de resultat*/
-				if($.trim($(this).parent().parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-					$(this).parent().parent().children('#formlabelRechercheNewUserToGroup').remove();
-				}
-			}else{
-				/*Cas ou il y a dÃ©jÃ  des utilisateurs dans le groupe */ 
-				var okToPush = true;
-
-				/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
-				$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
-					if($(this).attr('url') === urlUser ){
-						okToPush = false;
-						console.log($(this).attr('url'));
-					}
-						
-
-				});
-
-				if(okToPush == true){
-					$('#tbodyOfuserInGroup-'+groupe).prepend(view);
-
-					/* On supprime le select si il n'y a plus de resultat*/
-					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-					}
-				}else{
-					/*On supprime la ligne */
-					$(this).remove();
-
-					/* On supprime le select si il n'y a plus de resultat*/
-					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-					}
-				}
-			}
-				
-			
-			
-		});
 
 		if($(this).parent().children('#labelRechercheNewUserToGroup')=='')
 			$(this).parent().children('#labelRechercheNewUserToGroup').empty();
@@ -612,6 +551,55 @@ var length = letters.length;
 	}
 		
 });
+
+
+$("#corp").on('click',"#OptionAddUserToGroup",function() {
+			
+			
+	/*Supprimer la phrase signalant un groupe vide*/
+	$("#defaut-"+cGroupe).remove();
+
+	var selected = $(this);
+	var groupe = $(this).parent().parent().attr('codegroup');
+	var urlUser = $(this).attr("url");
+	var parent = $(this).parent();
+
+
+	/* Le .html() pour recuperer le nom et prenom c est pas super Ã  voir*/
+	view = '<tr url="'+urlUser+'"><td>'+$(this).html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+
+	/*Cas ou il y a dÃ©jÃ  des utilisateurs dans le groupe */ 
+	var okToPush = true;
+
+	/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
+	$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
+		if($(this).attr('url') === urlUser ){
+			okToPush = false;
+		}
+	});
+
+	if(okToPush == true){
+		$('#tbodyOfuserInGroup-'+groupe).prepend(view);
+	}
+
+	$(this).remove();
+
+	if(parent.html() == ''){
+		parent.remove();
+	}
+		
+});
+
+
+
+
+
+
+
+
+
+
+
 
 $('#corp').on('click', '#btnEnregisterEditionGroup', function() {
 	var save = {};
