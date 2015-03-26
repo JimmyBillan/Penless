@@ -56,7 +56,7 @@ function genererCorpAutreUser(User){
 			$("#title").after("<div id='tabDocument'></div>")
 			$("#tabDocument").append("<table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>Dernière modification</th></tr></thead><tbody id='bodyTabDocument'>");
 			for(key in result){
-				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable'>"+result[key].titreDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
+				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"&C=Affichage'><td class='clickable'>"+result[key].titreDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
 			}
 			$("#tabDocument").append("</tbody></table></div></div></div>");
 		
@@ -153,7 +153,7 @@ function newLineGroupe(User){
 		
 			$(".bodytabGroupe").append(""+
 				 	"<div class='row ligngroup'>"+
-				 		"<div class='col-xs-12 col-lg-7 col-md-8 col-sm-8' ><div id='groupName-"+arrayReponse[i].idGroupe+"' statut='normal' style='font-size: 18px; vertical-align: middle;'>"+arrayReponse[i].nom+"</div></div>"+
+				 		"<div class='col-xs-12 col-lg-7 col-md-8 col-sm-8' ><div id='groupName-"+arrayReponse[i].idGroupe+"' value='"+arrayReponse[i].nom+"' statut='normal' style='font-size: 18px; vertical-align: middle;'>"+arrayReponse[i].nom+"</div></div>"+
 				 		"<div class='col-xs-12  col-lg-5 col-md-4 col-sm-4' style='text-align: right;heigh:25px;margin-bottom:3px'><button id='btnEditerGroup' class='btn btn-default btn-xs'  value='"+arrayReponse[i].idGroupe+"' statut='Editer'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer</button><button id='btnEnregisterEditionGroup' value='"+arrayReponse[i].idGroupe+"' class='btn btn-default btn-xs' style='float:right; display:none'>Enregistrer</button></div>"+
 				 	"</div>"
 				 );
@@ -223,6 +223,15 @@ function saveEditGroupe(arrayGroupe){
 	
 }
 
+function deleteGroup(groupID){
+	$.ajax({type : 'POST',url : 'Controller/processDeleteGroup.php',data: {idGroup : $(this).attr("value")},
+			success: function(reponse){
+				if ( reponse = "delete_succes"){
+					$("#"+iddoc).hide();}			
+			}
+	});
+}
+
 
 $(document).ready(function(){
 	var User = getParameterByName('U');
@@ -272,16 +281,19 @@ $(document).ready(function(){
 
 	
 
-$('#corp').on('click', '#supprimerGroup',function(){
+$('#corp').on('click', '#SupprimerGroup',function(){
 	
-	$.ajax({type : 'POST',url : '../../Controller/processDeleteGroup.php',data: {idGroup : $(this).attr("value")},
-		success: function(reponse){
-			if ( reponse = "delete_succes"){
-				$("#"+iddoc).hide();}			
-		}
-	});
-});
+	if($(this).attr("statut") === "sleep"){
+		$(this).attr("statut", "deleting");
+		$(this).html("Confirmer");
+	}else if($(this).attr("statut") === "deleting"){
+		$(this).closest('.row .ligngroup').remove();
+		deleteGroup($(this).attr("value"));
 
+	}
+
+
+});
 $('#corp').on('click', '#btnCreateGroupe',function(){
 	
 	if( $('#formNewGroup').is(":visible")){
@@ -408,7 +420,7 @@ $("body").on('click', '#btnEditerGroup', function(){
 			"<div id='detailGroupe-"+groupCourrant+"' class='col-xs-12' value='"+groupCourrant+"'>"+
 				"<h5 id='ajouterNewUserToGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"' statut='on'>Ajouter</h5>"+
 				"<h5 id='renommerGroup'class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Renommer</h5>"+
-				"<h5 id='SupprimerGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"'>Supprimer</h5>"+
+				"<h5 id='SupprimerGroup' class='col-xs-4 actionOnGroup' value='"+groupCourrant+"' statut='sleep'>Supprimer</h5>"+
 		
 				"<div id='listOfUserInGroup-"+groupCourrant+"' class='form-inline listOfUserInGroup '>"+
 			"</div>");
@@ -431,7 +443,7 @@ $("body").on('click', '#btnEditerGroup', function(){
 
 $("body").on('click', '#renommerGroup', function() {
 	var gCourrant = $(this).attr("value");
-	var nom = $('#groupName-'+gCourrant).html();
+	var nom = $('#groupName-'+gCourrant).attr('value');
 
 	if($('#groupName-'+gCourrant).attr('statut') == "normal"){
 
@@ -454,6 +466,8 @@ $("body").on('click', '#renommerGroup', function() {
 
 		$('#groupName-'+gCourrant).html($('#inputGroupName-'+gCourrant).val());
 
+		$('#groupName-'+gCourrant).attr('value', $('#inputGroupName-'+gCourrant).val());
+
 		$('#groupName-'+gCourrant).attr('statut', 'normal');
 		$(this).parent().find('#ajouterNewUserToGroup').attr({
 			style:'',
@@ -467,6 +481,8 @@ $("body").on('click', '#renommerGroup', function() {
 
 	}
 });
+
+
 
 $('#corp').on('click', '#ajouterNewUserToGroup', function(){
 	var groupCourrant = $(this).attr('value');
@@ -492,9 +508,9 @@ $('#corp').on('click', '#ajouterNewUserToGroup', function(){
 
 $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 	
- 	
-    var letters = $(this).val().toLowerCase();
-   	var length = letters.length;
+ 	
+var letters = $(this).val().toLowerCase();
+var length = letters.length;
 	var contactFound = [];
 	var c = 0;
 	if(letters.length != 0){
@@ -527,64 +543,6 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 		
 		detailGroupe-bLVmNg67bP
 		*/
-		$("#corp").on('click',"#OptionAddUserToGroup",function() {
-			
-			
-			/*Supprimer la phrase signalant un groupe vide*/
-			$("#defaut-"+cGroupe).remove();
-			console.log("nom "+ $(this).html());
-			var selected = $(this);
-			var groupe = $(this).parent().parent().attr('codegroup');
-			var urlUser = $(this).attr("url");
-
-
-			/* Le .html() pour recuperer le nom et prenom c est pas super à voir*/
-			view = '<tr url="'+urlUser+'"><td>'+$(this).html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
-			
-			/*On supprime la ligne du menu deroulant */
-			$(this).remove();
-
-			
-			if($('#tableOfuserIngroup-'+groupe+'>tbody > tr').length == 0){ /*Cas ou il y a pas d'utilisateur dans le groupe */ 
-				
-				$('#tbodyOfuserInGroup-'+groupe).prepend(view);
-
-				/* On supprime le select si il n'y a plus de resultat*/
-				if($.trim($(this).parent().parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-					$(this).parent().parent().children('#formlabelRechercheNewUserToGroup').remove();
-				}
-			}else{
-				/*Cas ou il y a déjà des utilisateurs dans le groupe */ 
-				var okToPush = true;
-
-				/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
-				$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
-					if($(this).attr('url') === urlUser )
-						okToPush = false;
-
-				});
-
-				if(okToPush == true){
-					$('#tbodyOfuserInGroup-'+groupe).prepend(view);
-
-					/* On supprime le select si il n'y a plus de resultat*/
-					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-					}
-				}else{
-					/*On supprime la ligne */
-					$(this).remove();
-
-					/* On supprime le select si il n'y a plus de resultat*/
-					if($.trim($(this).parent().children('#formlabelRechercheNewUserToGroup').html())==''){
-						$(this).parent().children('#formlabelRechercheNewUserToGroup').remove();
-					}
-				}
-			}
-				
-			
-			
-		});
 
 		if($(this).parent().children('#labelRechercheNewUserToGroup')=='')
 			$(this).parent().children('#labelRechercheNewUserToGroup').empty();
@@ -594,26 +552,83 @@ $("#corp").on('keyup', '#inputNewUserToGroup', function(){
 		
 });
 
-$('#corp').on('click', '#btnEnregisterEditionGroup', function() {
-var save = {};
-save['idGroupe'] = $(this).val();
-save['nom'] = $("#groupName-"+save['idGroupe']).html();
-save['listUser'] = [];
 
-$('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
+$("#corp").on('click',"#OptionAddUserToGroup",function() {
+			
+			
+	/*Supprimer la phrase signalant un groupe vide*/
+	$("#defaut-"+cGroupe).remove();
 
-	url = $(this).attr('url');
-	option = $(this).find('select option:selected').text();
-	var row = {};
-	row[url] = option ;
-	save['listUser'].push(row);
+	var selected = $(this);
+	var groupe = $(this).parent().parent().attr('codegroup');
+	var urlUser = $(this).attr("url");
+	var parent = $(this).parent();
+
+
+	/* Le .html() pour recuperer le nom et prenom c est pas super Ã  voir*/
+	view = '<tr url="'+urlUser+'"><td>'+$(this).html()+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+
+	/*Cas ou il y a dÃ©jÃ  des utilisateurs dans le groupe */ 
+	var okToPush = true;
+
+	/*On parcours toutes les lignes pour voir si l utilisateur est deja present*/
+	$('#tableOfuserIngroup-'+groupe+' >tbody > tr').each(function(){
+		if($(this).attr('url') === urlUser ){
+			okToPush = false;
+		}
+	});
+
+	if(okToPush == true){
+		$('#tbodyOfuserInGroup-'+groupe).prepend(view);
+	}
+
+	$(this).remove();
+
+	if(parent.html() == ''){
+		parent.remove();
+	}
+		
 });
-console.log(save);
-saveEditGroupe(save);
-$('#detailGroupe-'+save['idGroupe']).remove();
-$(this).parent().children("#btnEditerGroup").attr('statut', 'Editer');
-$(this).parent().children("#btnEditerGroup").html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
-$(this).hide();
+
+
+
+
+
+
+
+
+
+
+
+
+$('#corp').on('click', '#btnEnregisterEditionGroup', function() {
+	var save = {};
+	save['idGroupe'] = $(this).val();
+	
+	if($("#groupName-"+save['idGroupe']).attr('statut') === "editing"){
+		save['nom'] = $('#inputGroupName-'+save['idGroupe']).val();
+		$('#groupName-'+save['idGroupe']).html(save['nom']);
+	}
+	else{
+		save['nom'] = $("#groupName-"+save['idGroupe']).html();
+	}
+
+	save['listUser'] = [];
+
+	$('#tableOfuserIngroup-'+save['idGroupe']+' >tbody > tr').each(function(){
+
+		url = $(this).attr('url');
+		option = $(this).find('select option:selected').text();
+		var row = {};
+		row[url] = option ;
+		save['listUser'].push(row);
+	});
+	console.log(save);
+	saveEditGroupe(save);
+	$('#detailGroupe-'+save['idGroupe']).remove();
+	$(this).parent().children("#btnEditerGroup").attr('statut', 'Editer');
+	$(this).parent().children("#btnEditerGroup").html("<span class='glyphicon glyphicon-edit' aria-hidden='true'></span> Editer");
+	$(this).hide();
 });
 
 
