@@ -14,7 +14,7 @@ if(isset($_GET["U"]) && isset($_SESSION["id"])) {
 	$groupDB = new GroupDbConnection();
 	$groups  = $groupDB->getAllGroupIdArray($user);
 	
-	$duo["createur"] = htmlspecialchars($_GET["U"]); //"N6vpo999Aa";// TODO : a vérifier
+	$duo["createur"] = (string)($_GET["U"]); //"N6vpo999Aa";
 	$duo["user"]     = $user;
 	$duo["userGroups"] = $groups;
 	$docCursor = $docDb->findReadableDocFromCreateur($duo);
