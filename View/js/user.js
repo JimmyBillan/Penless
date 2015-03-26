@@ -88,18 +88,10 @@ function genererCorpNotification(User) {
 					});
 }
 
-function genererCorpContact(User, jsonDescontact){
+function genererCorpContact(User){
 
-	var request = $.ajax({
-		type : 'GET',
-		data : {U:User},
-		async: !1,
-		url : 'Controller/getContact.php'
-	}).done(function(reponse)
-		{
-			var result = $.parseJSON(reponse);
-			$("#title").after(""+"<div id='listContact'style='display:none'>"+reponse+"</div>"+ /* ICI ON STORE EN LOCAL DANS LE HTML LE JSON DE LA LISTE DES CONTACTS*/
-				"<div id='gestionContact' >"+
+			var result = $.parseJSON($('#listContactJson').html());
+			$("#title").after("<div id='gestionContact' >"+
 				"<label><h2>Gestion des contacts</h2></label><br>"+		
 				"</div>");
 			genererTableauGroupe(User);
@@ -125,8 +117,7 @@ function genererCorpContact(User, jsonDescontact){
 			
 			jsonDescontact = result;
 			
-		});
-	return jsonDescontact;
+	
 }
 
 	function genererTableauGroupe(User){
@@ -164,6 +155,9 @@ function newLineGroupe(User){
 }
 
 function getlistofUserinaGroup(groupID){
+
+	var buttonSupprimer = '<span   id="supprimerMembreGroup" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
+	
 	$.ajax({
 		url: 'Controller/getlistofUserinaGroup.php',
 		type: 'GET',
@@ -179,16 +173,16 @@ function getlistofUserinaGroup(groupID){
 		}else 
 		if(reponse.arrayUser != null){
 			for (i=0; i < reponse.arrayUser.length; i++){
-				view = '<tr url="'+reponse.arrayUser[i]+'"><td>'+reponse.arrayUser[i]+'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
+				view = '<tr url="'+reponse.arrayUser[i].idUrl+'"><td>'+reponse.arrayUser[i].nom+' '+reponse.arrayUser[i].prenom +'</td><td><select><option>Utilisateur</option><option>Admin</option></select></td><td>'+buttonSupprimer+'</td></tr>';
 				$('#tbodyOfuserInGroup-'+groupID).prepend(view);
 			}
 			
 		}
 		if(reponse.admin != null){
 			for (i=0; i < reponse.admin.length; i++){
-				view = '<tr url="'+reponse.admin[i]+'"><td>'+reponse.admin[i]+'</td><td><select id="select-'+groupID+'-'+reponse.admin[i]+'"><option>Utilisateur</option><option>Admin</option></select></td>></tr>';
-				$('#tbodyOfuserInGroup-'+groupID).prepend(view);
-				$('#select-'+groupID+'-'+reponse.admin[i]).val('Admin');
+				view = '<tr url="'+reponse.admin[i].idUrl+'"><td>'+reponse.admin[i].nom+' '+reponse.admin[i].prenom +'</td><td><select id="select-'+groupID+'-'+reponse.admin[i].idUrl+'"><option>Utilisateur</option><option>Admin</option></select></td></tr>';
+				$('#tbodyOfuserInGroup-'+groupID).prepend(view);0
+				$('#select-'+groupID+'-'+reponse.admin[i].idUrl).val('Admin');
 			}
 
 		}
@@ -238,7 +232,7 @@ $(document).ready(function(){
 	var User = getParameterByName('U');
 	var idDocument = getParameterByName('D');
 	var codePage = getParameterByName('C');
-	var jsonDescontact;
+	var jsonDescontact = $.parseJSON($('#listContactJson').html());
 
 
 	if(User !=""){
@@ -267,7 +261,7 @@ $(document).ready(function(){
 				}
 				else
 				if(codePage == "Contact"){			
-					jsonDescontact = genererCorpContact(User, jsonDescontact);
+					genererCorpContact(User);
 					
 				}
 

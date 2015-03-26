@@ -19,6 +19,12 @@
             <input id="recherche" type="text" autocomplete="off"   class="form-control" placeholder="Search...">
             <div id="labelRecherche"   class="bulleUser bullUser-control" style="display: none">  </div>
           </div>
+
+          <div id="listContactJson" style="display:none"><?php 
+          $root = realpath($_SERVER["DOCUMENT_ROOT"]); 
+          require_once $root."/Controller/getContact.php"; ?>
+
+          </div>
         </div>
       </div>
     </div>
