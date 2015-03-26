@@ -224,10 +224,11 @@ function saveEditGroupe(arrayGroupe){
 }
 
 function deleteGroup(groupID){
-	$.ajax({type : 'POST',url : 'Controller/processDeleteGroup.php',data: {idGroup : $(this).attr("value")},
+	$.ajax({type : 'POST',url : 'Controller/processDeleteGroup.php',data: {idGroup : groupID},
 			success: function(reponse){
-				if ( reponse = "delete_succes"){
-					$("#"+iddoc).hide();}			
+				console.log(reponse);
+				/*if ( reponse = "delete_succes"){
+					$("#"+iddoc).hide();}	*/		
 			}
 	});
 }
@@ -589,16 +590,6 @@ $("#corp").on('click',"#OptionAddUserToGroup",function() {
 	}
 		
 });
-
-
-
-
-
-
-
-
-
-
 
 
 $('#corp').on('click', '#btnEnregisterEditionGroup', function() {

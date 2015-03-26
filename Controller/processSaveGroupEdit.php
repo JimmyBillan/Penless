@@ -15,7 +15,6 @@ if(isset($_POST['g']))
 	/*On cherche si le groupe existe et qu'on est bien admin*/
 	$cursor = $db->amIAdmin($_SESSION['id'], (string) $doc["idGroupe"]);
 	
-
 	if($cursor){
 
 		/*On reconstruit l'array en sécurité, en faille xss (htmlEntities) et injection mongo (string) */

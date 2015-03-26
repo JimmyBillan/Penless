@@ -16,7 +16,7 @@ if(isset($_GET["id"])){
 	
 	//Si je fais bien partie du groupe 
 	$cursor = $groupDbConnection->isInGroup($_SESSION['id'], $idgroupe);
-	if(!cursor){
+	if(!'cursor'){
 		$allowed = FALSE;
 		echo json_encode(array('error'=>'dontexist'));
 	}

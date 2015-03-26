@@ -32,6 +32,7 @@ class groupDbConnection {
         echo "init_success";
     }
 
+    // Les groupes où je suis admin
     public function getGroupe($admin, $projection){
         $cursor =  $this->_collection->find(array(
         'admin' => array('$in' => array($admin))
@@ -85,8 +86,13 @@ class groupDbConnection {
     }*/
 
     public function amIAdmin($idUser, $idGroup){
-        $cursor = $this->_collection->find(array('$and' => array( array('idGroupe' => $idGroup), array('admin' => array('$in'  => array($idUser)))) ));
-        return ($cursor->count() > 0);
+    $cursor = $this->_collection->find(array('$and' => array( array('idGroupe' => $idGroup), array('admin' => array('$in'  => array($idUser)))) ));
+     return ($cursor->count() > 0);
+     }
+
+    public function deleteGroup($idUser, $idGroup){
+         $cursor = $this->_collection->remove(array('$and' => array( array('idGroupe' => $idGroup), array('admin' => array('$in'  => array($idUser)))) ));
+     return ($cursor);
     }
 
      public function isInGroup($idUser, $idGroup){
