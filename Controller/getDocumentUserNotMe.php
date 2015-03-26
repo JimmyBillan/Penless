@@ -2,39 +2,30 @@
 
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once $root."/Model/UserDB.php";
 require_once $root."/Model/DocumentDB.php";
+require_once $root."/Model/ContactDB.php";
 
-if(isset($_GET["U"]) && $_GET["U"] != $_SESSION["id"]){
+if(isset($_GET["U"]) && isset($_SESSION["id"])) {
 
-	$db = new DocumentDbConnection();
-	$user = (string) $_GET["U"];
+	$docDb = new DocumentDbConnection();
+	$user = $_SESSION["id"]; //"m4QrZA90vL";//
 
-	$m = new MongoClient();
-	$db = $m->penless;
-	$collection = $db-> Document;
-
-	$projection = array("_id" => false, "nomDocument" => true,"idDocument" => true, "createur" => true, "confident" => true, "DateModification" => true);
-	$cursor = $collection->find(array("createur" => $user), $projection);
-
+	// Utilise les groupes auxquels appartient l'utilisateur
+	$groupDB = new GroupDbConnection();
+	$groups  = $groupDB->getAllGroupIdArray($user);
+	
+	$duo["createur"] = htmlspecialchars($_GET["U"]); //"N6vpo999Aa";// TODO : a vérifier
+	$duo["user"]     = $user;
+	$duo["userGroups"] = $groups;
+	$docCursor = $docDb->findReadableDocFromCreateur($duo);
+	
 	$arrayRetour = array();
-	if($cursor->count()==0)
+	if($docCursor->count()==0)
 		echo "no_document";	
-	else{
-		foreach ($cursor as $key) {
-				if($key["confident"] != "privee"){
-					array_push($arrayRetour, $key);
-
-				}
-					
+	else {
+		foreach ($docCursor as $key) {
+			array_push($arrayRetour, $key);
 		}
-		
-	}
-	if(count($arrayRetour) == 0 )
-		echo "no_document";
-	else
 		echo json_encode($arrayRetour);
-
-
-
+	}
 }

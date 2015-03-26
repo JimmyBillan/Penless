@@ -5,7 +5,7 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/ContactDB.php";
 
-if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){
+//if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){ TBC CKE
 	
 
 	$groupDbConnection = new groupDbConnection();
@@ -21,4 +21,4 @@ if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){
 	//echo json_encode($arrayRetour);
 
 	
-}
+//}

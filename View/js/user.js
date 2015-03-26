@@ -56,7 +56,7 @@ function genererCorpAutreUser(User){
 			$("#title").after("<div id='tabDocument'></div>")
 			$("#tabDocument").append("<table class='table table-striped table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>Dernière modification</th></tr></thead><tbody id='bodyTabDocument'>");
 			for(key in result){
-				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable'>"+result[key].nomDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
+				$("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable'>"+result[key].titreDocument+"</td><td class='clickable'>"+result[key].DateModification +"</td></tr>");
 			}
 			$("#tabDocument").append("</tbody></table></div></div></div>");
 		

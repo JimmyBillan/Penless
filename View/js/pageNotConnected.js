@@ -8,30 +8,6 @@ function isValidEmailAddress(emailAddress) {
 $(document).ready(function(){
 
     /*######################################################*/
-    /* Chargement du tableau public    */
-    /*######################################################*/
-
-    $.ajax({
-                        type : 'GET',
-                        data : {DPublic:"futurValeurPeutetrelenombrededocument"}, /*Definir le nombre de document que l'on veut voir afficher*/
-                        url : 'Controller/getDocumentPublicArea.php',
-                        success:function(reponse){
-                            
-                                var result = $.parseJSON(reponse);
-                            
-                            $("#tabDocument").append("<label><h2>Les derniers documents partagés </h2></label><table class='table  table-hover '><thead><tr><th class='hideMobile'>Nom</th><th class='hideMobile'>Dernière modification</th></tr></thead><tbody id='bodyTabDocument'>");
-                            for(key in result){
-                                $("#bodyTabDocument").append("<tr id='goToTargetDocument' target='"+result[key].idDocument+"'><td class='clickable2'>"+result[key].nomDocument+"</td><td class='clickable2'>"+result[key].DateModification +"</td></tr>");
-
-                            }
-                            $("#tabDocument").append("</tbody></table></div></div></div>");
-                            
-                            
-
-                        }
-                    });
-
-    /*######################################################*/
     /* Function clic ligne tableau document      */
     /*######################################################*/
 

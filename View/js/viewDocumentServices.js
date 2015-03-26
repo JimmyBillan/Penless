@@ -60,7 +60,7 @@ var addMenus = function(div, mode, jsonDoc) {
 
     if (mode === "UPDATE") {
         displayStyle = 'style="display : inline-block"';
-        labelPartage = 'Privé';
+        labelPartage = jsonDoc.confident;
         if (jsonDoc.categorie) {labelCategorie = CATEGORY.arrayToString(jsonDoc.categorie);}
     }
     
@@ -80,29 +80,7 @@ var addMenus = function(div, mode, jsonDoc) {
     div.append(menus);
 }
 
-var addPopPartage = function(div) {
-    var popPartage =
-    '<div id="popPartager" class="col-xs-12 col-md-12 col-lg-8 popMenu" style="display : none">'+
-        '<div  class="droite15 greybox col-xs-12">'+
-            '<label>Parametre de confidentialité</label>'+
-            '<div class="radio">'+
-                '<label>'+
-                '<input type="radio" name="optionsRadios" id="optionsRadios1" value="privee" checked> Privé'+
-                '</label>'+
-            '</div>'+
-            '<div class="radio">'+
-                '<label>'+
-                '<input type="radio" name="optionsRadios" id="optionsRadios2" value="public"> Public'+
-                '</label>'+
-            '</div>'+
-            '<input type="text" class="labelReponse saisie"name="groupecontactpartage" placeholder="Contact/s ou groupe/s"><br>'+
-            '<button id="annulerpopPartager" type="button" class="btn btn-default">Annuler</button>'+
-            '<button id="validerpopPartager" type="button" class="btn btn-default">Valider</button>'+
-            '<div id="textNotifyPopPartager"></div>'+
-        '</div>'+
-    '</div>';
-    div.append(popPartage);
-}
+
 
 var addBlockExos = function (div) {
     div.append('<div id="blockQuestion" class="col-xs-12 col-md-12 col-lg-8" style="display: block"></div>');
@@ -124,7 +102,7 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         addMenus($("#docHeader"), mode, jsonDoc);
-        addPopPartage($("#doc"));
+        PARTAGE.addPopPartage($("#doc"), mode, jsonDoc);
         // document en mode privé par défaut à la création et à la Modification
         // Un doc en cours de modification n'est donc plus accessible
         CATEGORY.addPopCategorie($("#doc"), jsonDoc);

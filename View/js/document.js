@@ -25,14 +25,16 @@ function dateJour(){
 	if(mm<10){mm='0'+mm;} 
 
 	return mm+'/'+dd+'/'+yyyy+" : "+hh+":"+min+"."+sec;
-}
+} 
  
 ﻿function postDocument(){
 	var jsonDoc={}
 	// Titre
 	jsonDoc["titreDocument"] = $('[name="titreDocument"]').val();
 	// Partage
-	jsonDoc["confident"]= $('input[name=optionsRadios]:checked', '#popPartager').val();
+	jsonDoc["confident"]= PARTAGE.getVisibilityClass();
+	jsonDoc["sharingContacts"]= PARTAGE.getSharingContacts();
+	jsonDoc["sharingGroups"]= PARTAGE.getSharingGroups();
 	// Catégories
 	jsonDoc["categorie"] = CATEGORY.inputToArray();
 	// Tags
@@ -216,7 +218,7 @@ $(document).ready(function(){
 	$("body").on('click', '#validerpopPartager', function(){
 		$("#textNotifyPopPartager").html("");	
 		var docOK = checkDocument();
-		$("#partager").val($('input[name=optionsRadios]:checked').val());			
+		$("#partager").val($('input[name=optionsVisibilite]:checked').val());			
 		if (docOK) {
 			postDocument();
 			$("#textNotifyPopPartager").html('<b>Sauvegarde effectuée</b>');

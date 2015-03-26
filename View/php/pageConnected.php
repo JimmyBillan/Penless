@@ -27,6 +27,7 @@ echo  "<script type='text/javascript' src='View/js/viewDocumentServices.js'></sc
 echo  "<script type='text/javascript' src='View/js/user.js'></script>";
 echo  "<script type='text/javascript' src='View/js/document.js'></script>"; 
 echo  "<script type='text/javascript' src='View/js/category.js'></script>"; 
+echo  "<script type='text/javascript' src='View/js/partage.js'></script>"; 
 
 echo "</html>";
 

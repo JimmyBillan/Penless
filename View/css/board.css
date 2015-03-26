@@ -50,7 +50,9 @@ font-weight: bold;
   /*height:100%;*/
 }
 
-
+.input-group{
+  padding : 5px;
+}
 @media (max-width: 768px){
 .corp {
     position: relative;

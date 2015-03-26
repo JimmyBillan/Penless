@@ -1,15 +1,13 @@
-$(document).ready(function(){
-	$("#recherche").keyup(function(e){
-		if($("#recherche").val() == ""){
-			$("#labelRecherche").hide(300);
-		}else{
-			$("#labelRecherche").show();
-		}
+var searchUserAndGoToPage = function(saisie, propositions) {
+	if(saisie.val() == ""){
+		propositions.hide(300);
+	}else{
+		propositions.show();
+	}
 
-		if($("#recherche").val() != "") {
-           	$.ajax({
-				type : 'POST',
-				data : { name : $('#recherche').val()},
+	if(saisie.val() != "") {
+        $.ajax({type : 'POST',
+				data : { name : saisie.val()},
 				url : 'Controller/processRechercheUser.php',
 
 				success: function(reponse){
@@ -26,14 +24,24 @@ $(document).ready(function(){
 							
 						part2 = part2+"<tr onclick=\"document.location = '/?&U="+key+"';\" class='clickable'><td>"+result[key].nom+"</td><td>"+result[key].prenom+"</td></tr>";
 						}
-						$('#labelRecherche').html(part1+part2+part3);
-						$('#labelRecherche').show(200);
+						propositions.html(part1+part2+part3);
+						propositions.show(200);
 					}
 					
 				}
 			});
        }
-$("#labelRecherche").hide()
+	propositions.hide();
+}
+
+
+$(document).ready(function(){
+	$("#recherche").keyup(function(e){
+		searchUserAndGoToPage (
+			$(this),	// saisie
+			$(this).parent().find('#labelRecherche'));		//propositions
 	});
+
+	
 });
 

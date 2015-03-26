@@ -1,22 +1,30 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/DocumentDB.php";
+require_once $root."/Model/ContactDB.php";
 
 session_start();
 if(isset($_POST['tags'])){
-	
 	$tagString = (string) $_POST['tags'];
 	$tags = explode (" ", $tagString);
+	//$_SESSION["id"] = "N6vpo999Aa";
+	//$tags = ["manger"];
 	
-	$m = new DocumentDbConnection();
+	$docDb = new DocumentDbConnection();
 	
-	// CKE : Ou faire le test sur le nombre de résultats et sur le partage?
-	$cursor = $m->findWithTags($tags); // ici?
-	
-	$cursor->limit(10); // là?
+	if (isset($_SESSION["id"])){
+		$userId = $_SESSION["id"]; // debug with : "N6vpo999Aa";//
 
-	$arrayRetour = iterator_to_array($cursor);
-	
-	echo json_encode($arrayRetour);
+		// Utilise les groupes auxquels appartient l'utilisateur
+		$groupDB = new GroupDbConnection();
+		$groups  = $groupDB->getAllGroupIdArray($userId);
 		
+		$docCursor = $docDb->findReadableDocWithTags($tags, $userId, $groups);
+	} 
+	else {
+		// Hors connection, l'utilisateur ne peut accéder qu'aux documents publics
+		$docCursor = $docDb->findPublicDocWithTags($tags);
+	}
+
+	echo json_encode(iterator_to_array($docCursor));		
 }

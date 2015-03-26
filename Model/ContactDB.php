@@ -41,6 +41,26 @@ class groupDbConnection {
         
     }
 
+    public function getAllGroupId($idUser){
+        // Retourne les groupes dans lesquels $user est soit Admin soit Utilisateur
+        $projection = array("_id" => false, "idGroupe" => true);
+        return $this->_collection->find(array('$or' => array(array('admin'     => array('$in' => array($idUser))) , 
+                                                             array('arrayUser' => array('$in'  => array($idUser))))),
+                                        $projection)        ;
+        return $cursor;
+        
+    }
+
+    public function getAllGroupIdArray($idUser) {
+        $userGroupsCursor = $this->getAllGroupId($idUser);
+        // Reformatage de la liste des groupes
+        $userGroupsArray = [];
+        foreach ($userGroupsCursor as $g) {
+            array_push($userGroupsArray, $g["idGroupe"]);
+        }
+        return $userGroupsArray;
+    }
+
     public function isGroupExist($idGroupe){
         $cursor = $this->_collection->find(array('idGroupe'=> $idGroupe));
         return ($cursor->count() > 0);

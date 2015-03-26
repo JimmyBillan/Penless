@@ -26,7 +26,8 @@ if($_SESSION['id']){
        
     include('View/php/navbarNotConnected.php');
     //include('html/corpHorsLigne.php'); 
-   
+    echo "<div id='sidebar' class='col-sm-3 col-md-3 col-lg-2 col-xs-12'>";
+    echo "</div>";
 }
 
 include('View/php/footer.php');
