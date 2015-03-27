@@ -70,7 +70,8 @@ var addMenus = function(div, mode, jsonDoc) {
             '<select name="new_element" id="new_element" class="btn btn-default" '+displayStyle+'>'+
                 '<option id="vide">Ajouter un élément</option>'+
                 '<option id="qcm" value="Qcm">QCM</option>'+
-                '<option id="qs" value="QuestionSimple">Question Simple</option>'+      
+                '<option id="qs" value="QuestionSimple">Question Simple</option>'+ 
+                '<option id="editeurHtml" value="editeurHtml"> Editeur </option>'+     /* 2703jimmy */
             '</select>'+
             // Bouton "partager"
             '<input type="button" id="partager" class="btn btn-default" value="'+labelPartage+'" '+displayStyle+'>'+
@@ -87,10 +88,10 @@ var addBlockExos = function (div) {
 }
 
 var addFormDocHeader = function (div, mode, jsonDoc) {
-	// En-tête du nouveau document	
-	var header =
+    // En-tête du nouveau document  
+    var header =
         '<div id="doc" class="droite15" style="display: block">'+
-            '<div id="docHeader" class="col-xs-12 col-md-12 col-lg-8 navbar-fixed-enteteCreation">'+                		
+            '<div id="docHeader" class="col-xs-12 col-md-12 col-lg-8 navbar-fixed-enteteCreation">'+                        
                 // LabelGeneral : utilisé pour affichage general 
                 '<label id="LabelGeneral" style="display : block"></label>'+
             '</div>'+
@@ -132,26 +133,40 @@ var addFormQuestion = function (data){
 
     // Valeur de la question
     //---------------------------
-    var valueQuestion = '';
-    if (data.question) {valueQuestion = data.question;} 
-
-	var q = 
-        '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-        '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
-
-    if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
-        // Les styles d'affichage par défaut sont ceux pour le mode CREATE
-        q +=
-        '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
-        '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
-        '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
-        '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
-        '<label name="labelErreur" style="color:red"></label>';
-        // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
+    if(data.typeExo === 'editeurHtml'){  /* 2703jimmy */
+       $.ajax({
+           type : 'GET',
+           url:'View/php/editor.php',
+           dataType:'html',})
+        .done(function(reponse){
+          var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+reponse+'</div>';
+                    data.div.append(q);
+        });
     }
-    // CKE : créer un div blockreponses?
-    q += '</div>';
-    data.div.append(q);
+    else
+    {
+                var valueQuestion = '';
+                if (data.question) {valueQuestion = data.question;} 
+
+                var q = 
+                    '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                    '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
+
+                if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
+                    // Les styles d'affichage par défaut sont ceux pour le mode CREATE
+                    q +=
+                    '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
+                    '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
+                    '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
+                    '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
+                    '<label name="labelErreur" style="color:red"></label>';
+                    // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
+                }
+                // CKE : créer un div blockreponses?
+                q += '</div>';
+                data.div.append(q);
+    }
+    
 }
 
 var addFormReponse = function(data){
@@ -188,7 +203,7 @@ var addFormReponse = function(data){
         '<div name="div'+data.idReponse+'" type="CB" class="col-xs-12 checkbox reponseCheckbox">';  // type CB utilisé dans Supprimer réponse
 
     // Checkbox pour les QCM
-	if (data.div.attr("typeexo") === "Qcm") {
+    if (data.div.attr("typeexo") === "Qcm") {
         var CBchecked = '';
         if ((data.CBOK)&&(data.mode !== "READ")) {CBchecked = "checked";}        
         reponse += '<input name="OK-'+data.idReponse+'" class="cbQCM" type="checkbox" '+ CBchecked+' >';
@@ -197,15 +212,15 @@ var addFormReponse = function(data){
     reponse += '<input name="'+data.idReponse+'" type ="text" class="labelReponse saisie" value="'+valueReponse+'" placeholder="Saisir la reponse">';
     // Bouton Supprimer
     if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
-        reponse +=   		   
-   		   '<span name="supprimerReponse" class="glyphiconReponse glyphicon-remove"></span>';
+        reponse +=             
+           '<span name="supprimerReponse" class="glyphiconReponse glyphicon-remove"></span>';
     } else {
         reponse +=
             '<span name="Validation" class="glyphiconReponse"></span>'+
             '<label name="Correction"></label>';
     }
 
- 	reponse += '</div>';
+    reponse += '</div>';
 
     data.div.append(reponse);    
 }
@@ -225,6 +240,9 @@ var afficheDoc = function (div, mode, jsonDoc){
             $.each(val, function(index, value) {
                 //console.log("   " + index + " " + value);
                 /// Enonce / Question ///
+                if (value ==="editeurHtml"){ /* 2703jimmy */
+                    /* ici faire l'affichage */
+                }
                 if (index.substring(0,8)=== "titreExo"){
                     var details = index.split("-");              
                     addFormQuestion({ //div, mode, idExo, typeExo, question
@@ -253,6 +271,7 @@ var afficheDoc = function (div, mode, jsonDoc){
                 }
 
             });
+
         }
     });
     
