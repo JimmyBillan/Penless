@@ -42,6 +42,13 @@ $(document).ready(function(){
 			$(this).parent().find('#labelRecherche'));		//propositions
 	});
 
+	/********************
+				Menu lateral
+				*********************/
+	$("body").on('click', 'ul.BAR li',function(){
+		window.location.href = $(this).children().attr('href');
+	})
+
 	
 });
 

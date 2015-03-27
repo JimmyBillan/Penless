@@ -26,6 +26,11 @@ li#OptionAddUserToGroup:hover {
     margin-right: 2px;
 
 }
+
+ul.BAR li a {
+    color: white;
+    text-decoration: none;
+}
     
     /****************************************************************************************/
     /****************************************************************************************/
@@ -49,7 +54,7 @@ li#OptionAddUserToGroup:hover {
         padding: 20px;
     
         width: 100%;
-        background-color: rgb(239, 238, 237);
+        background-color: #65C6BB;
         margin-bottom: 2px;
         text-decoration: none;
         font-weight: bold;
@@ -59,7 +64,7 @@ li#OptionAddUserToGroup:hover {
 }
     
     ul.BAR li:hover {
-        background-color: rgb(218, 230, 224);
+        background-color: #1BA39C;
         cursor: pointer;
         text-decoration: none;
     }
@@ -75,24 +80,24 @@ li#OptionAddUserToGroup:hover {
 
     ul.BAR {
         list-style-type: none;
-        height: 70px;
+        height: 61px;
         margin-bottom: 0px;
         overflow-y: hidden;
         padding-left: 0px;
         overflow-x: hidden;
-        width: 1040px;
+        width: 1084px;
     }
 
     ul.BAR li {
-        float: left;
-        padding: 20px;
-    
-        text-decoration: none;    font-weight: bold;
+        
+        float: left;    padding: 20px;        background-color: #bdc3c7;    margin-bottom: 2px;    text-decoration: none;    font-weight: bold;    
+        height: 61px;
+        border-bottom: 1px solid #e5e5e5;    border-right: 1px solid #e5e5e5;  };
 }
 
     #corp {
       position: relative;
-    margin-top: 0px;
+        margin-top: 0px;
       padding-right: 0px;
       padding-left: 0px;
     }

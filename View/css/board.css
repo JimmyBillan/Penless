@@ -50,9 +50,7 @@ font-weight: bold;
   /*height:100%;*/
 }
 
-.input-group{
-  padding : 5px;
-}
+
 @media (max-width: 768px){
 .corp {
     position: relative;
@@ -333,7 +331,7 @@ float: left;
 }
 
 .colorVert{
-  background-color: rgba(136, 173, 155, 1);
+  background-color: #1abc9c;
   margin: 0px;  -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);  box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
 
@@ -600,7 +598,7 @@ box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 }
 
 .row.ligngroup {
-    background-color: rgba(136, 173, 155, 0.3);
+    background-color: rgba(101, 198, 187, 0.54);
     margin-bottom: 5px;
 height: auto;
 
