@@ -26,6 +26,7 @@ function genererEntete(result) {
 function genererBoutonEntete(result, User) {
 	if(result.isAmi == "MYSELF"){
 		$('#title').append('<input type="submit" id="myParameter" class="btn btn-default  btn-xs" value="Mes paramètres">');
+		$('#title').append('<input type="submit" id="myQrCode" class="btn btn-default  btn-xs" value="Mon QR Code">');
 		return false;
 	}else{
 
@@ -360,6 +361,25 @@ $('#corp').on('click', '#deleteContact', function(){
 		}
 	});
 })
+
+$('#corp').on('click', '#myQrCode', function() {
+
+	if($('#divQrCode').is(":visible")){
+		$('#divQrCode').hide();
+		$('#myQrCode').prop('value', 'Mon Qr Code');
+	}else if ($('#divQrCode').is(":hidden")){
+			$('#divQrCode').show();
+			$('#myParameter').prop('value', 'Masquer');
+	}else
+	{
+		$('#title').after("<div id='divQrCode'></div>");
+		$("#divQrCode").qrcode({
+			render : "table",
+			text : $(location).attr('href')});
+	}
+
+});
+
 
 $('#corp').on('click', '#myParameter', function(){
 	if($('#formParametre').is(":visible")){

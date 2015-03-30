@@ -75,6 +75,7 @@ $(document).ready(function(){
 	var idDocument = getParameterByName('D');
 	var codePage   = getParameterByName('C');
 	///////////////////////////////////////////////////
+
 	
 	var jsonDoc = {};
 

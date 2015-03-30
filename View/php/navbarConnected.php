@@ -11,8 +11,8 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href=<?php echo '/?&U='.$_SESSION["id"]; ?> >Mon compte</a></li>
-            <li><a href="../../Controller/processDisconnection.php">Deconnexion</a></li>
+            <li><a href=<?php echo '/?&U='.$_SESSION["id"]; ?> ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mon compte</a></li>
+            <li><a href="../../Controller/processDisconnection.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Deconnexion</a></li>
           </ul>
 
           <div class="navbar-form navbar-right">
