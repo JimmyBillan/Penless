@@ -37,7 +37,8 @@ var addFormTitreDoc = function (div, mode, jsonDoc) {
 
     var formTitre =
         '<div id="TitreDoc">'+// class="col-lg-10 col-md-10 col-sm-9 col-xs-12">'+
-        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">';
+        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">'+
+        '<span id="Imprimer" class="glyphiconDoc glyphicon-print"></span>';
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         formTitre +=
@@ -117,7 +118,7 @@ var addFormQuestion = function (data){
     
     // Calcul idExo
     // Si l'id existe (doc existant), on l'utilise
-    // Sino (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
+    // Sinon (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
     //-------------------------------------------------------------------------------------------------------------
     if (!data.idExo) {
         var lastExo = data.div.find('[name^="exo"]:last');
@@ -133,38 +134,55 @@ var addFormQuestion = function (data){
 
     // Valeur de la question
     //---------------------------
-    if(data.typeExo === 'editeurHtml'){  /* 2703jimmy */
+    if (data.typeExo === 'editeurHtml') {
+        if ((data.mode==='CREATE')||(data.mode==='UPDATE')){  /* 2703jimmy */
        $.ajax({
            type : 'GET',
            url:'View/php/editor.php',
            dataType:'html',})
-        .done(function(reponse){
-          var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+reponse+'</div>';
-                    data.div.append(q);
-        });
+            .done(function(reponse){
+            var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                    reponse+'</div>';
+            data.div.append(q);
+            // Cas 'UPDATE', on restitue le texte enregistré
+            if (data.question) { 
+                console.log("Ajoute contenu à éditer : ");
+                console.log(data.question)
+                $('#editor').empty();
+                $('#editor').append(data.question);
+            }});        
+        }
+        else { // mode READ
+            if (data.question) {
+                var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                    data.question+'</div>';
+                data.div.append(q);
+            }
+        }
+
     }
     else
-    {
-                var valueQuestion = '';
-                if (data.question) {valueQuestion = data.question;} 
+    {        
+        var valueQuestion = '';
+        if (data.question) {valueQuestion = data.question;} 
 
-                var q = 
-                    '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-                    '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
+        var q = 
+            '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+            '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
 
-                if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
-                    // Les styles d'affichage par défaut sont ceux pour le mode CREATE
-                    q +=
-                    '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
-                    '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
-                    '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
-                    '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
-                    '<label name="labelErreur" style="color:red"></label>';
-                    // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
-                }
-                // CKE : créer un div blockreponses?
-                q += '</div>';
-                data.div.append(q);
+        if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
+            // Les styles d'affichage par défaut sont ceux pour le mode CREATE
+            q +=
+            '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
+            '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
+            '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
+            '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
+            '<label name="labelErreur" style="color:red"></label>';
+            // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
+        }
+        // CKE : créer un div blockreponses?
+        q += '</div>';
+        data.div.append(q);
     }
     
 }
@@ -233,16 +251,24 @@ var afficheDoc = function (div, mode, jsonDoc){
     $.each(jsonDoc, function(key, val){ // On parcourt le document
         //console.log(key + " " + val);
 
-        if (key.substring(0,3) === "exo"){ // à la recherche des questions CKE : virer le # si possible
+        if (key.substring(0,3) === "exo"){ // à la recherche des questions
             // Test sur le type de la question : QCM, QS, ... 
-            idExo = key;
+            var idExo = key;
             var nextCBisOK = false;
+            var typeExo = val["typeExo"];
+            console.log(typeExo);
+            if (typeExo==="editeurHtml"){
+                addFormQuestion({ //div, mode, idExo, typeExo, question
+                    div      : $("#blockQuestion"),
+                    idExo    : key,
+                    typeExo  : jsonDoc[key]["typeExo"],//details[1],
+                    mode     : mode,
+                    question : val["contenu"]});
+                } else {
             $.each(val, function(index, value) {
-                //console.log("   " + index + " " + value);
+                console.log("   " + index + " " + value);
                 /// Enonce / Question ///
-                if (value ==="editeurHtml"){ /* 2703jimmy */
-                    /* ici faire l'affichage */
-                }
+                
                 if (index.substring(0,8)=== "titreExo"){
                     var details = index.split("-");              
                     addFormQuestion({ //div, mode, idExo, typeExo, question
@@ -271,7 +297,7 @@ var afficheDoc = function (div, mode, jsonDoc){
                 }
 
             });
-
+        }
         }
     });
     

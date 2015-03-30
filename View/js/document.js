@@ -47,10 +47,10 @@ function dateJour(){
 		var idExo = "exo" +jsonDoc["nbExo"]; //ou $(this).attr("name"); si on ne veut pas renuméroter
 		jsonDoc[idExo] = {};
 		jsonDoc[idExo]["typeExo"] = $(this).attr("typeExo");
-		var arrayExo = $(this).find(" input,select,textarea").serializeArray();
-		if(arrayExo.length == 0){// Cas du text editor
+		if (jsonDoc[idExo]["typeExo"]==="editeurHtml"){//arrayExo.length == 0){// Cas du text editor
 			jsonDoc[idExo]["contenu"] = $(this).find('#editor').html();
-		}else{
+		} else {
+			var arrayExo = $(this).find(" input,select,textarea").serializeArray();
 			jQuery.each(arrayExo, function() {
 			jsonDoc[idExo][this.name] = this.value || '';
 			});
@@ -272,6 +272,13 @@ $(document).ready(function(){
 				}				
 			}
 		});
+	});
+
+	//BOUTONS Imprimer
+	//---------------------------------------------------
+	$("body").on('click', '#Imprimer', function(){	
+		console.log("Impression");
+		pdfMaker.htmlToPdf($('#corp').html());		
 	});
 
 	/////////////////////////////////////////////////////
