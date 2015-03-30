@@ -14,14 +14,6 @@ if(isset($_POST['document']))
 		$doc["DateModification"] = date("m.d.y g:i:s");
 		
 		$c = new DocumentDBconnection();
-		$documentSaved = $c->findOne($_SESSION['idDocument']);
-		var_dump($documentSaved);
-
-		
-
-		
-		
-		$c = new DocumentDBconnection();
         $c->Update ($_SESSION['idDocument'], $doc);
     	//echo "success [msg temp processsSaveDocument.php]";
 		//var_dump($resultat);

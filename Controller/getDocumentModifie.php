@@ -9,16 +9,12 @@ if(isset($_POST['D'])){
 	// Test si le document appartient bien à l'utilisateur
 	$m = new DocumentDbConnection();
 	
-	$doc = $m->FindOne($idDOcument);
+	$doc = $m->findMyOne($idDOcument, $_SESSION['id']);
 	
-	if ($doc['createur'] == null) {
-		echo "INVALID_DOCUMENT";}
-	else if ($doc['createur'] != $_SESSION['id']) {
+	if ($doc == null) {
 		echo "UNAUTHORIZED_USER";}
-	else {
-		
+	else {		
 		$_SESSION['idDocument'] = $idDOcument;
-		
 		echo json_encode($doc);
 	}
 }
