@@ -499,6 +499,11 @@ $('#corp').on('click', '#ajouterNewUserToGroup', function(){
 	}
 });
 
+$('#corp').on('click', '#supprimerMembreGroup', function(){
+	$(this).parent().parent().remove();
+})
+
+
 
 
 $("#corp").on('keyup', '#inputNewUserToGroup', function(){

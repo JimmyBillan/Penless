@@ -48,9 +48,14 @@ function dateJour(){
 		jsonDoc[idExo] = {};
 		jsonDoc[idExo]["typeExo"] = $(this).attr("typeExo");
 		var arrayExo = $(this).find(" input,select,textarea").serializeArray();
-		jQuery.each(arrayExo, function() {
+		if(arrayExo.length == 0){// Cas du text editor
+			jsonDoc[idExo]["contenu"] = $(this).find('#editor').html();
+		}else{
+			jQuery.each(arrayExo, function() {
 			jsonDoc[idExo][this.name] = this.value || '';
-		});
+			});
+		}
+		
 	});
 	if (jsonDoc["titreDocument"] !== '') {
 		console.log(jsonDoc);
@@ -108,7 +113,7 @@ $(document).ready(function(){
 				data : {D: idDocument},
 				url : 'Controller/getDocument.php',
 				success: function(reponse){
-					console.log(reponse);
+					//console.log(reponse);
 					if(reponse == "itsprivate"){
 						$("#corp").html("<label>Ce document est privé, vous n'avez pas l'autorisation de le lire</label>")
 					}else{
@@ -178,8 +183,9 @@ $(document).ready(function(){
 	    var infoQ = {div     : $("#blockQuestion"),
 	   		 		 typeExo : $(this).val(),
 	   		 		 mode    : "CREATE"};
-	   	
+	   	 
 	    addFormQuestion(infoQ);
+
 
  		$(this).val("Ajouter un élément"); // CKE : il faudrait pouvoir retrouver la valeur1 du select sans la nommer
 	    $("body").animate({ scrollTop: $(document).height() }, "slow");
