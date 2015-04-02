@@ -154,7 +154,7 @@ var addFormQuestion = function (data){
         }
         else { // mode READ
             if (data.question) {
-                var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                var q = '<div id="editor" name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
                     data.question+'</div>';
                 data.div.append(q);
             }
@@ -176,13 +176,15 @@ var addFormQuestion = function (data){
             '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
             '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
             '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
+            '<input name="plusImage" class="btn btn-default"  type="submit" statut="ajouter" value="Ajouter une image">'+
             '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
             '<label name="labelErreur" style="color:red"></label>';
             // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
         }
-        // CKE : créer un div blockreponses?
+        
         q += '</div>';
         data.div.append(q);
+
     }
     
 }
@@ -192,7 +194,7 @@ var addFormReponse = function(data){
     
     // Calcul idReponse : 
     // Si l'id existe (doc existant), on l'utilise
-    // Sino (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
+    // Sinon (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
     //-------------------------------------------------------------------------------------------------------------
     if (!data.idReponse) {
         var lastReponse = data.div.find('[name^="reponse"]:last');
@@ -243,6 +245,19 @@ var addFormReponse = function(data){
     data.div.append(reponse);    
 }
 
+var addFormImage = function (div) {
+    div.find('[name="plusImage"]').before('<input name="imageUrl" type="text" class="labelEnonce saisie" placeholder="Saisir l\'URL de l\'image">');
+}
+
+var addImage = function (data) {
+    var divImage = '<div><img name="image" src="'+data.url+'" alt="image" height="200"></div>';
+    if ((data.mode === 'CREATE') || (data.mode === 'UPDATE')) {
+        data.div.find('[name="plusImage"]').attr("statut", "supprimer").val("Supprimer l'image").before(divImage);
+        data.div.find('[name="imageUrl"]').remove();
+    } else {
+        data.div.find('[name="titreExo"]').after(divImage);
+    }
+}
 
 var afficheDoc = function (div, mode, jsonDoc){
     div.empty();
@@ -296,6 +311,12 @@ var afficheDoc = function (div, mode, jsonDoc){
                     nextCBisOK = true;
                 }
 
+                if (index === "imageUrl") {
+                    addImage({  
+                        div  : $('[name="'+key+'"]'),
+                        mode : mode,
+                        url  : value});
+                }
             });
         }
         }
@@ -415,7 +436,7 @@ var afficheCorrectionExo = function(divExo, jsonExo) {
                 
                 if (!reponseIsOK) {
                     setIconKO(validation);
-                    correction.html("La bonne réponse est : <em>"+bonneReponse[0]+"</em>");
+                    correction.html("La bonne réponse est : <em>"+bonneReponse+"</em>");
                 }
             }
             break;
