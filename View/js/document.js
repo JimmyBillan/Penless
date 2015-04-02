@@ -62,11 +62,12 @@ var lastJsonDoc={};
 		}
 		
 	});
-	console.log(lastJsonDoc);
+	// Enregistrement ssi différence
+	var change = (JSON.stringify(jsonDoc) !== JSON.stringify(lastJsonDoc));
 	// Test titre non nul et différence depuis le dernier enregistrement
-	if ((jsonDoc["titreDocument"] !== '')&&(jsonDoc!=lastJsonDoc)) {
+	if ((jsonDoc["titreDocument"] !== '')&&(change)) {
 		lastJsonDoc = jsonDoc;
-		console.log(jsonDoc);
+		
 		$.ajax({
 			type : 'POST',
 			url : '../../Controller/processSaveDocument.php',
