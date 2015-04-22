@@ -50,7 +50,7 @@ var lastJsonDoc={};
 		jsonDoc[idExo] = {};
 		jsonDoc[idExo]["typeExo"] = $(this).attr("typeExo");
 		if (jsonDoc[idExo]["typeExo"]==="editeurHtml"){//arrayExo.length == 0){// Cas du text editor
-			jsonDoc[idExo]["contenu"] = basicEditor.getHTML();
+			jsonDoc[idExo]["contenu"] = editor.getValue();
 		} else {
 			var arrayExo = $(this).find(" input,select,textarea").serializeArray();
 			jQuery.each(arrayExo, function() {

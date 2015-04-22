@@ -119,11 +119,12 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
   classe pour l'editeur d'article
 ********************************/
 var editeurArticle = function(idexo, typeexo){
-    this.htmlEditorWysi = "",
-    this.q = "",
-    this.idexo =idexo, 
-    this.typeexp =typeexo,
+    editeurArticle.htmlEditorWysi = "";
+    editeurArticle.q = "";
+    editeurArticle._idexo =idexo; 
+    editeurArticle._typeexo =typeexo;
     editeurArticle.HTTPGETHTML();
+  console.log(this._idexo);
 };
 
 editeurArticle.HTTPGETHTML = function(){
@@ -143,8 +144,12 @@ editeurArticle.SET_htmlEditorWysi = function (data){
     editeurArticle.htmlEditorWysi = data;
 }
 
-editeurArticle.APPEND_dataDIV = function(idexo, typeexo){
-    this.q ='<div name="'+editeurArticle.idexo+'" typeexo="'+editeurArticle.typeexo+'"class="droite15 greybox col-xs-12 quill-wrapper" style="display : block">'+ editeurArticle.htmlEditorWysi+'</div>';
+editeurArticle.APPEND_dataDIV = function(){
+
+    this.q ='<div name="'+editeurArticle._idexo+'" typeexo="'+editeurArticle._typeexo+'"class="droite15 greybox col-xs-12 quill-wrapper" style="display : block">'+ editeurArticle.htmlEditorWysi+'</div>';
+    console.log(editeurArticle._idexo);
+    console.log(editeurArticle._typeexo);
+    console.log(editeurArticle.htmlEditorWysi);
 }
 
 var editor; 
