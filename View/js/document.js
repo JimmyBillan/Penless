@@ -26,7 +26,9 @@ function dateJour(){
 
 	return mm+'/'+dd+'/'+yyyy+" : "+hh+":"+min+"."+sec;
 } 
- 
+
+var lastJsonDoc={};
+
 ﻿function postDocument(){
 	var jsonDoc={}
 	// Titre
@@ -52,12 +54,20 @@ function dateJour(){
 		} else {
 			var arrayExo = $(this).find(" input,select,textarea").serializeArray();
 			jQuery.each(arrayExo, function() {
-			jsonDoc[idExo][this.name] = this.value || '';
+				jsonDoc[idExo][this.name] = this.value || '';
 			});
+			if ($(this).find('img')) {
+				jsonDoc[idExo]["imageUrl"] = $(this).find('img').attr("src");
+			}
 		}
 		
 	});
-	if (jsonDoc["titreDocument"] !== '') {
+
+	// Enregistrement ssi différence
+	var change = (JSON.stringify(jsonDoc) !== JSON.stringify(lastJsonDoc));
+	// Test titre non nul et différence depuis le dernier enregistrement
+	if ((jsonDoc["titreDocument"] !== '')&&(change)) {
+		lastJsonDoc = jsonDoc;
 		
 		$.ajax({
 			type : 'POST',
@@ -227,6 +237,29 @@ $(document).ready(function(){
 
 		divExo.animate({ scrollTop: $(document).height()}, "slow");	
 	});
+	
+	//BOUTON "Ajouter Une Image"	
+	//---------------------------------------------------
+	$("body").on('click', '[name="plusImage"]', function(){
+		switch ($(this).attr("statut")) {
+			case "ajouter" : {
+				addFormImage($(this).parent());
+				$(this).val("Valider URL").attr("statut", "valider");
+				break;}
+			case "valider" : {
+				addImage({
+					div  : $(this).parent(), 
+					url  : $(this).parent().find('[name="imageUrl"]').val(),
+					mode : 'CREATE'});
+				$(this).val("Supprimer l'image").attr("statut", "supprimer");
+				break;}
+			case "supprimer" : {
+				$(this).parent().find('[name="image"]').remove();
+				$(this).val("Ajouter une image").attr("statut", "ajouter");
+				break;}
+			}
+		}); 
+	
 
 	//BOUTONS "Partager"
 	//---------------------------------------------------
