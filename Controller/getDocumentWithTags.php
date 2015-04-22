@@ -1,7 +1,7 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/DocumentDB.php";
-require_once $root."/Model/ContactDB.php";
+require_once $root."/Model/GroupDB.php";
 
 session_start();
 if(isset($_POST['tags'])){

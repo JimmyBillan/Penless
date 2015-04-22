@@ -3,7 +3,7 @@
 session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once $root."/Model/ContactDB.php";
+require_once $root."/Model/GroupDB.php";
 
 //if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){ TBC CKE
 	

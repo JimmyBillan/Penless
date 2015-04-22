@@ -22,6 +22,8 @@ function showForEleve(div, retard){
     div.find("[typeexo='QuestionSimple']").find("[name^='reponse']").addClass("saisie").val('');
 }
 
+var htmlEditor = '<link rel="stylesheet" href="View/css/editor2/quill.snow.css" /><div id="toolbar" class="toolbar ql-toolbar ql-snow"><span class="ql-format-group"><span title="Font" class="ql-font ql-picker"><span class="ql-picker-label" data-value="sans-serif">Sans Serif</span><span class="ql-picker-options"><span data-value="sans-serif" class="ql-picker-item ql-selected">Sans Serif</span><span data-value="serif" class="ql-picker-item">Serif</span><span data-value="monospace" class="ql-picker-item">Monospace</span></span></span><select title="Font" class="ql-font" style="display: none;"><option value="sans-serif" selected="">Sans Serif</option><option value="serif">Serif</option><option value="monospace">Monospace</option></select><span title="Size" class="ql-size ql-picker"><span class="ql-picker-label" data-value="13px">Normal</span><span class="ql-picker-options"><span data-value="10px" class="ql-picker-item">Small</span><span data-value="13px" class="ql-picker-item ql-selected">Normal</span><span data-value="18px" class="ql-picker-item">Large</span><span data-value="32px" class="ql-picker-item">Huge</span></span></span><select title="Size" class="ql-size" style="display: none;"><option value="10px">Small</option><option value="13px" selected="">Normal</option><option value="18px">Large</option><option value="32px">Huge</option></select></span><span class="ql-format-group"><span title="Bold" class="ql-format-button ql-bold"></span><span class="ql-format-separator"></span><span title="Italic" class="ql-format-button ql-italic"></span><span class="ql-format-separator"></span><span title="Underline" class="ql-format-button ql-underline"></span><span class="ql-format-separator"></span><span title="Strikethrough" class="ql-format-button ql-strike"></span></span><span class="ql-format-group"><span title="Text Color" class="ql-color ql-picker ql-color-picker"><span class="ql-picker-label" data-value="rgb(0, 0, 0)"></span><span class="ql-picker-options"><span data-value="rgb(0, 0, 0)" class="ql-picker-item ql-selected ql-primary-color" style="background-color: rgb(0, 0, 0);"></span><span data-value="rgb(230, 0, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(230, 0, 0);"></span><span data-value="rgb(255, 153, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(255, 153, 0);"></span><span data-value="rgb(255, 255, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(255, 255, 0);"></span><span data-value="rgb(0, 138, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(0, 138, 0);"></span><span data-value="rgb(0, 102, 204)" class="ql-picker-item ql-primary-color" style="background-color: rgb(0, 102, 204);"></span><span data-value="rgb(153, 51, 255)" class="ql-picker-item ql-primary-color" style="background-color: rgb(153, 51, 255);"></span><span data-value="rgb(255, 255, 255)" class="ql-picker-item" style="background-color: rgb(255, 255, 255);"></span><span data-value="rgb(250, 204, 204)" class="ql-picker-item" style="background-color: rgb(250, 204, 204);"></span><span data-value="rgb(255, 235, 204)" class="ql-picker-item" style="background-color: rgb(255, 235, 204);"></span><span data-value="rgb(255, 255, 204)" class="ql-picker-item" style="background-color: rgb(255, 255, 204);"></span><span data-value="rgb(204, 232, 204)" class="ql-picker-item" style="background-color: rgb(204, 232, 204);"></span><span data-value="rgb(204, 224, 245)" class="ql-picker-item" style="background-color: rgb(204, 224, 245);"></span><span data-value="rgb(235, 214, 255)" class="ql-picker-item" style="background-color: rgb(235, 214, 255);"></span><span data-value="rgb(187, 187, 187)" class="ql-picker-item" style="background-color: rgb(187, 187, 187);"></span><span data-value="rgb(240, 102, 102)" class="ql-picker-item" style="background-color: rgb(240, 102, 102);"></span><span data-value="rgb(255, 194, 102)" class="ql-picker-item" style="background-color: rgb(255, 194, 102);"></span><span data-value="rgb(255, 255, 102)" class="ql-picker-item" style="background-color: rgb(255, 255, 102);"></span><span data-value="rgb(102, 185, 102)" class="ql-picker-item" style="background-color: rgb(102, 185, 102);"></span><span data-value="rgb(102, 163, 224)" class="ql-picker-item" style="background-color: rgb(102, 163, 224);"></span><span data-value="rgb(194, 133, 255)" class="ql-picker-item" style="background-color: rgb(194, 133, 255);"></span><span data-value="rgb(136, 136, 136)" class="ql-picker-item" style="background-color: rgb(136, 136, 136);"></span><span data-value="rgb(161, 0, 0)" class="ql-picker-item" style="background-color: rgb(161, 0, 0);"></span><span data-value="rgb(178, 107, 0)" class="ql-picker-item" style="background-color: rgb(178, 107, 0);"></span><span data-value="rgb(178, 178, 0)" class="ql-picker-item" style="background-color: rgb(178, 178, 0);"></span><span data-value="rgb(0, 97, 0)" class="ql-picker-item" style="background-color: rgb(0, 97, 0);"></span><span data-value="rgb(0, 71, 178)" class="ql-picker-item" style="background-color: rgb(0, 71, 178);"></span><span data-value="rgb(107, 36, 178)" class="ql-picker-item" style="background-color: rgb(107, 36, 178);"></span><span data-value="rgb(68, 68, 68)" class="ql-picker-item" style="background-color: rgb(68, 68, 68);"></span><span data-value="rgb(92, 0, 0)" class="ql-picker-item" style="background-color: rgb(92, 0, 0);"></span><span data-value="rgb(102, 61, 0)" class="ql-picker-item" style="background-color: rgb(102, 61, 0);"></span><span data-value="rgb(102, 102, 0)" class="ql-picker-item" style="background-color: rgb(102, 102, 0);"></span><span data-value="rgb(0, 55, 0)" class="ql-picker-item" style="background-color: rgb(0, 55, 0);"></span><span data-value="rgb(0, 41, 102)" class="ql-picker-item" style="background-color: rgb(0, 41, 102);"></span><span data-value="rgb(61, 20, 102)" class="ql-picker-item" style="background-color: rgb(61, 20, 102);"></span></span></span><select title="Text Color" class="ql-color" style="display: none;"><option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)" selected=""></option><option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option><option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option><option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option><option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option><option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option><option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option><option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)"></option><option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option><option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option><option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option><option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option><option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option><option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option><option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option><option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option><option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option><option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option><option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option><option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option><option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option><option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option><option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option><option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option><option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option><option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option><option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option><option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option><option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option><option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option><option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option><option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option><option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option><option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option><option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option></select><span class="ql-format-separator"></span><span title="Background Color" class="ql-background ql-picker ql-color-picker"><span class="ql-picker-label" data-value="rgb(255, 255, 255)"></span><span class="ql-picker-options"><span data-value="rgb(0, 0, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(0, 0, 0);"></span><span data-value="rgb(230, 0, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(230, 0, 0);"></span><span data-value="rgb(255, 153, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(255, 153, 0);"></span><span data-value="rgb(255, 255, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(255, 255, 0);"></span><span data-value="rgb(0, 138, 0)" class="ql-picker-item ql-primary-color" style="background-color: rgb(0, 138, 0);"></span><span data-value="rgb(0, 102, 204)" class="ql-picker-item ql-primary-color" style="background-color: rgb(0, 102, 204);"></span><span data-value="rgb(153, 51, 255)" class="ql-picker-item ql-primary-color" style="background-color: rgb(153, 51, 255);"></span><span data-value="rgb(255, 255, 255)" class="ql-picker-item ql-selected" style="background-color: rgb(255, 255, 255);"></span><span data-value="rgb(250, 204, 204)" class="ql-picker-item" style="background-color: rgb(250, 204, 204);"></span><span data-value="rgb(255, 235, 204)" class="ql-picker-item" style="background-color: rgb(255, 235, 204);"></span><span data-value="rgb(255, 255, 204)" class="ql-picker-item" style="background-color: rgb(255, 255, 204);"></span><span data-value="rgb(204, 232, 204)" class="ql-picker-item" style="background-color: rgb(204, 232, 204);"></span><span data-value="rgb(204, 224, 245)" class="ql-picker-item" style="background-color: rgb(204, 224, 245);"></span><span data-value="rgb(235, 214, 255)" class="ql-picker-item" style="background-color: rgb(235, 214, 255);"></span><span data-value="rgb(187, 187, 187)" class="ql-picker-item" style="background-color: rgb(187, 187, 187);"></span><span data-value="rgb(240, 102, 102)" class="ql-picker-item" style="background-color: rgb(240, 102, 102);"></span><span data-value="rgb(255, 194, 102)" class="ql-picker-item" style="background-color: rgb(255, 194, 102);"></span><span data-value="rgb(255, 255, 102)" class="ql-picker-item" style="background-color: rgb(255, 255, 102);"></span><span data-value="rgb(102, 185, 102)" class="ql-picker-item" style="background-color: rgb(102, 185, 102);"></span><span data-value="rgb(102, 163, 224)" class="ql-picker-item" style="background-color: rgb(102, 163, 224);"></span><span data-value="rgb(194, 133, 255)" class="ql-picker-item" style="background-color: rgb(194, 133, 255);"></span><span data-value="rgb(136, 136, 136)" class="ql-picker-item" style="background-color: rgb(136, 136, 136);"></span><span data-value="rgb(161, 0, 0)" class="ql-picker-item" style="background-color: rgb(161, 0, 0);"></span><span data-value="rgb(178, 107, 0)" class="ql-picker-item" style="background-color: rgb(178, 107, 0);"></span><span data-value="rgb(178, 178, 0)" class="ql-picker-item" style="background-color: rgb(178, 178, 0);"></span><span data-value="rgb(0, 97, 0)" class="ql-picker-item" style="background-color: rgb(0, 97, 0);"></span><span data-value="rgb(0, 71, 178)" class="ql-picker-item" style="background-color: rgb(0, 71, 178);"></span><span data-value="rgb(107, 36, 178)" class="ql-picker-item" style="background-color: rgb(107, 36, 178);"></span><span data-value="rgb(68, 68, 68)" class="ql-picker-item" style="background-color: rgb(68, 68, 68);"></span><span data-value="rgb(92, 0, 0)" class="ql-picker-item" style="background-color: rgb(92, 0, 0);"></span><span data-value="rgb(102, 61, 0)" class="ql-picker-item" style="background-color: rgb(102, 61, 0);"></span><span data-value="rgb(102, 102, 0)" class="ql-picker-item" style="background-color: rgb(102, 102, 0);"></span><span data-value="rgb(0, 55, 0)" class="ql-picker-item" style="background-color: rgb(0, 55, 0);"></span><span data-value="rgb(0, 41, 102)" class="ql-picker-item" style="background-color: rgb(0, 41, 102);"></span><span data-value="rgb(61, 20, 102)" class="ql-picker-item" style="background-color: rgb(61, 20, 102);"></span></span></span><select title="Background Color" class="ql-background" style="display: none;"><option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option><option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option><option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option><option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option><option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option><option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option><option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option><option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)" selected=""></option><option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option><option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option><option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option><option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option><option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option><option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option><option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option><option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option><option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option><option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option><option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option><option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option><option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option><option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option><option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option><option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option><option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option><option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option><option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option><option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option><option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option><option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option><option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option><option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option><option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option><option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option><option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option></select></span><span class="ql-format-group"><span title="List" class="ql-format-button ql-list"></span><span class="ql-format-separator"></span><span title="Bullet" class="ql-format-button ql-bullet"></span><span class="ql-format-separator"></span><span title="Text Alignment" class="ql-align ql-picker"><span class="ql-picker-label" data-value="left"></span><span class="ql-picker-options"><span data-value="left" class="ql-picker-item ql-selected"></span><span data-value="center" class="ql-picker-item"></span><span data-value="right" class="ql-picker-item"></span><span data-value="justify" class="ql-picker-item"></span></span></span><select title="Text Alignment" class="ql-align" style="display: none;"><option value="left" label="Left" selected=""></option><option value="center" label="Center"></option><option value="right" label="Right"></option><option value="justify" label="Justify"></option></select></span><span class="ql-format-group"><span title="Link" class="ql-format-button ql-link"></span><span class="ql-format-separator"></span><span title="Image" class="ql-format-button ql-image"></span></span></div><div id="editor"></div>';
+
 // !!! L'attribut "name" se retrouve dans le JSON !!!
 /////////////////////////////////////////////////////
 
@@ -37,8 +39,7 @@ var addFormTitreDoc = function (div, mode, jsonDoc) {
 
     var formTitre =
         '<div id="TitreDoc">'+// class="col-lg-10 col-md-10 col-sm-9 col-xs-12">'+
-        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">'+
-        '<span id="Imprimer" class="glyphiconDoc glyphicon-print"></span>';
+        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">';
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         formTitre +=
@@ -113,12 +114,46 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
     addBlockExos($("#doc"));
 }
 
+
+/********************************
+  classe pour l'editeur d'article
+********************************/
+var editeurArticle = function(idexo, typeexo){
+    this.htmlEditorWysi = "",
+    this.q = "",
+    this.idexo =idexo, 
+    this.typeexp =typeexo,
+    editeurArticle.HTTPGETHTML();
+};
+
+editeurArticle.HTTPGETHTML = function(){
+      $.ajax({
+            url: 'View/php/wysihtml5.html',
+            type: 'GET',
+            dataType: 'html',
+            async : false
+        })
+        .done(function(data) {
+         editeurArticle.SET_htmlEditorWysi(data);
+         editeurArticle.APPEND_dataDIV();
+        })
+}
+
+editeurArticle.SET_htmlEditorWysi = function (data){
+    editeurArticle.htmlEditorWysi = data;
+}
+
+editeurArticle.APPEND_dataDIV = function(idexo, typeexo){
+    this.q ='<div name="'+editeurArticle.idexo+'" typeexo="'+editeurArticle.typeexo+'"class="droite15 greybox col-xs-12 quill-wrapper" style="display : block">'+ editeurArticle.htmlEditorWysi+'</div>';
+}
+
+var editor; 
 var addFormQuestion = function (data){
     // data = (div, mode, idExo, typeExo, question)
     
     // Calcul idExo
     // Si l'id existe (doc existant), on l'utilise
-    // Sinon (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
+    // Sino (doc en cours de création ou modification), on récupère l'id de la dernière réponse et on l'incrémente
     //-------------------------------------------------------------------------------------------------------------
     if (!data.idExo) {
         var lastExo = data.div.find('[name^="exo"]:last');
@@ -134,55 +169,39 @@ var addFormQuestion = function (data){
 
     // Valeur de la question
     //---------------------------
-    if (data.typeExo === 'editeurHtml') {
-        if ((data.mode==='CREATE')||(data.mode==='UPDATE')){  /* 2703jimmy */
-       $.ajax({
-           type : 'GET',
-           url:'View/php/editor.php',
-           dataType:'html',})
-            .done(function(reponse){
-            var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-                    reponse+'</div>';
-            data.div.append(q);
-            // Cas 'UPDATE', on restitue le texte enregistré
-            if (data.question) { 
-                console.log("Ajoute contenu à éditer : ");
-                console.log(data.question)
-                $('#editor').empty();
-                $('#editor').append(data.question);
-            }});        
-        }
-        else { // mode READ
-            if (data.question) {
-                var q = '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-                    data.question+'</div>';
-                data.div.append(q);
-            }
-        }
+    if(data.typeExo === 'editeurHtml'){ 
+        var OediteurArticle = new editeurArticle(data.idExo, data.typeExo);
+        data.div.append(editeurArticle.q);
+
+        editor = new wysihtml5.Editor("wysihtml5-textarea", { 
+          toolbar:      "wysihtml5-toolbar", 
+          parserRules:  wysihtml5ParserRules 
+        });
 
     }
     else
-    {        
-        var valueQuestion = '';
-        if (data.question) {valueQuestion = data.question;} 
+    {
+                var valueQuestion = '';
+                if (data.question) {valueQuestion = data.question;} 
 
-        var q = 
-            '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
-            '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
+                var q = 
+                    '<div name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                    '<input name="titreExo" type="text" placeholder="Saisir la question" class="labelEnonce saisie" value="'+valueQuestion+'">';
 
-        if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
-            // Les styles d'affichage par défaut sont ceux pour le mode CREATE
-            q +=
-            '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
-            '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
-            '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
-            '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+         
-            '<label name="labelErreur" style="color:red"></label>';
-            // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
-        }
-        // CKE : créer un div blockreponses?
-        q += '</div>';
-        data.div.append(q);
+                if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
+                    // Les styles d'affichage par défaut sont ceux pour le mode CREATE
+                    q +=
+                    '<span name="valider"   class="glyphiconQuestion glyphicon-ok"     type="submit" title="Valider l\'exercice" style="display: inline-block;"></span>'+
+                    '<span name="modifier"  class="glyphiconQuestion glyphicon-edit"   type="submit" title="Mofifier l\'exercice" style="display: none;"></span>'+
+                    '<span name="supprimer" class="glyphiconQuestion glyphicon-remove" type="submit" title="Supprimer l\'exercice"></span>'+
+                    '<input name="plusReponse" class="btn btn-default"  type="submit" value="Ajouter une reponse">'+
+                    '<input name="plusImage" class="btn btn-default"  type="submit" value="Ajouter une image">'+         
+                    '<label name="labelErreur" style="color:red"></label>';
+                    // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
+                }
+                // CKE : créer un div blockreponses?
+                q += '</div>';
+                data.div.append(q);
     }
     
 }
@@ -251,24 +270,16 @@ var afficheDoc = function (div, mode, jsonDoc){
     $.each(jsonDoc, function(key, val){ // On parcourt le document
         //console.log(key + " " + val);
 
-        if (key.substring(0,3) === "exo"){ // à la recherche des questions
+        if (key.substring(0,3) === "exo"){ // à la recherche des questions CKE : virer le # si possible
             // Test sur le type de la question : QCM, QS, ... 
-            var idExo = key;
+            idExo = key;
             var nextCBisOK = false;
-            var typeExo = val["typeExo"];
-            console.log(typeExo);
-            if (typeExo==="editeurHtml"){
-                addFormQuestion({ //div, mode, idExo, typeExo, question
-                    div      : $("#blockQuestion"),
-                    idExo    : key,
-                    typeExo  : jsonDoc[key]["typeExo"],//details[1],
-                    mode     : mode,
-                    question : val["contenu"]});
-                } else {
             $.each(val, function(index, value) {
-                console.log("   " + index + " " + value);
+                //console.log("   " + index + " " + value);
                 /// Enonce / Question ///
-                
+                if (value ==="editeurHtml"){ /* 2703jimmy */
+                    /* ici faire l'affichage */
+                }
                 if (index.substring(0,8)=== "titreExo"){
                     var details = index.split("-");              
                     addFormQuestion({ //div, mode, idExo, typeExo, question
@@ -297,7 +308,7 @@ var afficheDoc = function (div, mode, jsonDoc){
                 }
 
             });
-        }
+
         }
     });
     

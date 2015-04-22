@@ -2,7 +2,7 @@
 
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once $root."/Model/ContactDB.php";
+require_once $root."/Model/GroupDB.php";
 require_once $root."/Model/UserDB.php";
 
 if(isset($_POST['g']) && $_SESSION['id'])

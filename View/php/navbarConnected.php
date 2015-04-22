@@ -16,7 +16,7 @@
           </ul>
 
           <div class="navbar-form navbar-right">
-            <input id="recherche" type="text" autocomplete="off"   class="form-control" placeholder="Search...">
+            <input id="recherche" type="text" autocomplete="off"   class="form-control" placeholder="Recherche Utilisateur">
             <div id="labelRecherche"   class="bulleUser bullUser-control" style="display: none">  </div>
           </div>
 
