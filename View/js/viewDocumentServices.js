@@ -469,7 +469,7 @@ var afficheCorrectionExo = function(divExo, jsonExo) {
             }); 
             break;
         }
-        //return reponseIsOK; // Pour future notation 
+        return reponseIsOK; // Pour future notation 
     };
 
 }
@@ -477,9 +477,20 @@ var afficheCorrectionExo = function(divExo, jsonExo) {
 var afficheCorrectionDoc = function(jsonDoc) {
     //console.log("**** afficheCorrection ****");
     //console.log(jsonDoc);
+    var docResult = {"idDocument" : jsonDoc['idDocument']};
     for (var i = 1; i<= jsonDoc["nbExo"]; i++) {
         // Si les idExo sont non-consécutifs (non-renumérotés), utiliser une boucle $.each à la place de la boucle for(i)
         //console.log("*** Correction exo"+i+" ******");
-        afficheCorrectionExo($('[name="exo'+i+'"]'), jsonDoc["exo"+i]);
+        docResult["resExo"+i] = afficheCorrectionExo($('[name="exo'+i+'"]'), jsonDoc["exo"+i]);
         }
+
+    $.ajax({
+            type : 'POST',
+            url : '../../Controller/processResult.php',
+            data: {docResult : docResult},
+            success: function(reponse){
+                //$("#LabelGeneral").html(" Sauvegardé..");
+                //$("#LabelGeneral").show().delay(400).fadeOut();   
+            }
+        });
 }

@@ -5,7 +5,7 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Model/UserDB.php";
 
-//if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){ TBC CKE
+//if(isset($_GET["U"]) && $_GET["U"] == $_SESSION["id"] ){ Inutile
 	
 
 	$userDbConnection = new UserDbConnection();

@@ -63,6 +63,13 @@ class UserDbConnection {
         $this->_collection->update($filter, $update);
     }*/
     
+    public function UpdateWithResult($idUrl, $result)
+    {
+        $filter = array('idUrl' => $idUrl);
+        $update = array('$set' =>array('result' => $result));
+        $this->_collection->update($filter, $update);
+    }
+
     public function UpdateWithKey($mail, $cle)
     {
         $filter = array('mail' => $mail);

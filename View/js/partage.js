@@ -190,6 +190,32 @@ PARTAGE.addContactSubList = function() {
 }
 
 $(document).ready(function(){
+
+    //BOUTONS "Partager"
+    //---------------------------------------------------
+    $("body").on('click', "#partager", function(){
+        showInput($("#popPartager"));
+        $("#popPartager").show();
+        $("#textNotifyPopPartager").html("");
+    });
+
+    $("body").on('click', '#annulerpopPartager', function(){
+        $("#popPartager").hide();
+    });
+
+    $("body").on('click', '#validerpopPartager', function(){
+        $("#textNotifyPopPartager").html("");   
+        var docOK = checkDocument();
+        $("#partager").val($('input[name=optionsVisibilite]:checked').val());           
+        if (docOK) {
+            postDocument();
+            $("#textNotifyPopPartager").html('<b>Sauvegarde effectuée</b>');
+            $("#popPartager").delay(1000).fadeOut();
+        } else {
+            $("#textNotifyPopPartager").append("<span style='color:red'><br><b>Il existe une erreur dans vos exercices</b></span>");
+        }
+    });
+
     $("body").on('change', '[name^="optionsVisibilite"]', function() {
         
         if ($('#visibiliteRestreint').is(':checked')) {
