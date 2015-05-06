@@ -172,7 +172,9 @@ var addFormQuestion = function (data){
     // Valeur de la question
     //---------------------------
     if(data.typeExo === 'editeurHtml'){
-        if(!anEditorExist){
+
+        if(!anEditorExist){/*On verifie qu'un editeur n'est pas déjà crée*/
+           
             var OediteurArticle = new editeurArticle(data.idExo, data.typeExo);
             data.div.append(editeurArticle.q);
 
@@ -283,10 +285,14 @@ var afficheDoc = function (div, mode, jsonDoc){
             idExo = key;
             var nextCBisOK = false;
             $.each(val, function(index, value) {
-                //console.log("   " + index + " " + value);
+
                 /// Enonce / Question ///
-                if (value ==="editeurHtml"){ /* 2703jimmy */
-                    /* ici faire l'affichage */
+               
+                if (index === "contenu"){ 
+                     /* Contenue HTML à afficher ou à ajouter dans l'editeur */
+                     /* value est le code html à afficher en mode lecture*/
+                     /* Pour remplir l'editeur en mode update, une fois instancié ligne 181, utiliser la fonction editor.setValue(value) */
+
                 }
                 if (index.substring(0,8)=== "titreExo"){
                     var details = index.split("-");              
