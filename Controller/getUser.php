@@ -32,7 +32,7 @@ if(isset($_GET["U"])&& $_GET["U"] != $_SESSION["id"]){
 	
 	echo json_encode($resultat);
 
-}elseif(isset($_GET["U"]) == $_SESSION["id"]) {
+}elseif( $_GET["U"] == $_SESSION["id"]) {
 	# code...
 
 	$projection = array("_id" => false, "nom" =>true, "prenom" => true, "idUrl" => true, "contact" => true );
