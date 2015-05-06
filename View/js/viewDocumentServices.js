@@ -117,13 +117,14 @@ var addFormDocHeader = function (div, mode, jsonDoc) {
 /********************************
   classe pour l'editeur d'article
 ********************************/
+var anEditorExist = false;
+
 var editeurArticle = function(idexo, typeexo){
     editeurArticle.htmlEditorWysi = "";
     editeurArticle.q = "";
     editeurArticle._idexo =idexo; 
     editeurArticle._typeexo =typeexo;
     editeurArticle.HTTPGETHTML();
-  
 };
 
 editeurArticle.HTTPGETHTML = function(){
@@ -170,16 +171,21 @@ var addFormQuestion = function (data){
 
     // Valeur de la question
     //---------------------------
-    if(data.typeExo === 'editeurHtml'){ 
-        var OediteurArticle = new editeurArticle(data.idExo, data.typeExo);
-        data.div.append(editeurArticle.q);
+    if(data.typeExo === 'editeurHtml'){
+        if(!anEditorExist){
+            var OediteurArticle = new editeurArticle(data.idExo, data.typeExo);
+            data.div.append(editeurArticle.q);
 
-        editor = new wysihtml5.Editor("wysihtml5-textarea", { 
-          toolbar:      "wysihtml5-toolbar", 
-          parserRules:  wysihtml5ParserRules 
-        });
-        console.log("update");
+            editor = new wysihtml5.Editor("wysihtml5-textarea", { 
+              toolbar:      "wysihtml5-toolbar", 
+              parserRules:  wysihtml5ParserRules 
+            });
 
+            anEditorExist = true;
+        console.log("creation editeur terminé");
+        }else{
+            alert("Seul un editeur html par document n'est possible");
+        }
     }
     else
     {
