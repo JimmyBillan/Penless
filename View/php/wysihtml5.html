@@ -1,14 +1,110 @@
+  
+  <style type="text/css">
+
+
+  body {
+    font-family: Verdana;
+    font-size: 11px;
+  }
+  
+  h2 {
+    margin-bottom: 0;
+  }
+  
+  small {
+    display: block;
+    margin-top: 40px;
+    font-size: 9px;
+  }
+  
+  small,
+  small a {
+    color: #666;
+  }
+  
+  a {
+    color: #000;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  #wysihtml5-toolbar [data-wysihtml5-action] {
+    float: right;
+  }
+  
+  #wysihtml5-toolbar,
+  textarea {
+    width: 100%;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    min-height: 400px;
+    max-height: 600px;
+    border: 2px solid green;
+    font-family: Verdana;
+    font-size: 11px;
+  }
+  
+  textarea:focus {
+    color: black;
+    border: 2px solid black;
+  }
+
+
+  @font-face {
+  font-family: "Flaticon";
+  src: url("View/js/wysihtml/logo/flaticon.eot");
+  src: url("View/js/wysihtml/logo/flaticon.eot#iefix") format("embedded-opentype"),
+  url("View/js/wysihtml/logo/flaticon.woff") format("woff"),
+  url("View/js/wysihtml/logo/flaticon.ttf") format("truetype"),
+  url("View/js/wysihtml/logo/flaticon.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+/*margin-left: 20px;*/
+}.flaticon-bold15:before {
+  content: "\e000";
+}
+.flaticon-italic2:before {
+  content: "\e001";
+}
+.flaticon-link23:before {
+  content: "\e002";
+}
+.flaticon-list-1:before {
+  content: "\e003";
+}
+.flaticon-numbered8:before {
+  content: "\e004";
+}
+.flaticon-picture64:before {
+  content: "\e005";
+}
+
+
+</style>
+
 <div id="wysihtml5-toolbar" style="display: block;">
 
   <ul class="commands list-inline">
-          <li data-wysihtml5-command="bold" title="Make text bold (CTRL + B)" class="command" href="javascript:;" unselectable="on">bold</li>
-          <li data-wysihtml5-command="italic" title="Make text italic (CTRL + I)" class="command wysihtml5-command-active" href="javascript:;" unselectable="on">ITALIC</li>
-          <li data-wysihtml5-command="insertUnorderedList" title="Insert an unordered list" class="command" href="javascript:;" unselectable="on">LIST</li>
-          <li data-wysihtml5-command="insertOrderedList" title="Insert an ordered list" class="command wysihtml5-command-active" href="javascript:;" unselectable="on">ORLIST</li>
-          <li data-wysihtml5-command="createLink" title="Insert a link" class="command" href="javascript:;" unselectable="on">LIEN</li>
-          <li data-wysihtml5-command="insertImage" title="Insert an image" class="command" href="javascript:;" unselectable="on">IMAGE</li>
-          <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" title="Insert headline 1" class="command" href="javascript:;" unselectable="on">H1</li>
-          <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" title="Insert headline 2" class="command" href="javascript:;" unselectable="on">H2</li>
+          <li data-wysihtml5-command="bold" title="Rendre le texte en gras CTRL + B)" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-bold15"></button></li>
+          <li data-wysihtml5-command="italic" title="Rendre le texte en italic (CTRL + I)" class="command wysihtml5-command-active" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-italic2"></button></li>
+          <li data-wysihtml5-command="insertUnorderedList" title="Inserer une liste" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-list-1"></button></li>
+          <li data-wysihtml5-command="insertOrderedList" title="Inserer une liste numerotée" class="command wysihtml5-command-active" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-numbered8"></button></li>
+          <li data-wysihtml5-command="createLink" title="Inserer un lien" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-link23"></button></li>
+          <li data-wysihtml5-command="insertImage" title="Inserer une image" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm flaticon-picture64"></button></li>
+          <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" title="Inserer headline 1" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm" style="width:42px;height:42px">H1</button></li>
+          <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" title="Inserer headline 2" class="command" href="javascript:;" unselectable="on"><button class="btn btn-default btn-sm" style="width:42px;height:42px">H2</button></li>
           
           <!--
           CHOIX DES COULEURS #VOIR POUR L AFFICHAGE
