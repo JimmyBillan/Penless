@@ -204,24 +204,6 @@ $(document).ready(function(){
 	    return false;
 	});
 	
-	//BOUTON "Ajouter Une Image"	
-	//---------------------------------------------------
-	$("body").on('click', '[name^="plusReponse"]', function(){
-
-		var divExo = $(this).parent(); //$("#"+$(this).parent().attr('id')); CKE
-		divExo.find("[name='labelErreur']").hide();
-			
-		// Incremente le compteur de réponse : CKE a supprimer si possible : index nextAvailableIdReponse
-		// Insère le formulaire de saisie de la nouvelle réponse
-		addFormReponse({
-			div       : divExo,
-            mode      : "CREATE"});
-
-		divExo.animate({ scrollTop: $(document).height()}, "slow");	
-	});
-
-
-
 	//BOUTON "Ajouter Une Reponse"	
 	//---------------------------------------------------
 	$("body").on('click', '[name^="plusReponse"]', function(){
