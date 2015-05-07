@@ -79,6 +79,10 @@ ul.BAR li a {
         cursor: pointer;
         text-decoration: none;
     }
+
+    ul.BAR li.active {
+        background-color: #1BA39C;
+    }
 }
 
     /****************************************************************************************/
@@ -105,6 +109,9 @@ ul.BAR li a {
         height: 61px;
         border-bottom: 1px solid #e5e5e5;    border-right: 1px solid #e5e5e5;  };
 }
+    ul.BAR li.active {
+        background-color: #1BA39C;
+    }
 
     #corp {
       position: relative;

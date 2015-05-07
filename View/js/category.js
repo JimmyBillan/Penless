@@ -83,7 +83,7 @@ CATEGORY.addCategoryMenu = function(catList) {
 		else {
 			// niveau intermédiaire : click -> affichage du sous-menu
 			submenu += '<a name="menuCat"><label class="labelCategorie">'+ cat+ '</label>'+
-			'<span class="glyphiconReponse glyphicon-chevron-right" style="float:right;">';
+			'<span class="glyphicon glyphicon-chevron-right" style="float:right;">';
 		}
 		submenu += '</a></li>';
 	}
@@ -92,17 +92,17 @@ CATEGORY.addCategoryMenu = function(catList) {
 
 CATEGORY.createSidebarCategory = function(div) {
 	var sidebar = 
-		'<ul class="nav nav-sidebar" name="menuCategory">'+
+		'<ul class="BAR" name="menuCategory">'+
 		// Champs de recherche 
 		'<li><a href="#">'+
-        '<input name="tagsDoc" class="labelCategorie saisie" type="text" placeholder="Recherche exercice"></input>'+
-        '<span name="searchDoc" class="glyphiconReponse glyphicon-search" style="float:right"></span>'+
+        '<input name="tagsDoc" class="saisie" type="text" placeholder="Recherche exercice" style="color:grey; width: 90%; font-weight:normal;"></input>'+
+        '<span name="searchDoc" class="glyphicon glyphicon-search" style="float:right"></span>'+
         '</a></li>'+
         // Entête du Menu des catégories
 		'<li class="active"><a href="#">'+
 		'<label  class="labelCategorie" name="menuCat">Catégories</label>' +
-		'<span class="glyphiconReponse glyphicon-chevron-right" style="float:right">'+
-		'</a></span></li>'+
+		'<span class="glyphicon glyphicon-chevron-right" style="float:right">'+
+		'</span></a></li>'+
 		'</ul>';
 	div.append(sidebar);
 

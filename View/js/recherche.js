@@ -45,7 +45,7 @@ $(document).ready(function(){
 	/********************
 				Menu lateral
 				*********************/
-	$("body").on('click', 'ul.BAR li',function(){
+	$("body").on('click', '#menuMonCompte li',function(){
 		window.location.href = $(this).children().attr('href');
 	})
 
