@@ -150,6 +150,7 @@ editeurArticle.APPEND_dataDIV = function(){
 }
 
 var editor; 
+
 var addFormQuestion = function (data){
     // data = (div, mode, idExo, typeExo, question)
     
@@ -175,6 +176,7 @@ var addFormQuestion = function (data){
 
         if(!anEditorExist){/*On verifie qu'un editeur n'est pas déjà crée*/
            
+           if ((data.mode === "CREATE")||(data.mode === "UPDATE")) {
             var OediteurArticle = new editeurArticle(data.idExo, data.typeExo);
             data.div.append(editeurArticle.q);
 
@@ -183,10 +185,25 @@ var addFormQuestion = function (data){
               parserRules:  wysihtml5ParserRules 
             });
 
-            anEditorExist = true;
-        console.log("creation editeur terminé");
+            anEditorExist = true;            
+            console.log("creation editeur terminée");
+            
+            // Cas 'UPDATE', on restitue le texte enregistré
+            if (data.question) { 
+                console.log("Ajoute contenu à éditer : ");
+                console.log(data.question)
+                editor.setValue(data.question);
+            };        
+            }
+            else { // mode READ
+                if (data.question) {
+                var q = '<div id="editor" name="'+data.idExo+'" typeexo="'+data.typeExo+'"class="droite15 greybox col-xs-12" style="display : block">'+
+                    data.question+'</div>';
+                data.div.append(q);
+                }
+            }
         }else{
-            alert("Seul un editeur html par document n'est possible");
+            alert("Un seul editeur html par document.");
         }
     }
     else
@@ -209,7 +226,7 @@ var addFormQuestion = function (data){
                     '<label name="labelErreur" style="color:red"></label>';
                     // Il n'est pas nécessaire d'identifier les "supprimer", "modifier", "plusReponse" : on accède directement au div parent
                 }
-                // CKE : créer un div blockreponses?
+                
                 q += '</div>';
                 data.div.append(q);
     }
@@ -289,10 +306,12 @@ var afficheDoc = function (div, mode, jsonDoc){
                 /// Enonce / Question ///
                
                 if (index === "contenu"){ 
-                     /* Contenue HTML à afficher ou à ajouter dans l'editeur */
-                     /* value est le code html à afficher en mode lecture*/
-                     /* Pour remplir l'editeur en mode update, une fois instancié ligne 181, utiliser la fonction editor.setValue(value) */
-
+                    addFormQuestion({
+                        div      : $("#blockQuestion"),
+                        idExo    : key,
+                        typeExo  : jsonDoc[key]["typeExo"],//="editeurHtml"
+                        mode     : mode,
+                        question : value});
                 }
                 if (index.substring(0,8)=== "titreExo"){
                     var details = index.split("-");              
