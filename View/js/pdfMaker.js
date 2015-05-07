@@ -73,19 +73,10 @@ pdfMaker.addLigneReponse = function () {
 
 function addBase64FromImageUrl(URL) {
 	console.log("addBase64FromImageUrl" + URL);
-    /*var extension = imgData.split('.');
-	var fileType;
-	console.log("extension image " + extension[extension.length-1]);
-	switch (extension[extension.length-1]) {
-		case 'png' : {fileType = 'PNG'; break;}
-		case 'jpg' : {fileType = 'JPEG'; break;}
-		default : {fileType='IGNORE'}
-	}
-	if (fileType!=='IGNORE') {
-		pdfMaker.exos.addImage(imgData, 'PNG', pdfMaker.marginLeft, pdfMaker.lineY, 200, 200);
-	}*/
-	/*var img = new Image();
+    
+	var img = new Image();
     img.src = URL;
+    //img.crossOrigin = "Anonymous"; // ne suffit pas pour eviter l'erreur "The operation is insecure"
     img.onload = function () {
 	// Redmensionner l'image?
     var canvas = document.createElement("canvas");
@@ -95,10 +86,10 @@ function addBase64FromImageUrl(URL) {
     var ctx = canvas.getContext("2d");
     ctx.drawImage(this, 0, 0);
 
-    //var dataURL = canvas.toDataURL();
+    var dataURL = canvas.toDataURL();//**//
     pdfMaker.exos.addImage(dataURL);
 
-    }*/
+    }
 }
 
 pdfMaker.htmlToPdf = function () {

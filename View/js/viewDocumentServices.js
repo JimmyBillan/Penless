@@ -38,7 +38,8 @@ var addFormTitreDoc = function (div, mode, jsonDoc) {
 
     var formTitre =
         '<div id="TitreDoc">'+// class="col-lg-10 col-md-10 col-sm-9 col-xs-12">'+
-        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">';
+        '<input type="text" placeholder="Titre du Document" name="titreDocument" class="labelTitre saisie" value="'+valueTitre +'">'+
+        '<span id="Imprimer" class="glyphiconDoc glyphicon-print"></span>';
 
     if ((mode === "CREATE")||(mode === "UPDATE")) {
         formTitre +=
