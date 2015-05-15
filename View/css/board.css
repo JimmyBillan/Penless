@@ -7,7 +7,7 @@ body {
 padding-top: 50px;
 }
 body.hl {
-  background: url('/image/accueil-kids.jpg')no-repeat center fixed;
+  background: url('/image/accueil-kids.webp')no-repeat center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -154,7 +154,7 @@ div#creationDocument {
   padding-left: 0px;
 }
 }
-
+/*VUE MOBILE*/
 @media (max-width: 768px) {
 
 
@@ -164,14 +164,14 @@ display: none;
 
   div#blockQuestion {
   position: relative;
-  top: 177px;
+ /* top: 177px;*/
   padding-right: 3px;
-  padding-left: 3px;
+  /*padding-left: 3px;*/
   float: right;
   }
  div.popMenu {
     position: relative;
-    top: 177px;
+   /* top: 177px;*/
     padding-right: 3px;
     padding-left: 3px;
     float: right;
@@ -180,15 +180,12 @@ display: none;
 left: 0px;
 }
    .navbar-fixed-enteteCreation {
-    min-width: 377px;
+    min-width: 100%;
     background-color: rgb(245, 245, 245);  padding: 10px;  
     border-style: groove;
     border-top-color: black;
-    border-width: 0 0 1px;
-    border-width: 1px 0px 0px 0px;
-    margin-top: 140px;  
-    position: fixed;
-    position: fixed;  right: 0;  left: 0;  
+    border-width: 1px 0px 0px 0px; 
+    position: relative;  right: 0;  left: 0;  
     z-index: 1;  -webkit-transform: translate3d(0,0,0);  -o-transform: translate3d(0,0,0);  transform: translate3d(0,0,0);
     top: 1px;
 }
@@ -237,7 +234,7 @@ div#sidebar {
 
   #titreMenuLatteral { display: none;}
   .droite15{
-    margin-right: -15px;
+    /* margin-right: -15px; */
   }
 }
 
@@ -428,6 +425,11 @@ margin-left: 10px;
 margin-bottom: 12px;
 }
 
+.labelCategorie:hover {
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .saisie {
 -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -600,11 +602,15 @@ box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
 
 }
 
+div#gestionContact {
+  margin-left: 15px;
+}
+
 .row.ligngroup {
     background-color: rgba(101, 198, 187, 0.54);
     margin-bottom: 5px;
 height: auto;
-
+margin-left: 0px;
 min-height: 20px;
 padding-top: 5px;
 }

@@ -95,19 +95,23 @@ ul.BAR li a {
 
     ul.BAR {
         list-style-type: none;
-        height: 61px;
+        max-height: 61px;
         margin-bottom: 0px;
         overflow-y: hidden;
         padding-left: 0px;
         overflow-x: hidden;
-        width: 1084px;
-    }
+     /* at least the size of the header */      
+        display: table-row;
+        width:auto; /* size the block automatically */;
+}
 
     ul.BAR li {
-        
-        float: left;    padding: 20px;        background-color: #bdc3c7;    margin-bottom: 2px;    text-decoration: none;    font-weight: bold;    
+            padding: 20px;        background-color: #bdc3c7;    margin-bottom: 2px;    text-decoration: none;    font-weight: bold;    
         height: 61px;
-        border-bottom: 1px solid #e5e5e5;    border-right: 1px solid #e5e5e5;  };
+        border-bottom: 1px solid #e5e5e5;    border-right: 1px solid #e5e5e5;  
+        white-space: nowrap;
+        display: table-cell;
+};
 }
     ul.BAR li.active {
         background-color: #1BA39C;

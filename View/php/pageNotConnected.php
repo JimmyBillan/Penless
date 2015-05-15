@@ -9,7 +9,9 @@ include('navbarNotConnected.php');
 echo "<div class='row nomarginright'>";
 
 // Sidebar créée dynamiquement
-echo "<div id ='sidebar' class='col-sm-3 col-md-2  navbar-fixed-top25 sidebar'>";//<div id ='sidebar' class='col-xs-12 col-sm-3 col-md-2'>";
+//echo "<div id ='sidebar' class='col-sm-3 col-md-2  navbar-fixed-top25 sidebar'>";//<div id ='sidebar' class='col-xs-12 col-sm-3 col-md-2'>";
+
+echo "<div id ='sidebar' class='col-sm-3 col-md-3 col-lg-2 col-xs-12'>";
 echo "</div>";
 
 // Corp de la page
