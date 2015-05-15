@@ -180,5 +180,13 @@ class UserDbConnection {
     
     }
 
+    public function UpdateInfoConfidentiel($idUrl, $data)
+    {
+        $criteria = array("idUrl" => $idUrl);
+        $this->_collection->update($criteria, array('$set' => $data));
+        echo json_encode(array("retour" =>"succes"));
+
+    }
+
 
 }

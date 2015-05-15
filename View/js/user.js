@@ -380,44 +380,165 @@ $('#corp').on('click', '#myQrCode', function() {
 
 });
 
-
-$('#corp').on('click', '#myParameter', function(){
-	if($('#formParametre').is(":visible")){
-		$('#formParametre').hide();
-		$('#myParameter').prop('value', 'Mes paramètres');
-	}else if ($('#formParametre').is(":hidden")){
-			$('#formParametre').show();
-			$('#myParameter').prop('value', 'Annuler');
-	}else
-	{
-		$('#myParameter').prop('value', 'Annuler');
-			$.ajax({
-				type : 'POST',
-				data : {U: User},
-				url : 'Controller/parametreConfidentiel.php',
-
-				success: function(reponse){
-				checkboxMail = "<input id='idCheckboxMail' type='checkbox'>";
-				saveParametre = "<input id='saveParametre' type='submit' value='Sauvegarder' class='btn btn-default  btn-xs'>";
-				var result = $.parseJSON(reponse);
-
-				$("#title").after("<form id='formParametre'class='form-inline' style='display:none;'>"+
-					"<form class='form-horizontal'><div class='form-group'><input class='form-control' value="+result.nom+"></div><div class='form-group'><input class='form-control' value="+result.prenom+"></div></form>"+
-					"<label>Info Confidentiel</label>"+
-					"<form class='form-horizontal'><div class='checkbox'><label>"+checkboxMail+"Recevoir les notifications par mail :</label></div></form>"+saveParametre+"</form>");
-				
-				if(result.notificationMail == true)
-					$( "#idCheckboxMail" ).prop( "checked", true );
-				$('#formParametre').show();
-
-				}
-
-
-			});
+function MyParameter_view(){
+	this.hideForm = function(form, btn){
+		form.hide();
+		btn.prop('value', "Mes Parametres");
 	}
 
+	this.showForm = function(form, btn){
+		form.show();
+		btn.prop('value', 'Annuler');
+	}
+
+	this.setDisplayedButtonValue = function(btn, text){
+		console.log(btn);
+		btn.prop('value', text);
+	}
+	this.buildForm = function(userP){
+		form = '<form id="formParametre" statut="">'+
+				  '<div class="form-group">'+
+				    '<label>Nom</label>'+
+				    '<input class="form-control" name="nom" value='+userP.nom+'>'+
+				  '</div>'+
+				  '<div class="form-group">'+
+				    '<label>Prenom</label>'+
+				    '<input class="form-control" name="prenom" value='+userP.prenom+'>'+
+				  '</div>'+
+				  '<div class="checkbox">'+
+				    '<label>'+
+				      '<input id="idCheckboxMail" name="CB_mail" type="checkbox"> Recevoir les notifications par mail'+
+				    '</label>'+
+				  '</div>'+
+				  '<div id="LabelUpdateMyParametre" class="form-group" info="no-value" style="display:none;">'+
+				  '</div>'+
+				  '<input id="myAccountEdit_saveParametre" type="button" name="btn_save" info="no-value" value="Sauvegarder" class="btn btn-default  btn-xs"  >'+
+				'</form>';
+
+		$("#title").after(form);
+				
+		if(userP.notificationMail == true)
+			$( "#idCheckboxMail" ).prop( "checked", true );
+		$('#formParametre').show();
+		$('#formParametre').attr('statut', 'enabled');
+	}
+	this.printInfo = function(retour){
+		$('#LabelUpdateMyParametre').html('<label>Operation '+retour.retour+'</label>');
+		$('#LabelUpdateMyParametre').show().hide(5000);
+	}
+}
+
+function MyParameter_Ctrl(){
+	this.getParameterConfidential = function(callback){
+		$.ajax({
+			url: 'Controller/parametreConfidentiel.php',
+			type: 'GET',
+			dataType: 'JSON',
+		})
+		.done(function(retour) {
+			if(typeof callback === "function") callback(retour);
+		})
+		.fail(function(retour) {
+			console.log("error getParameterConfidential : "+retour);
+			console.log(retour);
+		})
+	}
+
+	this.extractInputs = function(){
+		var val_inputs = {};
+		var $inputs = $('#formParametre :input'); 
+
+		var stopProcess = false;
+
+		$inputs.each(function(index, el) {
+			if ($(this).attr('info') != "no-value"){
+				if($(this).val().trim() ==""){
+					alert("Le champs "+this.name+" est vide");
+					stopProcess = true;
+				}else{
+					
+					if(this.name == "CB_mail"){
+						if($(this).is(':checked')){val_inputs[this.name] = true;}
+						else{val_inputs[this.name] = false;}
+						
+					}else{
+						val_inputs[this.name] = $(this).val();
+					}
+				}
+			}
+		});
+		if (stopProcess == false){
+			return val_inputs;
+		}
+	}
+
+	this.postInputs = function(arrayInputs, callback){
+		$.ajax({
+			url: 'Controller/processSaveProfilEdit.php',
+			type: 'POST',
+			dataType: 'json',
+			data: {inputs: arrayInputs},
+		})
+		.done(function(retour) {
+			console.log(retour)
+			if(typeof callback === "function") callback(retour);
+		})
+		.fail(function(retour) {
+			console.log("error postInputs : "+ retour);
+		})
+	}
+}
+
+function MyParameter (btnMyParameter, formParameter){
+	this.btnMyParameter = btnMyParameter;
+	this.formParameter = formParameter;
+	self.View = new MyParameter_view();
+	self.Ctrl = new MyParameter_Ctrl();
+
+	this.userP = {};
+	this.eventOnClick = function(){
+		if(typeof this.formParameter.attr('statut') === 'undefined'){
+			self.View.setDisplayedButtonValue(this.btnMyParameter, "Annuler");
+			self.Ctrl.getParameterConfidential(function(userP){
+				self.View.buildForm(userP);
+			});
+		}
+		else if(this.formParameter.attr('statut') === "enabled"){
+			self.View.hideForm(this.formParameter, this.btnMyParameter);
+			this.formParameter.attr('statut', 'disabled');
+		}
+		else if (this.formParameter.attr('statut') === "disabled"){
+			self.View.showForm(this.formParameter, this.btnMyParameter);
+			this.formParameter.attr('statut', 'enabled');
+		}
+
+	}
+
+	this.saveParameter = function(){
+		var okToPost = self.Ctrl.extractInputs(this.formParameter);
+		if (okToPost){
+			self.Ctrl.postInputs(okToPost,function(retour){
+			self.View.printInfo(retour);
+			});
+		}
+		
+	}
+}
+
+
+
+
+$('#corp').on('click', '#myParameter', function(){
+	var a = new MyParameter($(this), $('#formParametre'));
+	a.eventOnClick();
 });
 
+
+$('#corp').on('click', '#myAccountEdit_saveParametre', function(){
+	var a = new MyParameter(null,  $('#formParametre'));
+	a.saveParameter();
+	
+});
 
 $("body").on('click', '#goToTarget', function(){
 	console.log($(this).attr("target"));
