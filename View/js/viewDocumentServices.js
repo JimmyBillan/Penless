@@ -133,7 +133,8 @@ editeurArticle.HTTPGETHTML = function(){
             url: 'View/php/wysihtml5.html',
             type: 'GET',
             dataType: 'html',
-            async : false
+            async : false,
+            cache: false
         })
         .done(function(data) {
          editeurArticle.SET_htmlEditorWysi(data);
