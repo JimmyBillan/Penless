@@ -22,7 +22,7 @@ if(isset($_POST["inputs"]) &&$_SESSION["id"]){
 		if($_POST["inputs"]["CB_mail"] == "true"){
 			$CB_mail = true;
 		}
-		$data = array("nom" => $_POST["inputs"]["nom"],"prenom" => $_POST["inputs"]["prenom"],"notificationMail" => $CB_mail);
+		$data = array("nom" => trim(strtolower( $_POST["inputs"]["nom"])),"prenom" => trim(strtolower((string)$_POST["inputs"]["prenom"])),"notificationMail" => $CB_mail);
 		
 		$u = new UserDbConnection();
 		$u->UpdateInfoConfidentiel($_SESSION["id"], $data);
