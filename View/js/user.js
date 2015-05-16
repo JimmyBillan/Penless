@@ -338,7 +338,7 @@ $(document).ready(function(){
 										'<div class="">'+
 										  '<div  class="tl-name"><a href="/?&U='+data[i].createur+'">'+Maj(data[i].nom)+' '+ Maj(data[i].prenom) +'</a></div> <a href="/?&D='+data[i].idDocument+'&C=Affichage" class="btn btn-default" style="float:right" type="submit">Consulter</a></div>'+
 										  '<div class="tl-title" style="float: left;">'+data[i].titreDocument+'</div> '+
-										  '<div class="tl-date" >Crée le : '+self.cleanDate(data[i].DateModification)+'</div>'
+										  '<div class="tl-date" >Derniere modification : '+self.cleanDate(data[i].DateModification)+'</div>'
 										'</div>'+
 									'</div>';
 			};
