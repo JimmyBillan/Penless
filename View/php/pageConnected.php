@@ -18,11 +18,7 @@ include('sidebarConnected.php');
 
 echo"</div>";  
 
-/* Footer */
-
-include('footer.php');
-
-/*
+include('footer.php'); /* scripts communs Connected/NotConnected */
 
 echo' <script type="text/javascript" src="View/js/editor2/lodash.js"></script>
  <script type="text/javascript" src="View/js/editor2/quill.js"></script>
@@ -31,11 +27,7 @@ echo' <script type="text/javascript" src="View/js/editor2/lodash.js"></script>
 echo  '<script type="text/javascript" src="View/js/wysihtml/dist/wysihtml5-0.3.0.min.js"></script>
  <script type="text/javascript" src="View/js/wysihtml/parser_rules/advanced.js"></script>';
 
-
-echo  "<script type='text/javascript' src='View/js/viewDocumentServices.js'></script>";
 echo  "<script type='text/javascript' src='View/js/user.js'></script>";
-echo  "<script type='text/javascript' src='View/js/document.js'></script>"; 
-echo  "<script type='text/javascript' src='View/js/category.js'></script>"; 
 echo  "<script type='text/javascript' src='View/js/partage.js'></script>"; 
 
 echo "</html>";

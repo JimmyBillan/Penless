@@ -30,10 +30,10 @@ echo "</div>";
 echo "</div>";
 //echo "<div id='tabDocument' class='col-xs-12 col-md-4 col-sm-12 col-lg-4 '></div>";
 //echo "</div>";
-/* Footer */
-include('footer.php');
-echo  "<script type='text/javascript' src='View/js/pageNotConnected.js'></script>";
-echo  "<script type='text/javascript' src='View/js/category.js'></script>";
-echo  "<script type='text/javascript' src='View/js/document.js'></script>";
-echo  "<script type='text/javascript' src='View/js/viewDocumentServices.js'></script>";
 
+/* Footer */
+include('footer.php'); /* scripts communs Connected/NotConnected */
+echo  "<script type='text/javascript' src='View/js/pageNotConnected.js'></script>";
+
+echo '</body>';
+echo '</html>';
