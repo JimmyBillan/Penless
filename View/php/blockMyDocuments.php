@@ -16,6 +16,7 @@
 	$documentDBconnection = new DocumentDBconnection();
 	$cursor = $documentDBconnection->Find($_SESSION['id']); // On cherche les documents de l'utilisateur
 	if($cursor->count() > 0){
+		$cursor->sort(array('DateModification' => -1));
 		foreach ($cursor as $key) {
 			echo "<tr id=".$key["idDocument"].">";
 				echo"<td onclick=\"document.location = '/?&D=".$key["idDocument"]."&C=Affichage';\" class=clickable>".$key["titreDocument"]."</td>";
