@@ -5,7 +5,11 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Controller/getNumberNotification.php";
 
-$nBNotification = numberNotification();?>
+$nBNotification = numberNotification();
+if ($nBNotification > 0 ){
+    $nBNotification ='<span class="badge">'.$nBNotification.'</span>';
+}
+?>
 
 <div id ="sidebar" class="col-sm-3 col-md-3 col-lg-2 col-xs-12">
 

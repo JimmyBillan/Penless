@@ -88,7 +88,7 @@ $(document).ready(function(){
 
 	
 	var jsonDoc = {};
-
+console.log("documentjs");
 	// Page de recherche de documents	
 	///////////////////////////////////////////////////
 	if ((idDocument ==="")&&(codePage ==="TousLesDocuments")){
@@ -96,7 +96,7 @@ $(document).ready(function(){
 		CATEGORY.createSidebarCategory($("#sidebar"));
 		$('#corp').empty();
 	}
-
+	
 	else if ((idDocument ==="")&&(codePage ==="Creation")){
 		// Création d'un nouveau document
 		///////////////////////////////////////
@@ -110,6 +110,7 @@ $(document).ready(function(){
 				}else{
 					idDocument = reponse;
 					addFormDocHeader($('#corp'), "CREATE"); // CKE ne contient pas l'IdDoc?
+					console.log("creation");
 					// Le document en cours d'écriture sera enregistré toutes les 4 secondes
 					window.setInterval( function() {postDocument()}, 4000);
 				}			
@@ -130,6 +131,7 @@ $(document).ready(function(){
 					}else{
 						jsonDoc = $.parseJSON(reponse);
 						afficheDoc($("#corp"), "READ", jsonDoc);
+						console.log("affichage");
 					}				
 				}
 			});
@@ -148,6 +150,7 @@ $(document).ready(function(){
 					}else {
 						jsonDoc = $.parseJSON(reponse);			
 						afficheDoc($("#corp"), "UPDATE", jsonDoc);
+						console.log("modification");
 						window.setInterval( function() {postDocument()}, 4000);
 					}				
 				}

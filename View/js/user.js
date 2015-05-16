@@ -12,6 +12,8 @@ function Maj(word){
     return word;
 }
 
+
+
 function genererEntete(result) {
 	nom = Maj(result.nom);
 	prenom = Maj(result.prenom);
@@ -228,12 +230,32 @@ function deleteGroup(groupID){
 	});
 }
 
+function extractIdFromJsonDesContact(jsonDescontact){
+	a = [];
+ 	for (var i = 0; i < jsonDescontact.length; i++) {a.push(jsonDescontact[i].idUrl);}
+	return a;
+}
+
+function findIdWithProjection(id, projection){
+	lJson = jsonDescontact.length;
+	retour = {};
+	for (var i = 0; i < lJson; i++) {
+		if(jsonDescontact[i]["idUrl"] == id){
+			for (var j = 0; j < projection.length; j++) { //projection ["nom", "prenom"]
+				retour[projection[j]] = jsonDescontact[i][projection[j]]
+			};
+		}
+	}
+	return retour;
+}
+
+var jsonDescontact ;
 
 $(document).ready(function(){
 	var User = getParameterByName('U');
 	var idDocument = getParameterByName('D');
 	var codePage = getParameterByName('C');
-	var jsonDescontact = $.parseJSON($('#listContactJson').html());
+	jsonDescontact = $.parseJSON($('#listContactJson').html());
 
 
 	if(User !=""){
@@ -272,6 +294,117 @@ $(document).ready(function(){
 
 		});
 
+	}
+	/* ICI LA PAGE D'ACCUEIL */
+
+	function TimeLine(CM, mode){
+		this.conteneurMere = CM;
+		this.mode = mode;
+		self.V = new ViewTimeLine();
+		self.V.generateConteneurTL(this.conteneurMere, this.mode);
+	}
+
+	function ViewTimeLine(){
+		self.Ctrl = new CtrlTimeLine();
+		self.CM ;
+		self.allData = {};
+
+		this.generateConteneurTL = function(CM, mode){
+			self.CM = CM;
+			self.CM.append('<div id="conteneurTL" class="col-xs-12"><div class="TL-Document"></div><div class="TL-Document"></div><div class="TL-Document"></div><div class="TL-Document"></div></div>');
+
+			self.Ctrl.getAllDocument(extractIdFromJsonDesContact(jsonDescontact), function(allData){
+				self.allData = allData;
+
+				if(mode == "full"){
+					self.Ctrl.OrderDataByDate(self.allData, function(allDataOrdered){
+						self.allData = allDataOrdered;
+						self.allData = self.Ctrl.getNamesWithID(self.allData);
+						
+						self.generateLine(self.allData, self.CM);
+					});
+				}
+				
+			});
+			
+		}
+
+		self.generateLine = function(data, CM){
+			dLength = data.length;
+			listLineToAppend = [];
+			console.log(data);
+			for (var i = 0; i < dLength; i++) {
+				listLineToAppend[i]='<div class="TL-Document">'+
+										'<div class="">'+
+										  '<div  class="tl-name"><a href="/?&U='+data[i].createur+'">'+Maj(data[i].nom)+' '+ Maj(data[i].prenom) +'</a></div> <a href="/?&D='+data[i].idDocument+'&C=Affichage" class="btn btn-default" style="float:right" type="submit">Consulter</a></div>'+
+										  '<div class="tl-title" style="float: left;">'+data[i].titreDocument+'</div> '+
+										  '<div class="tl-date" >Crée le : '+self.cleanDate(data[i].DateModification)+'</div>'
+										'</div>'+
+									'</div>';
+			};
+			CM.html("");
+			for (var i = 0; i < dLength; i++) {
+				CM.append(listLineToAppend[i]);
+			};
+		}
+
+		self.cleanDate = function(d){
+			var mois = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
+		  "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"
+		];
+			return d.getDate()+" "+mois[d.getMonth()]+" "+d.getHours()+":"+d.getMinutes();
+		}
+	}
+
+	function CtrlTimeLine(){
+
+		this.getNamesWithID = function(data){
+			dLength = data.length;
+			for (var i = 0; i < dLength; i++) {
+				cursor = findIdWithProjection(data[i]["createur"], ["nom", "prenom"])
+				data[i]["nom"] = cursor["nom"];
+				data[i]["prenom"] = cursor["prenom"];
+			};
+			return data;
+
+			
+		}
+
+		this.getAllDocument = function(ids, callback){
+
+				$.ajax({
+					url: 'Controller/getDocumentUserNotMe.php',
+					type: 'GET',
+					dataType: 'JSON',
+					data: {U: ids, area:"accueil"},
+				})
+				.done(function(retour) {
+					if(typeof callback === "function") callback(retour);
+				})
+				.fail(function(retour) {
+					console.log(retour);
+				})
+			
+		}
+
+		this.OrderDataByDate = function(data, callback){
+			
+			dLength = data.length;
+
+			for (var i = 0; i < dLength; i++) {
+				data[i].DateModification = new Date(data[i].DateModification);	
+			};
+			data.sort(function(a,b){return  b.DateModification - a.DateModification });
+			
+			if(typeof callback === "function") callback(data);
+		}
+		
+	}
+
+
+	if(window.location.href == "http://upylinks.com/index.php" ||window.location.href == "http://upylinks.com/"){
+		$("#corp").append("<div id='fulltimeline'></div>");
+		var tl = new TimeLine($("#fulltimeline"), "full");
 	}
 
 

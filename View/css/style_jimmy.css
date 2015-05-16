@@ -42,6 +42,18 @@ ul.BAR li a {
 .navbar-inverse .navbar-brand {
   color: #F0F0F0;
 }
+
+.tl-name a{
+  font-size: 1.5em;
+  font-weight: 700;
+  color: rgb(26, 188, 156);
+}
+
+.tl-date {
+  float: left;
+  width: 100%;
+  color: rgb(161, 163, 165);
+}
     
     /****************************************************************************************/
     /****************************************************************************************/
@@ -50,6 +62,25 @@ ul.BAR li a {
     /****************************************************************************************/
 
 @media (min-width: 768px){
+
+    div#fulltimeline {
+      max-height: 94vh;
+      overflow-y: scroll;
+    }
+    
+    div#conteneurTL {
+    display: block;
+    margin-right: 0;    margin-left: 0;    
+    background-color: #F5F5F5;    border-color: #ddd;    border-width: 1px;    border-radius: 4px 4px 0 0;    -webkit-box-shadow: none;    box-shadow: none;
+    height: 482px;
+    }
+
+    .TL-Document {
+        padding: 15px;
+        height: 100px;
+        background-color: white;
+        border-bottom: 1px solid #e1e8ed;
+    }
 
     ul.BAR {
         list-style-type: none;
@@ -92,6 +123,25 @@ ul.BAR li a {
     /****************************************************************************************/
 
 @media (max-width: 768px){
+    
+    div#fulltimeline {
+      max-height: 84vh;
+      overflow-y: scroll;
+    }
+    div#conteneurTL {
+        display: block;
+        margin-right: 0;    margin-left: 0;    
+        background-color: #F5F5F5;    border-color: #ddd;    border-width: 1px;    border-radius: 4px 4px 0 0;    -webkit-box-shadow: none;    box-shadow: none;
+        height: 482px;
+    }
+
+    .TL-Document {
+        margin-left: 15px;
+        padding: 15px;
+        height: 100px;
+        background-color: white;
+        border-bottom: 1px solid #e1e8ed;
+    }
 
     ul.BAR {
         list-style-type: none;
@@ -122,5 +172,6 @@ ul.BAR li a {
         margin-top: 0px;
       padding-right: 0px;
       padding-left: 0px;
+        overflow-y: auto;
     }
 }

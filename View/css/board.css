@@ -5,6 +5,8 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
 padding-top: 50px;
+overflow-y: auto; 
+-webkit-overflow-scrolling: touch
 }
 body.hl {
   background: url('/image/accueil-kids.webp')no-repeat center fixed;
@@ -205,6 +207,7 @@ left: 0px;
 div#sidebar {
   z-index: 2;
   overflow-x: scroll;
+
 }
   .sidebar {
   

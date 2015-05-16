@@ -3,7 +3,7 @@
         <div class="col-sm-12">
             <h1>Mot de passe oublié</h1>
         </div>
-        <div class="form-group " >
+        <div class="form-group col-sm-12" >
             <!--<div class="col-lg-7 col-md-8 col-sm-12"-->
                 <label  class="control-label" id="titreMailOublie" style="display: inline;">
                     Saisissez votre adresse email pour réinitialiser le mot de passe
