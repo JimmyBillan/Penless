@@ -21,7 +21,7 @@ PARTAGE.addPopPartage = function(div, mode, jsonDoc) {
                 '<input type="radio" name="optionsVisibilite" id="visibilitePublic" value="Public"> Public'+
                 '</label>'+
             '</div>'+
-            '<button id="annulerpopPartager" type="button" class="btn btn-default">Annuler</button>'+
+            //'<button id="annulerpopPartager" type="button" class="btn btn-default">Annuler</button>'+
             '<button id="validerpopPartager" type="button" class="btn btn-default">Valider</button>'+
             '<div id="textNotifyPopPartager"></div>'+
         '</div>'+
@@ -58,10 +58,14 @@ PARTAGE.addPopPartageRestreint = function() {
         '<div id="sharingGroups" class="form-inline"></div>'+
         '<div class="input-group">'+
         '<span class="input-group-addon glyphicon glyphicon-plus"></span>'+
-        '<select id="userGroup" class="form-control" placeholder="Ajouter un contact">'+
-        '<option>Ajouter un groupe</option>'+
-        '</select>'+
+        '<input type="text" class="form-control" id="userGroup" placeholder="Ajouter un groupe">'+
         '</div>'+
+        '<ul id="userGroupList" style="display:none"></ul>'+
+        // Version select ne marche qu'avec Firefox, pas avec Chrome, Safari ou IE
+        // on remplace donc par une liste
+        //'<select id="userGroup" class="form-control" placeholder="Ajouter un contact">'+
+        //'<option>Ajouter un groupe</option>'+
+        //'</select>'+
         '</div>';
 
     $('#visibiliteRestreint').parent().after(divPartage);
@@ -96,9 +100,8 @@ PARTAGE.addPopPartageRestreint = function() {
             console.log("GROUPS");
             PARTAGE.groups = $.parseJSON(reponse);
             
-            console.log(PARTAGE.groups);
             for (var i=0; i<PARTAGE.groups.length; i++) {
-                $('#userGroup').append('<option idGroup="'+PARTAGE.groups[i].idGroupe+'">'+PARTAGE.groups[i].nom+'</option>');
+                $('#userGroupList').append('<li class="form-control" idGroup="'+PARTAGE.groups[i].idGroupe+'">'+PARTAGE.groups[i].nom+'</li>');
             }
             // Cas Modification du document :
             // On affiche les contacts déjà enregistrés en partage
@@ -200,6 +203,7 @@ $(document).ready(function(){
     });
 
     $("body").on('keyup', '#userContact', function() {
+        $('#userContactSubList').empty();
         PARTAGE.addContactSubList();
     });
 
@@ -210,11 +214,26 @@ $(document).ready(function(){
         $('#userContactSubList').empty();
     });
 
+    /* Works for Firefox but not Chrome
     $("body").on('click', "#userGroup option", function(e) {  
         if ($(this).attr('idGroup')) { // On ignore le clic sur "Ajouter un groupe"
         PARTAGE.addSharingGroup ({idGroup : $(this).attr('idGroup'),
                                   nom     : $(this).val()});
         $(this).parent().val('Ajouter un groupe');
+        return false;
+        }
+    });*/
+
+    $("body").on('focus', '#userGroup', function() {
+        $("#userGroupList").show();
+    });
+
+    $("body").on('click', "#userGroupList li", function(e) {  
+
+        if ($(this).attr('idGroup')) { // On ignore le clic sur "Ajouter un groupe"
+        PARTAGE.addSharingGroup ({idGroup : $(this).attr('idGroup'),
+                                  nom     : $(this).html()});
+        $("#userGroupList").hide();
         }
     });
 
